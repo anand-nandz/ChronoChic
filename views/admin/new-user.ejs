@@ -1,0 +1,84 @@
+
+<% include('../layouts/header.ejs')  %>
+
+
+<div class="container">
+    <h1>Add New User</h1>
+
+    <form action="" method="post">
+        <input type="text" name="name" placeholder="Enter Name" required>
+        <br>
+        <input type="email" name="email" placeholder="Enter Email ID" required>
+        <br>
+        <input type="text" name="mobileno" placeholder="Enter Mobile" required>
+        <br>
+        <input type="password" name="password" placeholder="Enter Your Password" required>
+        <br>
+        <input type="submit" value="Add User" class="btn btn-primary">
+    </form>
+
+    <% if(typeof message !== 'undefined') { %>
+        <p><%= message %></p>
+    <% } %>
+
+    <a href="/admin/dashboard" class="btn btn-light">Go Back</a>
+</div>
+
+
+
+
+<style>
+    body {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        color: #007bff;
+    }
+
+    form {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        background-color: #495057;
+        color: #ffffff;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    p {
+        color: #430ac7;
+    }
+
+    a {
+        color: #007bff;
+        display: block;
+        margin-top: 20px;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+</style>
+
+
+<% include('../layouts/footer.ejs')  %>
+

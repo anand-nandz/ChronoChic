@@ -1,0 +1,61 @@
+<% include('../layouts/header.ejs') %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+<div class="container">
+    <form action="" method="POST">
+        <input type="hidden" name="user_id" value="<%=user._id%>">
+        <input type="text" name="name" value="<%=user.name%>" placeholder="Enter Name" required>
+        <br>
+        <input type="email" name="email" value="<%=user.email%>" placeholder="Enter Email" required>
+        <br>
+        <input type="text" name="mobileno" value="<%=user.mobile%>" placeholder="Enter Mobile" required>
+        <br>
+        <input type="submit" value="Update Profile" class="btn btn-primary">
+    </form>
+</div>
+
+
+
+
+<style>
+    body {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        background-color: #495057;
+        color: #ffffff;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+
+
+
+
+<% include('../layouts/footer.ejs') %>
+
+

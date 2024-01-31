@@ -1,0 +1,121 @@
+<% include ("../layouts/header.ejs") %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+<div class="container">
+    <h1>Dashboard</h1>
+
+    <a class="btn btn-primary" href="/admin/new-user">Add new User</a>
+    <br><br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Verified</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% if(users.length > 0) { %>
+                <% for(let i=0; i<users.length; i++) { %>
+                    <tr>
+                        <td><%= users[i].name  %></td>
+                        <td><%= users[i].email  %></td>
+                        <td><%= users[i].mobile  %></td>
+                        <td>
+                            <% if(users[i].is_verified == 0) { %>
+                                <p class="badge badge-warning">Not Verified</p>
+                            <% } else { %>
+                                <p class="badge badge-success">Verified</p>
+                            <% } %>
+                        </td>
+                        <td>
+                            <a class="btn btn-info" href="/admin/edit-user?id=<%= users[i]._id  %>">Edit</a>
+                            <a class="btn btn-danger" href="/admin/delete-user?id=<%= users[i]._id  %>">Delete</a>
+                        </td>
+                    </tr>
+                <% } %>
+            <% } else { %>
+                <tr>
+                    <td colspan="5" class="no-users">Users Not Found</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" href="/admin/home">Go To Home</a>
+
+
+
+
+
+
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td p {
+            margin: 0;
+        }
+
+        .btn {
+            margin-right: 10px;
+        }
+
+        .no-users {
+            color: #dc3545;
+        }
+    </style>
+
+<% include('../layouts/footer.ejs') %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

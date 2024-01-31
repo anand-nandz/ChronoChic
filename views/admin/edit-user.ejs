@@ -1,0 +1,86 @@
+<% include('../layouts/header.ejs') %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+<div class="container">
+    <h1 class="center-text">Edit User</h1>
+    <br><br>
+    <form action="" method="post" class="center-text">
+        <input type="hidden" name="user_id" value="<%=user._id%>">
+
+        <input type="text" name="name" placeholder="Enter your Name" value="<%=user.name %>" class="form-control" required>
+        <br>
+        <input type="email" name="email" placeholder="Enter email-Id" value="<%=user.email  %>" class="form-control" required>
+        <br>
+        <input type="text" name="mobileno" placeholder="Enter Mobile number" value="<%=user.mobile %>" class="form-control" required>
+        <br>
+        <div class="form-check">
+            <input type="radio" name="verify" value="1" class="form-check-input" <% if(user.is_verified == 1){%> checked <%} %> >
+            <label class="form-check-label">Verified</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" name="verify" value="0" class="form-check-input" <% if(user.is_verified == 0){%> checked <%} %> >
+            <label class="form-check-label">Unverified</label>
+        </div>
+        <br>
+        <input type="submit" value="Update User" class="btn btn-primary">
+    </form>
+
+    <a href="/admin/" class="btn btn-light">Go to Dashboard</a>
+</div>
+</div>
+
+
+
+
+<style>
+    body {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #007bff;
+       
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    form input {
+        margin-bottom: 15px;
+    }
+
+    form label {
+        margin-right: 10px;
+    }
+
+    form input[type="submit"] {
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+    form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        color: #007bff;
+        display: block;
+        margin-top: 20px;
+    }
+    .center-text {
+            text-align: center;
+        }
+   
+</style>
+
+
+
+<% include('../layouts/footer.ejs') %>
