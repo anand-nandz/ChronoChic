@@ -39,7 +39,11 @@
     <!-- Main Style CSS (Please use minify version for better website load performance) -->
     <link rel="stylesheet" href="assets/css/style.css">
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
-    
+
+    <!-- CDN for bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="..." crossorigin="anonymous" />
+  
 <style>
         .error {
             border-color: red;
@@ -536,11 +540,20 @@
                                         <div class="login-register-form">
                                             <form id="registrationForm" action="/register" method="post" onsubmit="return validateForm()">
                                                 <div class="login-input-box">
-                                                    <input type="text" id="name" name="name" placeholder="User Name" onblur="validateName()" required>
-                                                    <input type="password" id="userpassword" name="userpassword" placeholder="Password" onblur="validatePassword()" required>
-                                                    <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" onblur="validateConfirmPassword()" required>
+                                                    <input type="text" id="name" name="name" placeholder="Full Name" onblur="validateName()" required>
                                                     <input type="email" id="email" name="email" placeholder="Email" onblur="validateEmail()" required>
                                                     <input type="text" id="mobileno" name="mobileno" placeholder="Enter Mobile" onblur="validateMobile()" required>
+                                                    <!-- <input type="password" id="userpassword" name="userpassword" placeholder="Password" onblur="validatePassword()" required> -->
+                                                    <input type="password" id="userpassword" name="userpassword" placeholder="Password" onblur="validatePassword()" required>
+                                                    <span class="toggle-password" onclick="togglePasswordVisibility('userpassword')">
+                                                        <i class="fas fa-eye-slash"></i> <!-- Set initial state to closed -->
+                                                    </span>
+                                                    
+                                                    <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" onblur="validateConfirmPassword()" required>
+                                                    <span class="toggle-password" onclick="togglePasswordVisibility('confirmpassword')">
+                                                        <i class="fas fa-eye-slash"></i> <!-- Set initial state to closed -->
+                                                    </span>
+                                                    
                                                 </div>
                                                 <div class="button-box">
                                                     <button class="register-btn btn" type="submit"><span>Generate OTP</span></button>
@@ -761,14 +774,58 @@
     }
     
 
+//     function validateMobile() {
+//     var mobileInput = document.getElementById("mobileno");
+//     var mobile = mobileInput.value.trim();
+//     var mobileRegex = /^(?!0+$)(91)?[6-9]\d{9}$/;
+//     if (!mobileRegex.test(mobile)) {
+//         showError("mobileno", "Please enter a valid mobile number starting with a digit from 6 to 9");
+//     } else {
+//         hideError("mobileno");
+//     }
+// }
+
+
     function validateMobile() {
         var mobileInput = document.getElementById("mobileno");
         var mobile = mobileInput.value.trim();
-        var mobileRegex = /^(?!0+$)(91)?[6-9]\d{9}$/;
-        if (!mobileRegex.test(mobile)) {
-            displayError(mobileInput, "Please enter a valid mobile number starting with a digit from 6 to 9");
+        
+        // Regular expression for mobile number validation
+        var mobileRegex = /^(91)?[6-9]\d{9}$/;
+        
+        // Check for 10-digit number without country code
+        if (mobile.length === 10 && /^[6-9]\d{9}$/.test(mobile)) {
+            hideError("mobileno");
+        } 
+        // Check for 11-digit number with optional 0 at the front
+        else if (mobile.length === 11 && /^0[6-9]\d{9}$/.test(mobile)) {
+            hideError("mobileno");
+        }
+        // Check for 12-digit number with country code 91
+        else if (mobile.length === 12 && mobileRegex.test(mobile)) {
+            hideError("mobileno");
+        } 
+        // Display error for invalid cases
+        else {
+            showError("mobileno", "Please enter a valid mobile number starting with a digit from 6 to 9");
         }
     }
+
+    function togglePasswordVisibility(inputId) {
+    var passwordInput = document.getElementById(inputId);
+    var toggleButton = document.querySelector("#" + inputId + " + .toggle-password i");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.classList.remove("fa-eye-slash");
+        toggleButton.classList.add("fa-eye");
+    } else {
+        passwordInput.type = "password";
+        toggleButton.classList.remove("fa-eye");
+        toggleButton.classList.add("fa-eye-slash");
+    }
+}
+
 
     function validateForm() {
         validateName();
@@ -785,6 +842,71 @@
     
         return true;
     }
+
+    // Event listeners for blur to validate and show error messages
+    document.getElementById("name").addEventListener("blur", function() {
+        validateAndShow("name", validateName);
+    });
+    document.getElementById("userpassword").addEventListener("blur", function() {
+        validateAndShow("userpassword", validatePassword);
+    });
+    document.getElementById("confirmpassword").addEventListener("blur", function() {
+        validateAndShow("confirmpassword", validateConfirmPassword);
+    });
+    document.getElementById("email").addEventListener("blur", function() {
+        validateAndShow("email", validateEmail);
+    });
+    document.getElementById("mobileno").addEventListener("blur", function() {
+        validateAndShow("mobileno", validateMobile);
+    });
+
+    // Event listener for focus to hide error messages
+    document.getElementById("name").addEventListener("focus", function() {
+        hideError("name");
+    });
+    document.getElementById("userpassword").addEventListener("focus", function() {
+        hideError("userpassword");
+    });
+    document.getElementById("confirmpassword").addEventListener("focus", function() {
+        hideError("confirmpassword");
+    });
+    document.getElementById("email").addEventListener("focus", function() {
+        hideError("email");
+    });
+    document.getElementById("mobileno").addEventListener("focus", function() {
+        hideError("mobileno");
+    });
+
+
+
+
+
+//    // Add event listeners for blur and focus to show/hide error messages
+//    document.getElementById("name").addEventListener("blur", validateName);
+//     document.getElementById("userpassword").addEventListener("blur", validatePassword);
+//     document.getElementById("confirmpassword").addEventListener("blur", validateConfirmPassword);
+//     document.getElementById("email").addEventListener("blur", validateEmail);
+//     document.getElementById("mobileno").addEventListener("blur", validateMobile);
+
+//     // Hide error messages when the user focuses on the input field
+//     document.getElementById("name").addEventListener("focus", function() {
+//         hideError("name");
+//     });
+//     document.getElementById("userpassword").addEventListener("focus", function() {
+//         hideError("userpassword");
+//     });
+//     document.getElementById("confirmpassword").addEventListener("focus", function() {
+//         hideError("confirmpassword");
+//     });
+//     document.getElementById("email").addEventListener("focus", function() {
+//         hideError("email");
+//     });
+//     document.getElementById("mobileno").addEventListener("focus", function() {
+//         hideError("mobileno");
+//     });
+
+
+
     </script>
     
 

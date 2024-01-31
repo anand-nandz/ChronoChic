@@ -21,16 +21,21 @@ user_route.get('/',(req,res)=>{
 
 
     console.log(req.session);
-    res.render('home')
+    res.render('landingpage')
 });
 
-user_route.get('/login',userController.loadLogin)
+user_route.get('/login',userController.loadLogin);
+user_route.post('/login',userController.verifyLogin);
 
-user_route.get('/register',userController.loadRegister)
+user_route.get('/register',userController.loadRegister);
 user_route.post('/register',userController.insertUser);
 
 user_route.get('/verifyOTP',userController.loadOtp);
-user_route.post('/verifyOTP',userController.getOtp)
+user_route.post('/verifyOTP',userController.getOtp);
+
+user_route.get('/home',userController.loadHome);
+// user_route.get('/logout',userController.logout);
+user_route.get('/landingpage',userController.logout)
 
 
 

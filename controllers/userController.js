@@ -21,27 +21,6 @@ let transporter = nodemailer.createTransport({
 
 
 
-//---------------------*****Hash Password*****---------------------//
-
-// const securePassword = async(password)=>{
-
-//     try{
-
-//         const passwordHash = await bcrypt.hash(password, 10);
-//         return passwordHash;
-//     //     const password = req.session.Data.password;
-//     // const saltRounds = 10; // You can adjust the number of rounds as needed for your application
-//     // const passwordHash = await bcrypt.hash(password, saltRounds);
-
-        
-
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-
-// }
-
 //---------------------*****Load Login Page*****---------------------//
 
 const loadLogin = async(req,res)=>{
@@ -77,9 +56,9 @@ const insertUser = async(req,res)=>{
             if(req.body.userpassword===req.body.confirmpassword){
                 res.redirect('/verifyOTP')
             }
-            const otp = otpGenerator.generate(6, { upperCase: false, specialChar: false, alphabets: false});
-            // const OTP = otp()
-            // console.log(OTP)
+            const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false});
+            
+            
             const {name,email,mobileno,userpassword,confirmpassword} = req.body;
             // const data={
             //     name:name,
@@ -100,9 +79,9 @@ const insertUser = async(req,res)=>{
             
             // Setup email data with unicode symbols
             const mailOptions = await {
-                from: '"ChronoChic" <chronochic1@gmail.com>', // Sender address
+                from: '"ChronoChic" <chronochic1@gmail.com>', 
                 to: `${req.body.email}`, // List of receivers
-                subject: 'Your One Time Password, ChronoChic Registration', // Subject line
+                subject: 'Your One Time Password, ChronoChic Registration', 
                 text: `Hi,
                     Your Email OTP is ${otp}`
             };
@@ -115,31 +94,6 @@ const insertUser = async(req,res)=>{
                 });
                 // res.redirect('/verifyOTP')
             }           
-
-            // res.render('verifyOTP')
-
-
-
-            // if(req.body.userpassword===req.body.confirmpassword){
-            //     const spassword = await securePassword(req.body.userpassword)
-            //     const user = new User({
-            //     name:req.body.name,
-            //     email:req.body.email,
-            //     mobile:req.body.mobileno,
-            //     password:spassword,
-            //     is_admin :0
-            // });
-    
-            // const userData = await user.save();
-    
-            // if(userData){
-            //     res.render('register',{message:'Your registration is successful'});
-            // }
-            // else{
-            //     res.render('register',{message:'Your registration has been failed'});
-    
-            // }
-            // }
             
         }
         catch(error){
@@ -172,16 +126,17 @@ const getOtp = async (req, res) => {
         const otpInBody = req.body.otp;
         const otp = req.session.Data.otp
         console.log("stored otp",otp)
-        // const { mobile, password } = req.session.Data; // Destructure mobile and password from session Data
         console.log(otpInBody, 'this is otp', req.session, 'LLLLLLLL');
         
         if(otpInBody === otp){
             console.log(req.session.Data,"hello")
             const {name,email,mobileno,userpassword} = req.session.Data
+
             console.log("username:",name);
             console.log("email:",email);
             console.log("mobileno:",mobileno)
             console.log("userpassword:",userpassword)
+
             const passwordHash = await bcrypt.hash(userpassword,10);
             console.log("Hashedpassword ==>" , passwordHash);
             const existingUser = await User.findOne({email:email}) 
@@ -192,7 +147,8 @@ const getOtp = async (req, res) => {
                 mobile: mobileno,
                 password: passwordHash,
                 is_admin: 0,
-                is_verified: 1
+                is_verified: 1,
+                is_blocked:false
                 });
                 await user.save()
 
@@ -211,50 +167,66 @@ const getOtp = async (req, res) => {
 
 
 
-// const verifyLogin = async(req,res)=>{
+const verifyLogin = async(req,res)=>{
+    try{
+        const {email,userpassword}=req.body;
+        const userData= await User.findOne({email});
 
-//     try{
-        
-//         const email = req.body.email;
-//         const password = req.body.password;
+        console.log(userData);
 
-//         const userData = await User.findOne({email:email})
+        if(!userData){
+            res.status(400).json({message:"user not found"})
+        }
 
-//         if(userData){
+        const hashedPassword = await bcrypt.compare(userpassword,userData.password);
+        console.log(hashedPassword,'password');
+        console.log(userData.password,'hlooooooooooooo');
 
-//             const passwordMatch = await bcrypt.compare(password,userData.password);
+        if(hashedPassword){
+            if(userData.is_blocked){
+                res.render('login',{message:"user has been blocked"})
+            }
+            req.session.user = userData;
+            console.log(req.session.user);
+            res.redirect('/home');
+        }
+        else{
+            console.log("home rendering");
+            res.render('login',{message:'Invalid Password'})
+        }
+    }
+    catch(error){
+        console.log(error.message);
+        res.status(500).json({ message: "Internal server error" }); // Send a generic error response
 
-//             if(passwordMatch){
-
-//                 if(userData.is_verified === 0 ){
-//                     res.render('login',{message:'Admin not yet approved'})
-//                 }
-//                 else{
-//                     req.session.user_id = userData._id;
-//                     res.redirect('/home')
-//                 }
-
-//             }
-//             else{
-//                 res.render('login',{message:"Email and password is incorrect"});
-   
-//             }
-
-//         }
-
-//         else{
-//             res.render('login',{message:"Email and password is incorrect"});
-//         }
-
-
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-// };
+    }
+}
 
 
+const loadHome = async(req,res)=>{
+    try{
 
+        // const userData = await User.findById({_id:req.session.user_id});
+        // res.render('home',{user:userData});
+        res.render('home');
+
+    }
+    catch(error){
+        console.log(error.message);
+    }
+}
+
+
+const logout = (req, res) => {
+    try {
+      req.session.destroy();
+      res.redirect('/');
+    } 
+    catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error logging out" });
+    }
+   };
 
 
 
@@ -313,16 +285,7 @@ const getOtp = async (req, res) => {
 
 
 
-// const loadHome = async(req,res)=>{
-//     try{
 
-//         const userData = await User.findById({_id:req.session.user_id});
-//         res.render('home',{user:userData});
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-// }
 
 
 
@@ -385,12 +348,11 @@ module.exports = {
     loadRegister,
     insertUser,
     loadOtp,
-    getOtp
-    // loginLoad,
-    // verifyLogin,
-    // loadHome,
-    // userLogout,
-    // editLoad,
-    // updateProfile
+    getOtp,
+    verifyLogin,
+    loadHome,
+    logout
+
+
     
 }
