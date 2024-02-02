@@ -1,23 +1,27 @@
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
-// const otp =require('../controllers/otpGenerate');
-const otpGenerator =require('otp-generator')
-// Import Nodemailer
+// const otpGenerator =require('otp-generator');
 const nodemailer = require('nodemailer');
+const randomString = require("randomstring");
+const config = require("../config/config");
+const { use } = require("../routes/userRoute");
+const { sendForgotPasswordOTP } = require('../utils/forgotOtp');
+const { sendInsertOtp } = require('../utils/insertOtp');
+const { generateOtp } = require('../utils/otphandle');
 
 
 
-// Create a transporter object using SMTP transport
-let transporter = nodemailer.createTransport({
-     host:"smtp.gmail.com",  //  email service provider
-     port:587,
-     secure:false,
-     requireTLS:true,
-    auth: {
-        user: 'chronochic1@gmail.com',
-        pass: 'zdrh vybm xjfi ckrt' 
-    }
-});
+// // Create a transporter object using SMTP transport
+// let transporter = nodemailer.createTransport({
+//      host:"smtp.gmail.com",  //  email service provider
+//      port:587,
+//      secure:false,
+//      requireTLS:true,
+//     auth: {
+//         user: config.emailUser,
+//         pass: config.emailPassword 
+//     }
+// });
 
 
 
@@ -30,7 +34,7 @@ const loadLogin = async(req,res)=>{
 
     }
     catch{
-        console.log(error.message);
+        console.log(error.message); 
     }
 }
 
@@ -56,19 +60,10 @@ const insertUser = async(req,res)=>{
             if(req.body.userpassword===req.body.confirmpassword){
                 res.redirect('/verifyOTP')
             }
-            const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false});
-            
+            const otp = generateOtp();
             
             const {name,email,mobileno,userpassword,confirmpassword} = req.body;
-            // const data={
-            //     name:name,
-            //     email:email,
-            //     mobileno:mobileno,
-            //     userpassword:userpassword,
-            //     confirmpassword:confirmpassword,
-            //     otp:otp
-            // }
-
+          
               req.session.Data = {name,email,mobileno,userpassword,confirmpassword,otp}
             req.session.save();
             console.log(req.session,'this is sesion');
@@ -76,24 +71,31 @@ const insertUser = async(req,res)=>{
             console.log(otp);
             console.log(req.session.Data.otp,'wWWWWWW');
            
+
+
+            const sentEmailUser = await sendInsertOtp(req.body.email,otp);
+            if(sentEmailUser){
+                // console.log('sentemail');
+                res.redirect('/verifyOTP')
+            }
             
             // Setup email data with unicode symbols
-            const mailOptions = await {
-                from: '"ChronoChic" <chronochic1@gmail.com>', 
-                to: `${req.body.email}`, // List of receivers
-                subject: 'Your One Time Password, ChronoChic Registration', 
-                text: `Hi,
-                    Your Email OTP is ${otp}`
-            };
-            if(mailOptions){
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        return console.error('Error occurred while sending email:', error);
-                    }
-                    console.log('Email sent successfull',info.response);
-                });
-                // res.redirect('/verifyOTP')
-            }           
+            // const mailOptions = await {
+            //     from: '"ChronoChic" <chronochic1@gmail.com>', 
+            //     to: `${req.body.email}`, // List of receivers
+            //     subject: 'Your One Time Password, ChronoChic Registration', 
+            //     text: `Hi,
+            //         Your Email OTP is ${otp}`
+            // };
+            // if(mailOptions){
+            //     transporter.sendMail(mailOptions, (error, info) => {
+            //         if (error) {
+            //             return console.error('Error occurred while sending email:', error);
+            //         }
+            //         console.log('Email sent successfull',info.response);
+            //     });
+            //     // res.redirect('/verifyOTP')
+            // }           
             
         }
         catch(error){
@@ -154,16 +156,48 @@ const getOtp = async (req, res) => {
 
             }
             console.log("registered successfully")
-            res.redirect('/login')
-    
-        }else{
+            // res.redirect('/login')
+            res.redirect('/login?registration=complete');
+        }
+        else{
             res.status(400).json({error:"otp invalid"})
         }
+
+        // //forgot password data
+        // if(req.session.forgotData){
+        //     if(getOtp == req.session.forgotData.otp){
+        //         const passwordHash = await bcrypt.hash(newPassword,10);
+        //         console.log("NewHashedpassword ==>" , passwordHash);
+        //         const existingUser = await User.updateOne({email:email}) 
+        //         if(!existingUser){
+        //             const user = new User({
+        //             name: name,
+        //             email: email,
+        //             mobile: mobileno,
+        //             password: passwordHash,
+        //             is_admin: 0,
+        //             is_verified: 1,
+        //             is_blocked:false
+        //             });
+        //             await user.save()
+
+        //         }
+        //     console.log("password reseted successfully")
+        //     res.redirect('/login')
+        //     // res.redirect('/login?registration=complete');
+        //     }
+        // }
+
+
+
     } catch (error) {
         console.log('Error in OTP verification:', error);
         return res.render('verifyOTP', { message: 'An error occurred during OTP verification. Please try again later.' });
     }
 };
+
+
+//---------------------*****VerifyLogin*****---------------------//
 
 
 
@@ -203,6 +237,10 @@ const verifyLogin = async(req,res)=>{
 }
 
 
+//---------------------*****Load Home*****---------------------//
+
+
+
 const loadHome = async(req,res)=>{
     try{
 
@@ -217,7 +255,12 @@ const loadHome = async(req,res)=>{
 }
 
 
-const logout = (req, res) => {
+
+//---------------------*****Logout*****---------------------//
+
+
+
+const logout = async(req, res) => {
     try {
       req.session.destroy();
       res.redirect('/');
@@ -230,6 +273,111 @@ const logout = (req, res) => {
 
 
 
+//---------------------***** Verify email while reseting and Forgot Password*****---------------------//
+
+
+   const loadForgotPassword= async(req,res)=>{
+    try{
+        res.render('forgotPassword')
+    }
+    catch(error){
+        console.log(error.message);
+    }
+   }
+
+
+
+   const forgotPassword = async(req,res)=>{
+    try{
+        const email= req.body.email;
+       const user= await User.findOne({email:email});
+       if(!user){
+        return res.status(404).json({message:"Email not found"})
+       }
+
+       const otp = generateOtp();
+
+       req.session.forgotPassword = {
+        email:req.body.email,
+        otp:otp
+       }
+    //    req.session.save();
+
+       const sentEmail = await sendForgotPasswordOTP(req.body.email,otp);
+       if(sentEmail){
+        // console.log('sentemail');
+        res.redirect('/resetPassword')
+       }
+
+    }
+    catch(error){
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+   }
+
+
+   const loadPasswordReset = async(req,res)=>{
+    try{
+        res.render('resetPassword')        
+        
+    }
+    catch(error){
+        console.log(error.message)
+    }
+
+}
+
+
+
+
+
+   const passwordReset = async(req,res)=>
+   {
+    try{
+        // console.log("otp not get",req.session.forgotPassword.otp);
+        // console.log(otpEntered);
+        const otpEntered = req.body.otp;
+        const otpStored = req.session.forgotPassword.otp;
+        console.log("otp not get",req.session.forgotPassword.otp);
+        console.log(otpEntered);
+    
+        const newPassword = req.body.newPassword;
+
+        const hashedPassword = await bcrypt.hash(newPassword,10);
+        const confirmNewPassword = req.body.confirmNewPassword
+
+        if(newPassword !== confirmNewPassword){
+            return res.status(400).json({message:"Passwords not match"})
+        }
+        console.log('pass',hashedPassword);
+        if(otpEntered===otpStored)
+        {
+            const user = await User.findOneAndUpdate(
+                {email:req.session.forgotPassword.email},
+                {password:hashedPassword},
+                {new:true}
+            )
+
+            if(!user){
+                return res.status(404).json({message:"User not found"});
+            }
+    
+            console.log('email to update',req.session.forgotPassword.email);
+            console.log('hashed password',hashedPassword);
+    
+            res.redirect('/login'); 
+        }
+        else{
+            return res.status(500).json({message:"Invalid otp"})
+        }
+        
+    }
+    catch (error) {
+        console.error('Error sending password reset email:', error);
+        res.status(500).send({ error: 'An error occurred while processing your request' });
+      }
+   }
 
 
 
@@ -265,39 +413,6 @@ const logout = (req, res) => {
 
 
 
-
-
-// //login user methods started
-
-// const loginLoad = async(req,res)=>{
-
-//     try{
-
-//         res.render("login");
-
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-
-// }
-
-
-
-
-
-
-
-
-// const userLogout = async (req,res)=>{
-//     try{
-//         req.session.destroy();
-//         res.redirect('/');
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-// }
 
 
 // //user profile and update
@@ -351,7 +466,11 @@ module.exports = {
     getOtp,
     verifyLogin,
     loadHome,
-    logout
+    logout,
+    loadForgotPassword,
+    passwordReset,
+    forgotPassword,
+    loadPasswordReset
 
 
     

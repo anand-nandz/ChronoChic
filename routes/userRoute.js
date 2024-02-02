@@ -34,14 +34,13 @@ user_route.get('/verifyOTP',userController.loadOtp);
 user_route.post('/verifyOTP',userController.getOtp);
 
 user_route.get('/home',userController.loadHome);
-// user_route.get('/logout',userController.logout);
 user_route.get('/landingpage',userController.logout)
 
-
-
-
-
-
+user_route.get('/forgotPassword',userController.loadForgotPassword);
+user_route.post('/forgotPassword',userController.forgotPassword);
+// user_route.get('/verifyOTP',userController.loadForgotOTP);
+user_route.get('/resetPassword',userController.loadPasswordReset)
+user_route.post('/resetPassword',userController.passwordReset)
 
 
 
