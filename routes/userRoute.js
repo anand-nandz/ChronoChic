@@ -23,6 +23,9 @@ user_route.get('/',(req,res)=>{
     console.log(req.session);
     res.render('landingpage')
 });
+user_route.get('/login', (req, res) => {
+    res.render('login', { messages: req.flash('error') }); // Pass flash messages to the view
+});
 
 user_route.get('/login',userController.loadLogin);
 user_route.post('/login',userController.verifyLogin);

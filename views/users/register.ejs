@@ -769,25 +769,13 @@
     function validateEmail() {
         var emailInput = document.getElementById("email");
         var email = emailInput.value;
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(email)) {
             showError("email", "Please enter a valid email address");
         } else {
             hideError("email");
         }
     }
-    
-
-//     function validateMobile() {
-//     var mobileInput = document.getElementById("mobileno");
-//     var mobile = mobileInput.value.trim();
-//     var mobileRegex = /^(?!0+$)(91)?[6-9]\d{9}$/;
-//     if (!mobileRegex.test(mobile)) {
-//         showError("mobileno", "Please enter a valid mobile number starting with a digit from 6 to 9");
-//     } else {
-//         hideError("mobileno");
-//     }
-// }
 
 
     function validateMobile() {
@@ -880,36 +868,6 @@
     document.getElementById("mobileno").addEventListener("focus", function() {
         hideError("mobileno");
     });
-
-
-
-
-
-//    // Add event listeners for blur and focus to show/hide error messages
-//    document.getElementById("name").addEventListener("blur", validateName);
-//     document.getElementById("userpassword").addEventListener("blur", validatePassword);
-//     document.getElementById("confirmpassword").addEventListener("blur", validateConfirmPassword);
-//     document.getElementById("email").addEventListener("blur", validateEmail);
-//     document.getElementById("mobileno").addEventListener("blur", validateMobile);
-
-//     // Hide error messages when the user focuses on the input field
-//     document.getElementById("name").addEventListener("focus", function() {
-//         hideError("name");
-//     });
-//     document.getElementById("userpassword").addEventListener("focus", function() {
-//         hideError("userpassword");
-//     });
-//     document.getElementById("confirmpassword").addEventListener("focus", function() {
-//         hideError("confirmpassword");
-//     });
-//     document.getElementById("email").addEventListener("focus", function() {
-//         hideError("email");
-//     });
-//     document.getElementById("mobileno").addEventListener("focus", function() {
-//         hideError("mobileno");
-//     });
-
-
 
     </script>
     

@@ -1,13 +1,14 @@
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
 // const otpGenerator =require('otp-generator');
-const nodemailer = require('nodemailer');
-const randomString = require("randomstring");
-const config = require("../config/config");
+// const nodemailer = require('nodemailer');
+// const randomString = require("randomstring");
+// const config = require("../config/config");
 const { use } = require("../routes/userRoute");
 const { sendForgotPasswordOTP } = require('../utils/forgotOtp');
 const { sendInsertOtp } = require('../utils/insertOtp');
 const { generateOtp } = require('../utils/otphandle');
+const flash = require('connect-flash');
 
 
 
@@ -79,24 +80,7 @@ const insertUser = async(req,res)=>{
                 res.redirect('/verifyOTP')
             }
             
-            // Setup email data with unicode symbols
-            // const mailOptions = await {
-            //     from: '"ChronoChic" <chronochic1@gmail.com>', 
-            //     to: `${req.body.email}`, // List of receivers
-            //     subject: 'Your One Time Password, ChronoChic Registration', 
-            //     text: `Hi,
-            //         Your Email OTP is ${otp}`
-            // };
-            // if(mailOptions){
-            //     transporter.sendMail(mailOptions, (error, info) => {
-            //         if (error) {
-            //             return console.error('Error occurred while sending email:', error);
-            //         }
-            //         console.log('Email sent successfull',info.response);
-            //     });
-            //     // res.redirect('/verifyOTP')
-            // }           
-            
+          
         }
         catch(error){
             console.log(error.message)
@@ -163,33 +147,6 @@ const getOtp = async (req, res) => {
             res.status(400).json({error:"otp invalid"})
         }
 
-        // //forgot password data
-        // if(req.session.forgotData){
-        //     if(getOtp == req.session.forgotData.otp){
-        //         const passwordHash = await bcrypt.hash(newPassword,10);
-        //         console.log("NewHashedpassword ==>" , passwordHash);
-        //         const existingUser = await User.updateOne({email:email}) 
-        //         if(!existingUser){
-        //             const user = new User({
-        //             name: name,
-        //             email: email,
-        //             mobile: mobileno,
-        //             password: passwordHash,
-        //             is_admin: 0,
-        //             is_verified: 1,
-        //             is_blocked:false
-        //             });
-        //             await user.save()
-
-        //         }
-        //     console.log("password reseted successfully")
-        //     res.redirect('/login')
-        //     // res.redirect('/login?registration=complete');
-        //     }
-        // }
-
-
-
     } catch (error) {
         console.log('Error in OTP verification:', error);
         return res.render('verifyOTP', { message: 'An error occurred during OTP verification. Please try again later.' });
@@ -204,21 +161,48 @@ const getOtp = async (req, res) => {
 const verifyLogin = async(req,res)=>{
     try{
         const {email,userpassword}=req.body;
+
+        // Check if email and password are provided
+        if (!email || !userpassword) {
+            req.flash('error', 'Email and password are required');
+            return res.redirect('/login');
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            req.flash('error', 'Please enter a valid email address');
+            return res.redirect('/login');
+        }
+
+
         const userData= await User.findOne({email});
 
         console.log(userData);
 
         if(!userData){
-            res.status(400).json({message:"user not found"})
+            req.flash('error', 'User not found');
+            return res.redirect('/login');
+        }
+
+        if (userData.is_blocked) {
+            req.flash('error', 'Your account has been blocked. Please contact the admin.');
+            return res.redirect('/login');
         }
 
         const hashedPassword = await bcrypt.compare(userpassword,userData.password);
+
+        if (!hashedPassword) {
+            req.flash('error', 'Invalid password');
+            return res.redirect('/login');
+        }
+
         console.log(hashedPassword,'password');
         console.log(userData.password,'hlooooooooooooo');
 
         if(hashedPassword){
             if(userData.is_blocked){
-                res.render('login',{message:"user has been blocked"})
+                return res.render('login', { message: "User has been blocked" });
             }
             req.session.user = userData;
             console.log(req.session.user);
@@ -327,9 +311,6 @@ const logout = async(req, res) => {
     }
 
 }
-
-
-
 
 
    const passwordReset = async(req,res)=>

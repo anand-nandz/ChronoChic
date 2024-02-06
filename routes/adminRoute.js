@@ -15,27 +15,24 @@ admin_route.set('views', './views/admin');
 
 const adminController = require("../controllers/adminController");
 
-const auth = require('../middleware/adminAuth')
+// const auth = require('../middleware/adminAuth')
 
-admin_route.get('/',auth.isLogout,adminController.loadLogin);
+admin_route.get('/',adminController.loadLogin);
+admin_route.get('/adminLogin',adminController.adminLogout)
 
-admin_route.post('/',adminController.verifyLogin);
+admin_route.post('/',adminController.verifyAdmin);
 
-admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
+admin_route.get('/home',adminController.loadDashboard);
 
-admin_route.get('/logout',auth.isLogin,adminController.logout);
+admin_route.get('/users',adminController.loadUsers)
 
-admin_route.get('/dashboard',auth.isLogin,adminController.adminDashboard);
+admin_route.get("/users/edit", adminController.editUser);
+admin_route.post("/users/edit", adminController.edit_User);
 
-admin_route.get('/new-user',auth.isLogin,adminController.newUserLoad);
+// admin_route.get("/users/delete", adminController.delete_User);
 
-admin_route.post('/new-user',adminController.addUser);
+admin_route.get('/products',adminController.loadProducts)
 
-admin_route.get('/edit-user',auth.isLogin,adminController.edituserLoad);
-
-admin_route.post('/edit-user',adminController.updateUsers);
-
-admin_route.get('/delete-user',adminController.deleteUser);
 
 
 admin_route.get('*',function(req,res){

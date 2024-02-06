@@ -5,3 +5,4 @@ function generateOtp() {
     return otpGenerator.generate(6, { digits: true });
 }
 module.exports = { generateOtp };
+

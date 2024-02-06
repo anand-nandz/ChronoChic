@@ -39,6 +39,7 @@
     <!-- Main Style CSS (Please use minify version for better website load performance) -->
     <link rel="stylesheet" href="assets/css/style.css">
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="..." crossorigin="anonymous" />
 
 </head>
 
@@ -500,10 +501,27 @@
                                         <div class="login-register-form">
                                             <form action="/login" method="post">
                                                 <div class="login-input-box">
+                                                    
+                                                    <!-- error message for blocking -->
+                                                    <% if (messages && messages.length > 0) { %>
+                                                        <% messages.forEach(message => { %>
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <%= message %>
+                                                            </div>
+                                                        <% }); %>
+                                                    <% } %>
+                                                    
+
+                                                    
+
+
                                                     <!-- <input type="text" name="username" placeholder="User Name"> -->
-                                                    <input type="email" name="email" placeholder="Email" required>
-                                                    <input type="password" name="userpassword" placeholder="Password" required>
-                                                </div>
+                                                    <input type="email" id="email" name="email" placeholder="Email" onblur="validateEmail()" >
+                                                    <input type="password" id="userpassword" name="userpassword" placeholder="Password" onblur="validatePassword()" >
+                                                    <span class="toggle-password" onclick="togglePasswordVisibility('userpassword')">
+                                                        <i class="fas fa-eye-slash"></i> <!-- Set initial state to closed -->
+                                                    </span>
+                                                     </div>
                                                 <div class="button-box">
                                                     <div class="login-toggle-btn">
                                                         <!-- <input type="checkbox">
@@ -519,49 +537,23 @@
                                                         <a href="register" class="register-link-text">New to ChronoChic? Create an account</a>
                                                     </div>
 
+                                                    <% if (messages && messages.length > 0) { %>
+                                                        <% messages.forEach(message => { %>
+                                                            <div class="alert alert-danger" role="alert">
+                                                                <%= message %>
+                                                            </div>
+                                                        <% }); %>
+                                                    <% } %>
+                                                    
+
                                                     <!-- login.ejs or similar view template -->
                                                     <div id="registrationMessage" class="registration-message"></div>
 
                                                 </div>
-                                            </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                            
+                                            </form>                                            
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div id="lg2" class="tab-pane">
-                                    <div class="login-form-container">
-                                        <div class="login-register-form">
-                                            <form action="/login-register" method="post">
-                                                <div class="login-input-box">
-                                                    <input type="text" name="name" placeholder="User Name">
-                                                    <input type="password" name="userpassword" placeholder="Password">
-                                                    <input type="password" name="confirmpassword" placeholder="ConfirmPassword">
-                                                    <input name="email" placeholder="Email" type="email">
-                                                    <input type="text" name="mobileno" placeholder="Enter Mobile" required>
-                                                    
-                                                    
-                                                </div>
-                                                <div class="button-box">
-                                                    <button class="register-btn btn" type="submit"><span>Generate otp</span></button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -725,6 +717,128 @@
     });
 
     </script>
+
+
+
+<!-- messgage for error -->
+
+
+
+<!-- Add this script to your login.ejs file or another relevant view -->
+<script>
+    // Automatically remove flash messages after 5 seconds
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+            alert.remove();
+        });
+    }, 5000); // 5000 milliseconds = 5 seconds
+</script>
+
+
+
+<!-- validate form -->
+<script>
+    function showError(inputId, message) {
+        var errorElement = document.getElementById(inputId + "-error");
+        if (!errorElement) {
+            errorElement = document.createElement("div");
+            errorElement.id = inputId + "-error";
+            errorElement.className = "error-message";
+            document.getElementById(inputId).insertAdjacentElement("afterend", errorElement);
+        }
+        errorElement.textContent = message;
+    }
+    
+    function hideError(inputId) {
+        var errorElement = document.getElementById(inputId + "-error");
+        if (errorElement) {
+            errorElement.remove();
+        }
+    }
+    
+ 
+    
+    function validatePassword() {
+        var passwordInput = document.getElementById("userpassword");
+        var password = passwordInput.value;
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            showError("userpassword", "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long");
+        } else {
+            hideError("userpassword");
+        }
+    }
+    
+  
+    function validateEmail() {
+        var emailInput = document.getElementById("email");
+        var email = emailInput.value;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            showError("email", "Please enter a valid email address");
+        } else {
+            hideError("email");
+        }
+    }
+
+   
+
+
+
+
+    
+    function togglePasswordVisibility(inputId) {
+    var passwordInput = document.getElementById(inputId);
+    var toggleButton = document.querySelector("#" + inputId + " + .toggle-password i");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.classList.remove("fa-eye-slash");
+        toggleButton.classList.add("fa-eye");
+    } else {
+        passwordInput.type = "password";
+        toggleButton.classList.remove("fa-eye");
+        toggleButton.classList.add("fa-eye-slash");
+    }
+}
+
+
+    function validateForm() {
+        validatePassword();
+        validateEmail();
+    
+        var errorMessages = document.querySelectorAll(".error-message");
+        if (errorMessages.length > 0) {
+            errorMessages[0].previousElementSibling.focus();
+            return false;
+        }
+    
+        return true;
+    }
+
+    // Event listeners for blur to validate and show error messages
+    document.getElementById("userpassword").addEventListener("blur", function() {
+        validateAndShow("userpassword", validatePassword);
+    });
+    
+    document.getElementById("email").addEventListener("blur", function() {
+        validateAndShow("email", validateEmail);
+    });
+  
+
+    // Event listener for focus to hide error messages
+   
+    document.getElementById("userpassword").addEventListener("focus", function() {
+        hideError("userpassword");
+    });
+    
+    document.getElementById("email").addEventListener("focus", function() {
+        hideError("email");
+    });
+  
+
+    </script>
+    
 
 </body>
 

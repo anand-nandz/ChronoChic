@@ -1,9 +1,10 @@
-const session =require('express-session');
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
 const path = require('path');
 const bodyParser = require("body-parser");
+const session =require('express-session');
+const flash = require('connect-flash');
 
 
 mongoose.connect(`mongodb://127.0.0.1:27017/chronoChic`);
@@ -27,11 +28,20 @@ app.use(bodyParser.urlencoded({extended:true}))
 
 //Serve static files form the public directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/products", express.static(path.join(__dirname, "public")));
+app.use("/admin/users", express.static(path.join(__dirname, "public")));
+app.use("/admin/products", express.static(path.join(__dirname, "public")));
+
+
 app.use(session({
     secret: "chroNO@9876",
     resave: true,
     saveUninitialized: true,
 }));
+
+app.use(flash());
+
+
 
 //for user route
 const userRoute = require('./routes/userRoute');
