@@ -10,17 +10,22 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  // offprice: {
+  //   type: Number,
+  //   required: true,
+  // },
 
   description: {
     type: String,
     required: true,
   },
-  
+
   images: [
     {
-      type: String, 
+      type: String,
     },
   ],
+  
   category: {
     type: String,
     required: true,
@@ -31,23 +36,25 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
 
-  sizes: [
-    {
-      size: {
-        type: String,
-        required: true,
-      },
-      quantity: {
-        type: Number,
-        required: true,
-      },
-    },
-  ],
+  color: {
+    type: String,
+    required: true,
+  },
+
+  material: {
+    type: String,
+    required: true,
+  },
+
+  caseSize: {
+    type: String,
+    required: true,
+  },
 
   is_listed: {
-    type: String,
-    default: 1,
-  },
+    type: Boolean,
+    default: true,
+  }
 });
 
 module.exports = mongoose.model("Product", productSchema);

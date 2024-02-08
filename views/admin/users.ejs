@@ -25,7 +25,7 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="index.html" class="brand-wrap">
-                <img src="/adminassets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                <img src="/adminassets/imgs/theme/logo.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
@@ -71,15 +71,15 @@
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
+                    <a class="menu-link" href=""> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
                     </a>
-                    <div class="submenu">
+                    <!-- <div class="submenu">
                         <a href="page-form-product-1.html">Add product 1</a>
                         <a href="page-form-product-2.html">Add product 2</a>
                         <a href="page-form-product-3.html">Add product 3</a>
                         <a href="page-form-product-4.html">Add product 4</a>
-                    </div>
+                    </div> -->
                 </li>
                 <!-- <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
@@ -263,7 +263,7 @@
                                     <i class="material-icons md-edit"></i> Edit
                                 </a>
                                 <% if (user.is_verified !=="1" ) { %>
-                                    <a href="#" class="btn btn-sm font-sm btn-light rounded delete-btn" id="delete-btn-<%= user._id %>" data-user-id="<%= user._id %>">
+                                    <a href="/admin/users/delete?id=<%= user._id %>" class="btn btn-sm font-sm btn-light rounded delete-btn" id="delete-btn-<%= user._id %>" data-user-id="<%= user._id %>">
                                         <i class="material-icons md-delete_forever"></i> Delete
                                     </a>
                                     

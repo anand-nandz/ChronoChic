@@ -51,6 +51,9 @@ app.use('/',userRoute);
 const adminRoute = require('./routes/adminRoute');
 app.use('/admin',adminRoute);
 
+
+
+
 app.listen(8080,function check(error){
     if(error){
         console.log('Error......');

@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:00 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>ChronoChic Dashboard</title>
@@ -24,10 +25,11 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="/admin/home" class="brand-wrap">
-                <img src="/adminassets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                <img src="/adminassets/imgs/theme/logo.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
             </div>
         </div>
         <nav>
@@ -45,7 +47,7 @@
                         <a href="/admin/products" class="active">Product List</a>
                         <!-- <a href="page-products-grid.html">Product grid</a> -->
                         <!-- <a href="page-products-grid-2.html">Product grid 2</a> -->
-                        <a href="page-categories.html">Categories</a>
+                        <a href="/admin/category">Categories</a>
                     </div>
                 </li>
                 <!-- <li class="menu-item has-submenu ">
@@ -64,8 +66,8 @@
                     </a>
                     <div class="submenu">
                         <!-- <a href="page-sellers-cards.html">Sellers cards</a> -->
-                        <a href="/admin/users">Sellers list</a>
-                        <a href="page-seller-detail.html">Seller profile</a>
+                        <a href="/admin/users">Users list</a>
+                        <!-- <a href="page-seller-detail.html">Seller profile</a> -->
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
@@ -140,7 +142,8 @@
                 <form class="searchform">
                     <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                        <button class="btn btn-light bg" type="button"> <i
+                                class="material-icons md-search"></i></button>
                     </div>
                     <datalist id="search_terms">
                         <option value="Products">
@@ -151,39 +154,54 @@
                 </form>
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
                             <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                            <span class="badge rounded-pill">0</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i
+                                class="material-icons md-cast"></i></a>
                     </li>
                     <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
+                            aria-expanded="false"><i class="material-icons md-public"></i></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/adminassets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                            <a class="dropdown-item text-brand" href="#"><img src="/adminassets/imgs/theme/flag-us.png"
+                                    alt="English">English</a>
+                            <!-- <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-fr.png"
+                                    alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-jp.png"
+                                    alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-cn.png"
+                                    alt="Français">中国人</a> -->
                         </div>
                     </li>
                     <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/adminassets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                            aria-expanded="false"> <img class="img-xs rounded-circle"
+                                src="/adminassets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit
+                                Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account
+                                Settings</a>
+                            <a class="dropdown-item" href="#"><i
+                                    class="material-icons md-account_balance_wallet"></i>Wallet</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help
+                                center</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="adminLogin"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="adminLogin"><i
+                                    class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -193,17 +211,15 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Products grid</h2>
-                    <p>Lorem ipsum dolor sit amet.</p>
+                    <!-- <p>Lorem ipsum dolor sit amet.</p> -->
                 </div>
                 <div>
-                  
                     <a href="/admin/products/add-product" class="btn btn-primary btn-sm rounded">Create new</a>
                 </div>
             </div>
             <div class="card mb-4">
                 <header class="card-header">
                     <div class="row gx-3">
-                       
                         <div class="col-lg-2 col-6 col-md-3">
                             <select class="form-select">
                                 <!-- <option>All category</option>
@@ -220,48 +236,54 @@
                             </select>
                         </div>
                     </div>
-                </header> 
- 
-            
-
-              <div class="card-body">
-                <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
-            
-                    <% for (let i=0; i < allProducts.length; i++) { %>
-                       
-                        <div class="col">
-                            <div class="card card-product-grid">
-                                <a href="#" class="img-wrap m-3">
-                                <img src="/productAssets/<%= allProducts[i].images[0] %>" alt="Product Image" style="height: 250px;width: 195px;" >
-
-                                </a>
-                                <div class="info-wrap">
-                                    <a href="#" class="title text-truncate">
-                                        <%= allProducts[i].pname %>
+                </header>
+        
+               
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+                        <% for (let i = 0; i < allProducts.length; i++) { %>
+                            <div class="col">
+                                <div class="card card-product-grid h-100">
+                                    <a href="#" class="img-wrap m-3">
+                                        <img src="/productAssets/<%= allProducts[i].images[0] %>" alt="Product Image" style="max-height: 250px; max-width: 195px;">
                                     </a>
-                                    <div class="price mb-2">
-                                        <%= allProducts[i].price %>
-                                    </div>
-                                    <a href="/admin/products/edit-product?id=<%=allProducts[i]._id %>" class="btn btn-sm font-sm rounded btn-brand">
-                                        <i class="material-icons md-edit"></i> Edit
-                                    </a>
-                                    <% if (allProducts[i].is_listed !=="1" ) { %>
-                                        <a href="/admin/delete-product/<%= allProducts[i]._id %>" class="btn btn-sm font-sm btn-danger rounded">
-                                            <i class="material-icons md-delete_forever"></i> Delete
+                                    <div class="info-wrap d-flex flex-column justify-content-between">
+                                        <div class="d-flex justify-content-between">
+                                            <% for (let j = 1; j < Math.min(allProducts[i].images.length, 4); j++) { %> 
+                                                <img src="/productAssets/<%= allProducts[i].images[j] %>" alt="Product Image" class="additional-image">
+                                            <% } %>
+                                        </div>
+                                        <a href="#" class="title text-truncate mt-2">
+                                            <%= allProducts[i].pname %>
                                         </a>
-                                        <% } %>
+                                        <div class="price mt-1">
+                                            <%= allProducts[i].price %>
+                                        </div>
+                                        <!-- <div class="price mt-1">
+                                            <%= allProducts[i].offprice %>
+                                        </div> -->
+                                        <div class="d-flex">
+                                            <a href="/admin/products/edit-product?id=<%=allProducts[i]._id %>" class="btn btn-sm font-sm rounded btn-brand me-2">
+                                                <i class="material-icons md-edit"></i> Edit
+                                            </a>
+                                            <% if (allProducts[i].is_listed !== true) { %>
+                                                <a href="/admin/delete-product/<%= allProducts[i]._id %>" class="btn btn-sm font-sm btn-danger rounded">
+                                                    <i class="material-icons md-delete_forever"></i> Delete
+                                                </a>
+                                            <% } %>
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
-                        </div>
                         <% } %>
-                        
-            
-                </div> <!-- row.// -->
-            </div> <!-- card-body end// -->
+                    </div> <!-- row.// -->
+                </div> <!-- card-body end// -->
+                
+                
+                
+                
             </div> <!-- card end// -->
-
-
+        
             <div class="pagination-area mt-30 mb-50">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">
@@ -275,13 +297,13 @@
                     </ul>
                 </nav>
             </div>
-
         </section>
+        
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                    document.write(new Date().getFullYear())
+                        document.write(new Date().getFullYear())
                     </script> ©, ChronoChic - HTML Ecommerce Template .
                 </div>
                 <div class="col-sm-6">
@@ -303,4 +325,5 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:12 GMT -->
+
 </html>

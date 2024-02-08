@@ -29,11 +29,11 @@ const userSchema = new mongoose.Schema({
     is_blocked:{
         type:Boolean,
         default:false
-    },
-    token:{
-        type:String,
-        default:''
     }
+    // token:{
+    //     type:String,
+    //     default:''
+    // }
 
 });
 

@@ -36,7 +36,7 @@ user_route.post('/register',userController.insertUser);
 user_route.get('/verifyOTP',userController.loadOtp);
 user_route.post('/verifyOTP',userController.getOtp);
 
-user_route.get('/home',userController.loadHome);
+user_route.get('/',userController.loadHome);
 user_route.get('/landingpage',userController.logout)
 
 user_route.get('/forgotPassword',userController.loadForgotPassword);
@@ -45,23 +45,8 @@ user_route.post('/forgotPassword',userController.forgotPassword);
 user_route.get('/resetPassword',userController.loadPasswordReset)
 user_route.post('/resetPassword',userController.passwordReset)
 
+user_route.get('/home',userController.loadProduct);
+user_route.get('/productDetails',userController.loadIndividualProduct);
 
-
-// user_route.get('/register',auth.isLogout,userController.loadRegister);
-
-// user_route.post('/register',userController.insertUser);
-
-// user_route.get('/',auth.isLogout,userController.loginLoad);
-// user_route.get('/login',auth.isLogout,userController.loginLoad);
-
-// user_route.post('/login',userController.verifyLogin);
-
-// user_route.get('/home',auth.isLogin,userController.loadHome);
-
-// user_route.get('/logout',auth.isLogin,userController.userLogout)
-
-// user_route.get('/edit',auth.isLogin,userController.editLoad);
-
-// user_route.post('/edit',userController.updateProfile)
 
 module.exports = user_route;

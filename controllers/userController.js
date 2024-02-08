@@ -10,6 +10,9 @@ const { sendInsertOtp } = require('../utils/insertOtp');
 const { generateOtp } = require('../utils/otphandle');
 const flash = require('connect-flash');
 
+const Product = require("../models/productModel");
+const Category = require("../models/categoryModel")
+
 
 
 // // Create a transporter object using SMTP transport
@@ -368,65 +371,45 @@ const logout = async(req, res) => {
 
 
 
+   const loadProduct = async (req, res) => {
+    try {
+      const userData = await User.findById(req.session.user_id);
+      const productData = await Product.find({}).limit(8)
+      const categoryData = await Category.find({});
+        console.log(productData,'pdtdata........................');
+        console.log(userData,'userdata........................');
+      res.render('home',{user:userData,product:productData , category:categoryData})
+  
+      
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send("Internal Server Error");
+    }
+  };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //user profile and update
-
-// const editLoad = async(req,res)=>{
-//     try{
-
-//         const id = req.query.id;
-
-//         const userData = await User.findById({_id:id})
-
-//         if(userData){
-//             res.render('edit',{user:userData})
-//         }
-//         else{
-//             res.redirect('/home');
-//         }
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-// }
-
-// const updateProfile = async(req,res)=>{
-//     try{
-//         const userData =  await User.findByIdAndUpdate({_id:req.body.user_id},{$set:{name:req.body.name, email:req.body.email,mobile:req.body.mobileno}})
-
-//         res.redirect('/home');
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-// }
+  const loadIndividualProduct =async(req,res)=>{
+    try{
+        
+        const id =req.query.id;
+        const userData = await User.findById(req.session.user_id);
+        const productData = await Product.findById({_id:id});
+        const categoryData = await Category.find({});
+        console.log(productData,'id.........................');
+        if(productData){
+            res.render('productDetails',{product:productData,
+            user:userData , 
+            category:categoryData})
+        }
+        else{
+            res.redirect('/home')
+        }
+    }
+    catch (error) {
+        console.log(error.message);
+        res.status(500).send("Internal Server Error");
+      }
+  }
 
 
 
@@ -451,7 +434,9 @@ module.exports = {
     loadForgotPassword,
     passwordReset,
     forgotPassword,
-    loadPasswordReset
+    loadPasswordReset,
+    loadProduct,
+    loadIndividualProduct
 
 
     

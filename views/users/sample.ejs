@@ -1,0 +1,36 @@
+<div class="row product-active-lg-4">
+    <% product.forEach((productList) => { %>
+        <div class="col-lg-3 col-md-6 col-sm-6"> <!-- Adjust the column size based on your layout -->
+            <div class="single-product-area mt-30">
+                <div class="product-thumb">
+                    <a href="/productDetails?id=<%= productList._id %>">
+                        <img class="primary-image" src="/productAssets/<%= productList.images[0] %>" alt="">
+                        <img class="hover-img"   src="/productAssets/<%= productList.images[1] %>" alt="" >                                    </a>
+                    <!-- <div class="label-product label_new">New</div> -->
+                    <div class="action-links">
+                        <a href="cart.html" class="cart-btn" title="Add to Cart"><i class="icon-basket-loaded"></i></a>
+                        <a href="wishlist.html" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a>
+                        <a href="#" class="quick-view" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
+                    </div>
+                    <!-- <ul class="watch-color">
+                        <li class="twilight"><span></span></li>
+                        <li class="pigeon"><span></span></li>
+                        <li class="portage"><span></span></li>
+                    </ul> -->
+                </div>
+                <div class="product-caption">
+                    <h4 class="product-name"><a href="product-details.html"><%= productList.pname %></a></h4>
+                    <div class="price-box">
+                        <span class="new-price"><%= productList.brand %></span>
+                    </div>
+                    <div class="price-box">
+                        <span class="new-price">Rs <%= productList.price %></span>
+                        <!-- <span class="old-price">Rs<%= productList.offprice %></span> -->
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- single-product-area end -->
+        </div>
+    <% }); %>
+</div>

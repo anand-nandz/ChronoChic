@@ -1843,18 +1843,19 @@ img.mfp-img {
 
 
 
+/* 
 
-/* Add margin-bottom to the logo */
 .logo-area {
   margin-bottom: 20px;
+  margin-top: 15px;
 }
 
-/* Add margin-right to the user wrap to separate elements */
+
 .user-wrap {
   margin-right: 10px;
 }
 
-/* Style for buttons */
+
 .button-list {
   list-style: none;
   padding: 0;
@@ -1863,23 +1864,23 @@ img.mfp-img {
 
 .button-list li {
   display: inline-block;
-  margin-left: 10px; /* Adjust spacing between buttons */
+  margin-left: 10px; 
 }
 
 .button {
   padding: 10px 20px;
   background-color: #007bff;
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
   border-radius: 5px;
-  /* transition: background-color 0.3s ease; */
+ 
 }
 
 .button:hover {
   background-color: #0056b3;
 }
 
-
+ */
 
 
 
@@ -5562,4 +5563,56 @@ img.mfp-img {
 .login-form-container .login-btn, .login-form-container .register-btn {
   margin-top: 20px;
   padding: 8px 30px;
+}
+
+
+
+.single-product-area {
+  border: 1px solid #ddd; /* Add border for better visualization */
+  margin-bottom: 30px; /* Adjust margin as needed */
+}
+
+.product-thumb {
+  position: relative; /* Ensure proper positioning for action links */
+}
+
+.product-thumb img {
+  width: 100%; /* Ensure images fill their parent container */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.product-caption {
+  padding: 15px; /* Add padding for better spacing */
+}
+
+.product-caption .product-name {
+  margin-top: 10px; /* Adjust margin for product name */
+}
+
+.price-box {
+  margin-top: 10px; /* Adjust margin for price box */
+}
+
+.action-links {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+
+.product-thumb {
+  position: relative;
+  overflow: hidden; /* Hide the hover image initially */
+}
+
+.hover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease; /* Add smooth transition effect */
+}
+
+.product-thumb:hover .hover-img {
+  opacity: 1; /* Show hover image on hover */
 }

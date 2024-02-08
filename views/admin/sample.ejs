@@ -1,0 +1,35 @@
+ <!-- <div class="card-body">
+                    <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+                        <% for (let i = 0; i < allProducts.length; i++) { %>
+                            <div class="col">
+                                <div class="card card-product-grid" style="height: 400px;"> 
+                                    <a href="#" class="img-wrap m-3">
+                                        <% for (let j = 0; j < Math.min(allProducts[i].images.length); j++) { %>
+                                        <img src="/productAssets/<%= allProducts[i].images[0] %>" alt="Product Image" style="height: 250px;width: 195px;">
+                                        <% } %>
+                                    </a>
+                                    <div class="info-wrap">
+                                        <% for (let j = 1; j < Math.min(allProducts[i].images.length, 4); j++) { %>
+                                            <img src="/productAssets/<%= allProducts[i].images[j] %>" alt="Product Image" style="height: 25px;width: 19px;">
+                                        <% } %>
+                                        
+                                        <a href="#" class="title text-truncate">
+                                            <%= allProducts[i].pname %>
+                                        </a>
+                                        <div class="price mb-2">
+                                            <%= allProducts[i].price %>
+                                        </div>
+                                        <a href="/admin/products/edit-product?id=<%=allProducts[i]._id %>" class="btn btn-sm font-sm rounded btn-brand">
+                                            <i class="material-icons md-edit"></i> Edit
+                                        </a>
+                                        <% if (allProducts[i].is_listed !== true) { %>
+                                            <a href="/admin/delete-product/<%= allProducts[i]._id %>" class="btn btn-sm font-sm btn-danger rounded">
+                                                <i class="material-icons md-delete_forever"></i> Delete
+                                            </a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div> 
+                </div>  -->
