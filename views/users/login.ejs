@@ -3,10 +3,11 @@
 
 
 <!-- Mirrored from template.hasthemes.com/ruiz/ruiz/login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Jan 2024 11:50:58 GMT -->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Ruiz - Watch Store HTML Template</title>
+    <title>ChronoChic</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -39,14 +40,17 @@
     <!-- Main Style CSS (Please use minify version for better website load performance) -->
     <link rel="stylesheet" href="assets/css/style.css">
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="..." crossorigin="anonymous" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="..." crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
 
     <div class="main-wrapper">
-        
+
         <!--  Header Start -->
         <header class="header">
 
@@ -66,10 +70,10 @@
                                 <a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
-                        
-                       
-                       
-                        
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -84,7 +88,7 @@
                                 <!--  Start Mainmenu Nav-->
                                 <nav class="main-navigation text-center">
                                     <ul>
-                                        <li class="active"><a href="index.html">Home <i class="fa fa-angle-down"></i></a>
+                                        <li class="active"><a href="home">Home <i class="fa fa-angle-down"></i></a>
                                             <ul class="sub-menu">
                                                 <li><a href="index.html">Home Page 1</a></li>
                                                 <li><a href="index-2.html">Home Page 2</a></li>
@@ -96,18 +100,25 @@
                                                 <li><a href="#">Shop Layouts</a>
                                                     <ul>
                                                         <li><a href="shop.html">Shop Left Sidebar</a></li>
-                                                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
-                                                        <li><a href="shop-list-left.html">Shop List Left Sidebar</a></li>
-                                                        <li><a href="shop-list-right.html">Shop List Right Sidebar</a></li>
+                                                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a>
+                                                        </li>
+                                                        <li><a href="shop-list-left.html">Shop List Left Sidebar</a>
+                                                        </li>
+                                                        <li><a href="shop-list-right.html">Shop List Right Sidebar</a>
+                                                        </li>
                                                         <li><a href="shop-fullwidth.html">Shop Full Width</a></li>
                                                     </ul>
                                                 </li>
                                                 <li><a href="blog.html">Product Details</a>
                                                     <ul>
-                                                        <li><a href="product-details.html">Single Product Details</a></li>
-                                                        <li><a href="variable-product-details.html">Variable Product Details</a></li>
-                                                        <li><a href="affiliate-product-details.html">affiliatel Product Details</a></li>
-                                                        <li><a href="gallery-product-details.html">Gallery Product Details</a></li>
+                                                        <li><a href="product-details.html">Single Product Details</a>
+                                                        </li>
+                                                        <li><a href="variable-product-details.html">Variable Product
+                                                                Details</a></li>
+                                                        <li><a href="affiliate-product-details.html">affiliatel Product
+                                                                Details</a></li>
+                                                        <li><a href="gallery-product-details.html">Gallery Product
+                                                                Details</a></li>
                                                     </ul>
                                                 </li>
                                                 <li><a href="#">Shop Pages</a>
@@ -149,10 +160,11 @@
                         </div>
 
                         <div class="col-5 col-md-6 d-block d-lg-none">
-                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a></div>
+                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                            </div>
                         </div>
-                        
-                        
+
+
                         <!-- <div class="col-lg-3 col-md-6 col-7 d-block d-lg-none">
                             <div class="right-blok-box text-white d-flex">
 
@@ -216,13 +228,13 @@
                             </div>
                         </div>
                          -->
-                        
-                        
+
+
                     </div>
                 </div>
             </div>
             <!-- haeader bottom End -->
-            
+
             <!-- off-canvas menu start -->
             <aside class="off-canvas-wrapper">
                 <div class="off-canvas-overlay"></div>
@@ -344,10 +356,10 @@
                 </div>
             </aside>
             <!-- off-canvas menu end -->
-            
+
         </header>
         <!--  Header Start -->
-        
+
         <!-- breadcrumb-area start -->
         <div class="breadcrumb-area">
             <div class="container">
@@ -355,7 +367,7 @@
                     <div class="col-12">
                         <!-- breadcrumb-list start -->
                         <ul class="breadcrumb-list">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="home">Home</a></li>
                             <li class="breadcrumb-item active">Login</li>
                         </ul>
                         <!-- breadcrumb-list end -->
@@ -387,56 +399,58 @@
                                         <div class="login-register-form">
                                             <form action="/login" method="post">
                                                 <div class="login-input-box">
-                                                    
+
                                                     <!-- error message for blocking -->
-                                                    <% if (messages && messages.length > 0) { %>
-                                                        <% messages.forEach(message => { %>
+                                                    <% if (messages && messages.length> 0) { %>
+                                                        <% messages.forEach(message=> { %>
                                                             <div class="alert alert-danger" role="alert">
                                                                 <%= message %>
                                                             </div>
-                                                        <% }); %>
-                                                    <% } %>
-                                                    
-
-                                                    
+                                                            <% }); %>
+                                                                <% } %>
 
 
-                                                    <!-- <input type="text" name="username" placeholder="User Name"> -->
-                                                    <input type="email" id="email" name="email" placeholder="Email" onblur="validateEmail()" >
-                                                    <input type="password" id="userpassword" name="userpassword" placeholder="Password" onblur="validatePassword()" >
-                                                    <span class="toggle-password" onclick="togglePasswordVisibility('userpassword')">
-                                                        <i class="fas fa-eye-slash"></i> <!-- Set initial state to closed -->
-                                                    </span>
-                                                     </div>
+
+                                                                    <!-- <input type="text" name="username" placeholder="User Name"> -->
+                                                                    <input type="email" id="email" name="email"
+                                                                        placeholder="Email" value="ajaskm@gmail.com" onblur="validateEmail()">
+                                                                    <div class="password-wrapper">
+                                                                        <input type="password" id="userpassword"
+                                                                            name="userpassword" placeholder="Password" value="Ajas@123"
+                                                                            onblur="validatePassword()">
+                                                                        <span class="toggle-password"
+                                                                            onclick="togglePasswordVisibility('userpassword')">
+                                                                            <i class="fas fa-eye-slash"></i>
+                                                                        </span>
+                                                                    </div>
+                                                </div>
                                                 <div class="button-box">
                                                     <div class="login-toggle-btn">
                                                         <!-- <input type="checkbox">
                                                         <label>Remember me</label> -->
-                                                        <a href="/forgotPassword" style="color: #007bff; text-decoration: underline;">Forgot Password?</a>
-                                                        
+                                                        <a href="/forgotPassword"
+                                                            style="color: #007bff; text-decoration: underline;">Forgot
+                                                            Password?</a>
+
                                                     </div>
                                                     <div class="button-box">
-                                                        <button class="login-btn btn" type="submit"><span>Login</span></button>
+                                                        <button class="login-btn btn"
+                                                            type="submit"><span>Login</span></button>
                                                     </div>
                                                     <br>
                                                     <div class="register-link">
-                                                        <a href="register" class="register-link-text">New to ChronoChic? Create an account</a>
+                                                        <a href="register" class="register-link-text">New to ChronoChic?
+                                                            Create an account</a>
                                                     </div>
 
-                                                    <% if (messages && messages.length > 0) { %>
-                                                        <% messages.forEach(message => { %>
-                                                            <div class="alert alert-danger" role="alert">
-                                                                <%= message %>
-                                                            </div>
-                                                        <% }); %>
-                                                    <% } %>
-                                                    
+
+                                                    <p id="error1"></p>
 
                                                     <!-- login.ejs or similar view template -->
                                                     <div id="registrationMessage" class="registration-message"></div>
 
                                                 </div>
-                                            </form>                                            
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -448,7 +462,7 @@
         </div>
         <!-- main-content-wrap end -->
 
-<!-- footer Start -->
+        <!-- footer Start -->
         <footer>
             <div class="footer-top section-pb section-pt-60">
                 <div class="container">
@@ -469,19 +483,24 @@
 
                                 <ul class="social-icons">
                                     <li>
-                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i
+                                                class="fa fa-facebook"></i></a>
                                     </li>
                                     <li>
-                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i
+                                                class="fa fa-twitter"></i></a>
                                     </li>
                                     <li>
-                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i class="fa fa-instagram"></i></a>
+                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i
+                                                class="fa fa-instagram"></i></a>
                                     </li>
                                     <li>
-                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>
+                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i
+                                                class="fa fa-linkedin"></i></a>
                                     </li>
                                     <li>
-                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i class="fa fa-rss"></i></a>
+                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i
+                                                class="fa fa-rss"></i></a>
                                     </li>
                                 </ul>
 
@@ -505,7 +524,7 @@
                             <div class="widget-footer mt-40">
                                 <h6 class="title-widget">Extras</h6>
                                 <ul class="footer-list">
-                                   
+
                                     <li><a href="#">Concord History</a></li>
                                     <li><a href="#">Client Feed</a></li>
                                     <li><a href="about-us.html">About Us</a></li>
@@ -527,7 +546,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <div class="container">
                     <div class="row align-items-center">
@@ -557,16 +576,16 @@
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
 
-    <!-- jquery -->		
+    <!-- jquery -->
     <script src="assets/js/vendor/jquery-3.6.1.min.js"></script>
-    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>		
+    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="assets/js/vendor/bootstrap.min.js"></script>
 
     <!-- Plugins JS -->
     <script src="assets/js/plugins/slick.min.js"></script>
-    
+
     <script src="assets/js/plugins/jquery.nice-select.min.js"></script>
     <script src="assets/js/plugins/countdown.min.js"></script>
     <script src="assets/js/plugins/image-zoom.min.js"></script>
@@ -585,149 +604,154 @@
     <script src="assets/js/main.js"></script>
 
     <script>
-       window.addEventListener('DOMContentLoaded', () => {
-        // Check if the URL contains the registration query parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('registration') && urlParams.get('registration') === 'complete') {
-            // Display registration completion message
-            const registrationMessage = document.getElementById('registrationMessage');
-            registrationMessage.textContent = 'Registration completed successfully. You can now log in using your email and password.';
-            registrationMessage.classList.add('show');
+        window.addEventListener('DOMContentLoaded', () => {
+            // Check if the URL contains the registration query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('registration') && urlParams.get('registration') === 'complete') {
+                // Display registration completion message
+                const registrationMessage = document.getElementById('registrationMessage');
+                registrationMessage.textContent = 'Registration completed successfully. You can now log in using your email and password.';
+                registrationMessage.classList.add('show');
 
-            // Remove the message after 10 seconds
-            setTimeout(() => {
-                registrationMessage.textContent = '';
-                registrationMessage.classList.remove('show');
-            }, 10000);
-        }
-    });
-
-    </script>
-
-
-
-<!-- messgage for error -->
-
-
-
-<!-- Add this script to your login.ejs file or another relevant view -->
-<script>
-    // Automatically remove flash messages after 5 seconds
-    setTimeout(() => {
-        document.querySelectorAll('.alert').forEach(alert => {
-            alert.remove();
+                // Remove the message after 10 seconds
+                setTimeout(() => {
+                    registrationMessage.textContent = '';
+                    registrationMessage.classList.remove('show');
+                }, 10000);
+            }
         });
-    }, 5000); // 5000 milliseconds = 5 seconds
-</script>
-
-
-
-<!-- validate form -->
-<script>
-    function showError(inputId, message) {
-        var errorElement = document.getElementById(inputId + "-error");
-        if (!errorElement) {
-            errorElement = document.createElement("div");
-            errorElement.id = inputId + "-error";
-            errorElement.className = "error-message";
-            document.getElementById(inputId).insertAdjacentElement("afterend", errorElement);
-        }
-        errorElement.textContent = message;
-    }
-    
-    function hideError(inputId) {
-        var errorElement = document.getElementById(inputId + "-error");
-        if (errorElement) {
-            errorElement.remove();
-        }
-    }
-    
- 
-    
-    function validatePassword() {
-        var passwordInput = document.getElementById("userpassword");
-        var password = passwordInput.value;
-        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
-        if (!passwordRegex.test(password)) {
-            showError("userpassword", "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long");
-        } else {
-            hideError("userpassword");
-        }
-    }
-    
-  
-    function validateEmail() {
-        var emailInput = document.getElementById("email");
-        var email = emailInput.value;
-        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            showError("email", "Please enter a valid email address");
-        } else {
-            hideError("email");
-        }
-    }
-
-   
-
-
-
-
-    
-    function togglePasswordVisibility(inputId) {
-    var passwordInput = document.getElementById(inputId);
-    var toggleButton = document.querySelector("#" + inputId + " + .toggle-password i");
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        toggleButton.classList.remove("fa-eye-slash");
-        toggleButton.classList.add("fa-eye");
-    } else {
-        passwordInput.type = "password";
-        toggleButton.classList.remove("fa-eye");
-        toggleButton.classList.add("fa-eye-slash");
-    }
-}
-
-
-    function validateForm() {
-        validatePassword();
-        validateEmail();
-    
-        var errorMessages = document.querySelectorAll(".error-message");
-        if (errorMessages.length > 0) {
-            errorMessages[0].previousElementSibling.focus();
-            return false;
-        }
-    
-        return true;
-    }
-
-    // Event listeners for blur to validate and show error messages
-    document.getElementById("userpassword").addEventListener("blur", function() {
-        validateAndShow("userpassword", validatePassword);
-    });
-    
-    document.getElementById("email").addEventListener("blur", function() {
-        validateAndShow("email", validateEmail);
-    });
-  
-
-    // Event listener for focus to hide error messages
-   
-    document.getElementById("userpassword").addEventListener("focus", function() {
-        hideError("userpassword");
-    });
-    
-    document.getElementById("email").addEventListener("focus", function() {
-        hideError("email");
-    });
-  
 
     </script>
-    
+
+
+
+    <!-- messgage for error -->
+
+
+
+    <!-- Add this script to your login.ejs file or another relevant view -->
+    <script>
+        // Automatically remove flash messages after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.remove();
+            });
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+
+
+
+    <!-- validate form -->
+    <script>
+        function showError(inputId, message) {
+            var errorElement = document.getElementById(inputId + "-error");
+            if (!errorElement) {
+                errorElement = document.createElement("div");
+                errorElement.id = inputId + "-error";
+                errorElement.className = "error-message";
+                document.getElementById(inputId).insertAdjacentElement("afterend", errorElement);
+            }
+            errorElement.textContent = message;
+        }
+
+        function hideError(inputId) {
+            var errorElement = document.getElementById(inputId + "-error");
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+
+
+
+        function validatePassword() {
+            var passwordInput = document.getElementById("userpassword");
+            var password = passwordInput.value;
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                showError("userpassword", "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long");
+            } else {
+                hideError("userpassword");
+            }
+        }
+
+
+        function validateEmail() {
+            var emailInput = document.getElementById("email");
+            var email = emailInput.value;
+            var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                showError("email", "Please enter a valid email address");
+            } else {
+                hideError("email");
+            }
+        }
+
+
+
+
+
+
+
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var toggleButton = document.querySelector("#" + inputId + " + .toggle-password i");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.classList.remove("fa-eye-slash");
+                toggleButton.classList.add("fa-eye");
+            } else {
+                passwordInput.type = "password";
+                toggleButton.classList.remove("fa-eye");
+                toggleButton.classList.add("fa-eye-slash");
+            }
+        }
+
+
+        function validateForm() {
+            validatePassword();
+            validateEmail();
+
+            var errorMessages = document.querySelectorAll(".error-message");
+            if (errorMessages.length > 0) {
+                errorMessages[0].previousElementSibling.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Event listeners for blur to validate and show error messages
+        document.getElementById("userpassword").addEventListener("blur", function () {
+            validateAndShow("userpassword", validatePassword);
+        });
+
+        document.getElementById("email").addEventListener("blur", function () {
+            validateAndShow("email", validateEmail);
+        });
+
+
+        // Event listener for focus to hide error messages
+
+        document.getElementById("userpassword").addEventListener("focus", function () {
+            hideError("userpassword");
+        });
+
+        document.getElementById("email").addEventListener("focus", function () {
+            hideError("email");
+        });
+
+
+    </script>
+
+
+
+
+
 
 </body>
 
 
 <!-- Mirrored from template.hasthemes.com/ruiz/ruiz/login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Jan 2024 11:50:58 GMT -->
+
 </html>

@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-account-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>ChronoChic</title>
@@ -17,6 +18,44 @@
     <link rel="shortcut icon" type="image/x-icon" href="/adminassets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/adminassets/css/main.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="..." crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+       .password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .form-control {
+    padding-right: 40px;
+    /* Adjust padding to accommodate the eye icon */
+}
+
+.password-wrapper .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    /* Adjust the distance from the right edge */
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.password-wrapper .toggle-password i {
+    font-size: 16px;
+    /* Adjust icon size */
+    color: #777;
+    /* Adjust icon color */
+}
+
+/* Adjust the z-index to make sure the eye icon stays above the validation message */
+.error-message {
+    z-index: 1;
+}
+
+    </style>
 </head>
 
 <body>
@@ -29,9 +68,10 @@
             </div>
             <div class="col-nav">
                 <ul class="nav">
-                    
+
                     <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -41,22 +81,40 @@
                 <div class="card-body text-center">
                     <h4 class="card-title mb-4">Admin Login</h4>
                     <form action="" method="post">
-                        <div class="mb-3">
-                            <input class="form-control" placeholder="Email" type="text" name="email" id="email">
-                        </div> <!-- form-group// -->
-                        <div class="mb-3">
-                            <input class="form-control" placeholder="Password" type="password" name="password" id="password">
-                        </div> <!-- form-group// -->
-                        <div class="mb-3">
-                            <!-- <a href="#" class="float-end font-sm text-muted">Forgot password?</a> -->
-                            <!-- <label class="form-check">
+
+
+                        <% if (messages && messages.length> 0) { %>
+                            <% messages.forEach(message=> { %>
+                                <div class="alert alert-danger" role="alert">
+                                    <%= message %>
+                                </div>
+                                <% }); %>
+                                    <% } %>
+
+
+                                        <div class="mb-3">
+                                            <input class="form-control" placeholder="Email" type="text" name="email"
+                                                id="email">
+                                            <span id="email-error" class="error-message"></span>
+                                        </div> <!-- form-group// -->
+                                        <div class="mb-3 password-wrapper">
+                                            <input class="form-control" placeholder="Password" type="password" name="password" id="password">
+                                            <span class="toggle-password" onclick="togglePasswordVisibility('password')">
+                                                <i class="fas fa-eye-slash"></i>
+                                            </span>
+                                            <span id="password-error" class="error-message"></span>
+                                        </div>
+                                        <!-- form-group// -->
+                                        <div class="mb-3">
+                                            <!-- <a href="#" class="float-end font-sm text-muted">Forgot password?</a> -->
+                                            <!-- <label class="form-check">
                                 <input type="checkbox" class="form-check-input" checked="">
                                 <span class="form-check-label">Remember</span>
                             </label> -->
-                        </div> <!-- form-group form-check .// -->
-                        <div class="mb-4">
-                            <button type="submit" class="btn btn-primary w-100"> Login </button>
-                        </div> <!-- form-group// -->
+                                        </div> <!-- form-group form-check .// -->
+                                        <div class="mb-4">
+                                            <button type="submit" class="btn btn-primary w-100"> Login </button>
+                                        </div> <!-- form-group// -->
                     </form>
                     <!-- <p class="text-center small text-muted mb-15">or sign up with</p>
                     <div class="d-grid gap-3 mb-4">
@@ -81,7 +139,7 @@
         <footer class="main-footer text-center">
             <p class="font-xs">
                 <script>
-                document.write(new Date().getFullYear())
+                    document.write(new Date().getFullYear())
                 </script> ©, ChronoChic .
             </p>
             <p class="font-xs mb-30">All rights reserved</p>
@@ -92,8 +150,94 @@
     <script src="/adminassets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/adminassets/js/main.js" type="text/javascript"></script>
+
+
+
+    <script>
+        // Automatically remove flash messages after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.remove();
+            });
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+
+    <script>
+        function showError(inputId, message) {
+            var errorElement = document.getElementById(inputId + "-error");
+            if (!errorElement) {
+                errorElement = document.createElement("div");
+                errorElement.id = inputId + "-error";
+                errorElement.className = "error-message";
+                document.getElementById(inputId).insertAdjacentElement("afterend", errorElement);
+            }
+            errorElement.textContent = message;
+        }
+
+        function hideError(inputId) {
+            var errorElement = document.getElementById(inputId + "-error");
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+
+
+
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var toggleButton = document.querySelector("#" + inputId + " + .toggle-password i");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.classList.remove("fa-eye-slash");
+                toggleButton.classList.add("fa-eye");
+            } else {
+                passwordInput.type = "password";
+                toggleButton.classList.remove("fa-eye");
+                toggleButton.classList.add("fa-eye-slash");
+            }
+        }
+
+        function validateEmail() {
+            var emailInput = document.getElementById("email");
+            var email = emailInput.value.trim();
+            var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                showError("email", "Please enter a valid email address");
+            } else {
+                hideError("email");
+            }
+        }
+
+        function validatePassword() {
+            var passwordInput = document.getElementById("password");
+            var password = passwordInput.value;
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                showError("password", "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long");
+            } else {
+                hideError("password");
+            }
+        }
+
+        document.getElementById("email").addEventListener("blur", validateEmail);
+        document.getElementById("password").addEventListener("blur", validatePassword);
+
+        document.getElementById("email").addEventListener("focus", function () {
+            hideError("email");
+        });
+        document.getElementById("password").addEventListener("focus", function () {
+            hideError("password");
+        });
+
+    </script>
+
+
+
+
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-account-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:33 GMT -->
+
 </html>

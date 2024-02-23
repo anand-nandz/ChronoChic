@@ -203,7 +203,7 @@
                                 <!--  Start Mainmenu Nav-->
                                 <nav class="main-navigation text-center">
                                     <ul>
-                                        <li class="active"><a href="index.html">Home <i
+                                        <li class="active"><a href="home">Home <i
                                                     class="fa fa-angle-down"></i></a>
                                             <!-- <ul class="sub-menu">
                                                 <li><a href="index.html">Home Page 1</a></li>
@@ -515,23 +515,6 @@
                                 </div>
                             <% } %>
                             
-                            
-                            <!-- <div class="pro-large-img img-zoom">
-                                <img src="assets/images/product/product-02.png" alt="product-details" />
-                                <a href="assets/images/product/product-02.png" data-fancybox="images"><i class="fa fa-search"></i></a>
-                            </div>
-                            <div class="pro-large-img img-zoom">
-                                <img src="assets/images/product/product-03.png" alt="product-details" />
-                                <a href="assets/images/product/product-03.png" data-fancybox="images"><i class="fa fa-search"></i></a>
-                            </div>
-                            <div class="pro-large-img img-zoom">
-                                <img src="assets/images/product/product-04.png" alt="product-details" />
-                                <a href="assets/images/product/product-04.png" data-fancybox="images"><i class="fa fa-search"></i></a>
-                            </div>
-                            <div class="pro-large-img img-zoom">
-                                <img src="assets/images/product/product-05.png" alt="product-details" />
-                                <a href="assets/images/product/product-05.png" data-fancybox="images"><i class="fa fa-search"></i></a>
-                            </div> -->
 
                         </div>
                         <div class="product-nav">
@@ -562,13 +545,13 @@
                                     <a href="#reviews">(<span class="count">1</span> customer review)</a>
                                 </div> -->
                                 <div class="price-box">
-                                    <span class="new-price"><%= product.price %></span>
+                                    <span>₹ </span><span class="new-price"><%= product.price %></span>
                                     <!-- <span class="old-price">$78.00</span> -->
                                 </div>
                                 <p><%= product.description %></p>
 
                                 <div class="single-add-to-cart">
-                                    <button class="add-to-cart" type="submit">Add To Cart</button>
+                                    <button class="add-to-cart" type="submit"  >Add To Cart</button>
                                     <!-- <form action="" class="cart-quantity d-flex">
                                         <div class="quantity">
                                             <div class="cart-plus-minus">
@@ -582,15 +565,17 @@
                                     <li class="add-to-wishlist">
                                         <a href="wishlist.html" class="add_to_wishlist"><i class="icon-heart"></i> Add to Wishlist</a>
                                     </li>
-                                    <li class="add-to-compare">
+                                    <!-- <li class="add-to-compare">
                                         <div class="compare-button"><a href="compare.html"><i class="icon-refresh"></i> Compare</a></div>
-                                    </li>
+                                    </li> -->
                                 </ul>
                                 <ul class="stock-cont">
                                     <!-- <li class="product-sku">Sku: <span>P006</span></li> -->
                                     <!-- <li class="product-stock-status">Categories: <a href="#">Butter & Eggs,</a> <a href="#">Cultured Butter</a></li> -->
-                                    <li class="product-stock-status">Categories: <%= product.category %> </li>
+                                    
                                     <!-- <li class="product-stock-status">Tag: <a href="#">Man</a></li> -->
+                                    <li class="product-stock-status">Categories: <%= category  %> </li>
+                                    
                                 </ul>
                                 <!-- <div class="share-product-socail-area">
                                     <p>Share this product</p>
@@ -604,24 +589,6 @@
                         </div>
                     </div>
                 </div>
-
-               
-                
-               
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 
 
             </div>
@@ -672,7 +639,7 @@
                             <div class="widget-footer mt-40">
                                 <h6 class="title-widget">Information</h6>
                                 <ul class="footer-list">
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="home">Home</a></li>
                                     <li><a href="about-us.html">About Us</a></li>
                                     <li><a href="contact.html">Quick Contact</a></li>
                                     <li><a href="blog.html">Blog Pages</a></li>
@@ -762,6 +729,35 @@
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
+
+
+    <script>
+        function addCart(){
+            const id = document.getElementById('productId').value
+            const pdtOffPrice = document.getElementById('offerPrice').innerHTML
+
+            alert(id)
+
+            $.ajax({
+                url:"/addCartLoad",
+                method:"post",
+                data:{
+                    id,
+                    pdtOffPrice,
+                },
+                success:(response)=>{
+                    if(response.status === true){
+                        window.location.href = "http://localhost:8080/cart"
+                    }
+                    else if (response.status == "viewCart") {
+                        window.location.href = "http://localhost:8080/cart"
+                }
+                }
+            })
+
+        }
+    </script>
+
 
 </body>
 

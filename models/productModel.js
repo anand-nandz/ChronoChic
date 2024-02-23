@@ -10,10 +10,14 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  // offprice: {
-  //   type: Number,
-  //   required: true,
-  // },
+  offprice: {
+    type: Number,
+    required: true,
+  },
+  discountPercentage: {
+    type: Number,
+    default: 0, 
+  },
 
   description: {
     type: String,
@@ -27,7 +31,8 @@ const productSchema = new mongoose.Schema({
   ],
   
   category: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
     required: true,
   },
 
@@ -54,7 +59,15 @@ const productSchema = new mongoose.Schema({
   is_listed: {
     type: Boolean,
     default: true,
+  },
+
+  countInStock: {
+    type: Number,
+    required: true,
+    min: 0,
+    max: 300 // Example maximum stock limit, adjust as needed
   }
+
 });
 
 module.exports = mongoose.model("Product", productSchema);

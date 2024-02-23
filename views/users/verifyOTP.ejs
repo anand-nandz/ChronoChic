@@ -519,11 +519,17 @@
                                                 <div class="login-input-box">
                                                     <input type="text" id="otp" name="otp" placeholder="Enter OTP" required>
                                                 </div>
-                                                <div class="button-box">
-                                                    <button class="verify-btn btn" type="submit"><span>Verify OTP</span></button>
-                                                   
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="button-box">
+                                                        <button class="verify-btn btn" type="submit"><span>Verify OTP</span></button>                                                        
+                                                    </div>
+                                                    <div class="button-box">
+                                                        <button class="verify-btn btn" id="resend" type="submit"><span>Resend OTP</span></button>
+                                                    </div>
+                                                    <p>Resend OTP in <span class="time"></span> seconds</p>
                                                 </div>
                                             </form>
+                                            
                                             
                                         </div>
                                     </div>
@@ -673,8 +679,23 @@
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
 
-
-
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function timer(n) {
+                document.getElementById("resend").disabled = true;
+                const interval = setInterval(() => {
+                    if (n == 0) {
+                        clearInterval(interval);
+                        document.getElementById("resend").disabled = false;
+                    }
+                    document.querySelector(".time").innerHTML = n;
+                    n = n - 1;
+                }, 1000);
+            }
+            timer(10);
+        });
+    </script>
+    
     
 </body>
 

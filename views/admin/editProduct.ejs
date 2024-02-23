@@ -64,12 +64,12 @@
                         <span class="text">Orders</span>
                     </a>
                 </li> -->
-                <li class="menu-item has-submenu">
+                <!-- <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-sellers-cards.html">
                         <i class="icon material-icons md-store"></i>
                         <span class="text">Sellers</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-form-product-1.html">
                         <i class="icon material-icons md-add_box"></i>
@@ -83,7 +83,7 @@
                     </a>
                 </li> -->
 
-                <li class="menu-item">
+                <!-- <li class="menu-item">
                     <a class="menu-link" href="page-reviews.html">
                         <i class="icon material-icons md-comment"></i>
                         <span class="text">Reviews</span>
@@ -100,7 +100,7 @@
                         <i class="icon material-icons md-pie_chart"></i>
                         <span class="text">Statistics</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
             <hr />
            
@@ -143,7 +143,7 @@
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
                             aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                        <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
                             <a class="dropdown-item text-brand" href="#"><img src="/adminassets/imgs/theme/flag-us.png"
                                     alt="English" />English</a>
                             <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-fr.png"
@@ -152,17 +152,20 @@
                                     alt="Français" />日本語</a>
                             <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-cn.png"
                                     alt="Français" />中国人</a>
-                        </div>
+                        </div> -->
                     </li>
                 </ul>
             </div>
         </header>
-        <form action="/admin/products/edit-product?id=<%=product._id%>" method="post" enctype="multipart/form-data">
+        
+
+
+        <form action="/admin/products/edit-product?id=<%= product._id %>" method="post" enctype="multipart/form-data">
             <section class="content-main">
                 <div class="row">
                     <div class="col-9">
                         <div class="content-header">
-                            <h2 class="content-title">Add Product</h2>
+                            <h2 class="content-title">Edit Product</h2>
                             <div>
                                 <button type="submit" class="btn btn-md rounded font-sm hover-up">
                                     Publish
@@ -175,29 +178,38 @@
                             <div class="card-body">
                                 <div class="mb-4">
                                     <label for="product_title" class="form-label">Product title</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="ProductName" value="<%=product.pname%>" required />
+                                    <input type="text" placeholder="Type here" class="form-control" name="ProductName" value="<%= product.pname %>" required />
                                 </div>
                                 <div class="row gx-3"></div>
         
                                 <div class="mb-4">
                                     <label for="product_brand" class="form-label">Brand</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="ProductBrand" value="<%=product.brand%>" required />
+                                    <input type="text" placeholder="Type here" class="form-control" name="ProductBrand" value="<%= product.brand %>" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_category" class="form-label">Category</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="ProductCategory" value="<%=product.category%>" required />
+                                    <select class="form-control" id="category" name="ProductCategory" required>
+                                        <option value="" selected>None</option>
+                                        <% categories.forEach(function(category) { %>
+                                            <option value="<%= category._id %>" <%= category._id.equals(product.category) ? 'selected' : '' %> >
+                                                <%= category.name %>
+                                            </option>
+                                        <% }); %>
+                                    </select>
+                                    <span id="ProductCategory-error" class="error-message"></span>
                                 </div>
+                                
                                 <div class="mb-4">
                                     <label for="product_color" class="form-label">Color</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="ProductColor" value="<%=product.color%>" required />
+                                    <input type="text" placeholder="Type here" class="form-control" name="ProductColor" value="<%= product.color %>" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_material" class="form-label">Material</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="ProductMaterial" value="<%=product.material%>" required />
+                                    <input type="text" placeholder="Type here" class="form-control" name="ProductMaterial" value="<%= product.material %>" required />
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_caseSize" class="form-label">Case Size</label>
-                                    <input type="text" placeholder="Type here" class="form-control" name="ProductCaseSize" value="<%=product.caseSize%>" required />
+                                    <input type="text" placeholder="Type here" class="form-control" name="ProductCaseSize" value="<%= product.caseSize %>" required />
                                 </div>
                             </div>
                         </div>
@@ -206,7 +218,7 @@
                             <div class="card-body">
                                 <div>
                                     <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" class="form-control" name="ProductDetails" rows="4" required ><%=product.description%></textarea>
+                                    <textarea placeholder="Type here" class="form-control" name="ProductDetails" rows="4" required ><%= product.description %></textarea>
                                 </div>
                             </div>
                         </div>
@@ -232,55 +244,47 @@
                             <div class="card-body">
                                 <div class="mb-4">
                                     <label class="form-label">Price</label> 
-                                   <input type="text" placeholder="Type here" name="ProductPrice" id="productPrice" value="<%=product.price%>" class="form-control" required />
-
+                                    <input type="text" placeholder="Type here" name="ProductPrice" id="productPrice" value="<%= product.price %>" class="form-control" required />
                                 </div>
-                                <!-- <div class="mb-4">
-                                    <label class="form-label"> Offer Price</label>
-                                    <input type="text" placeholder="Type here" name="ProductPrice" id="productOffPrice" value="<%=product.offprice%>" class="form-control" required />
-                                </div> -->
+                                <div class="mb-4">
+                                    <label class="form-label">Discount Percentage</label>
+                                    <input type="number" placeholder="Type here" name="DiscountPercentage" class="form-control" min="0" max="100" value="<%= product.discountPercentage %>" />
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="form-label">Offer Price</label>
+                                    <input type="text" placeholder="Type here" name="ProductOffPrice" id="productOffPrice" value="<%= product.offprice %>" class="form-control" required />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">Count In Stock</label>
+                                    <input type="number" placeholder="Type here" name="ProductStock" class="form-control" min="0" max="300" value="<%= product.countInStock %>" required />
+                                    <span id="countInStock-error" class="error-message"></span>
+                                </div>
+                                
         
                                 <!-- Status -->
                                 <h5 class="mb-3">Status</h5>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="listed" id="status1" value="false" <%=product.is_listed==="false" ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="status1">Draft</label>
+                                    <input class="form-check-input" type="radio" name="listed" id="status1" value="false" <%= product.is_listed === false ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="status1">Unlisted</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="listed" id="status2" value="true" <%=product.is_listed==="true" ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="status2">Published</label>
+                                    <input class="form-check-input" type="radio" name="listed" id="status2" value="true" <%= product.is_listed === true ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="status2">Listed</label>
                                 </div>
                                 
                                 
                                 <br>
                                 
-                                <!-- Categories -->
-                                <h5 class="mb-3">Categories</h5>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="productCategory" id="category" value="none"
-                                        <%=product.category==='none' ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="category">None</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="productCategory" id="category1" value="option1"
-                                        <%=product.category==='option1' ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="category1">Category 1</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="productCategory" id="category2" value="option2"
-                                        <%=product.category==='option2' ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="category2">Category 2</label>
-                                </div>
-
-        
                             </div>
                         </div>
-        
-        
                     </div>
                 </div>
             </section>
         </form>
+        
+        
         
 
         <footer class="main-footer font-xs">
@@ -325,6 +329,31 @@
             }
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const priceInput = document.getElementById('productPrice');
+        const discountInput = document.querySelector('input[name="DiscountPercentage"]');
+        const offpriceInput = document.getElementById('productOffPrice');
+
+        // Function to calculate offer price based on price and discountPercentage
+        function updateOffprice() {
+            const price = parseFloat(priceInput.value) || 0;
+            const discountPercentage = parseFloat(discountInput.value) || 0;
+            const offprice = price - (price * discountPercentage / 100);
+            offpriceInput.value = offprice.toFixed(2);
+        }
+
+        // Attach event listeners to update offer price on input changes
+        priceInput.addEventListener('input', updateOffprice);
+        discountInput.addEventListener('input', updateOffprice);
+
+        // Call updateOffprice initially to set offer price based on default values
+        updateOffprice();
+    });
+</script>
+
+
 
     
 </body>

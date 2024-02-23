@@ -33,3 +33,248 @@
                         <% } %>
                     </div> 
                 </div>  -->
+
+
+
+
+
+
+
+
+
+
+
+                <section class="content-main">
+                    <div class="content-header">
+                        <div>
+                            <h2 class="content-title card-title">Products grid</h2>
+                            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+                        </div>
+                        <div>
+                            <a href="/admin/products/add-product" class="btn btn-primary btn-sm rounded">Create new</a>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <header class="card-header">
+                            <div class="row gx-3">
+                                <div class="col-lg-2 col-6 col-md-3">
+                                    <select class="form-select">
+                                        <!-- <option>All category</option>
+                                        <option>Electronics</option>
+                                        <option>Clothings</option>
+                                        <option>Something else</option> -->
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-6 col-md-3">
+                                    <select class="form-select">
+                                        <!-- <option>Latest added</option>
+                                        <option>Cheap first</option>
+                                        <option>Most viewed</option> -->
+                                    </select>
+                                </div>
+                            </div>
+                        </header>
+                
+                       
+                        <div class="card-body">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+                                <% for (let i = 0; i < allProducts.length; i++) { %>
+                                    <div class="col">
+                                        <div class="card card-product-grid h-100">
+                                            <a href="#" class="img-wrap m-3">
+                                                <img src="/productAssets/<%= allProducts[i].images[0] %>" alt="Product Image" style="max-height: 250px; max-width: 195px;">
+                                            </a>
+                                            <div class="info-wrap d-flex flex-column justify-content-between">
+                                                <div class="d-flex justify-content-between">
+                                                    <% for (let j = 1; j < Math.min(allProducts[i].images.length, 4); j++) { %> 
+                                                        <img src="/productAssets/<%= allProducts[i].images[j] %>" alt="Product Image" class="additional-image">
+                                                    <% } %>
+                                                </div>
+                                                <a href="#" class="title text-truncate mt-2">
+                                                    <%= allProducts[i].pname %>
+                                                </a>
+                                                <div class="price mt-1">
+                                                    <%= allProducts[i].price %>
+                                                </div>
+                                                <div class="price mt-1">
+                                                    <%= allProducts[i].offprice %>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <a href="/admin/products/edit-product?id=<%=allProducts[i]._id %>" class="btn btn-sm font-sm rounded btn-brand me-2">
+                                                        <i class="material-icons md-edit"></i> Edit
+                                                    </a>
+                                                    <% if (allProducts[i].is_listed !== true) { %>
+                                                        <a href="/admin/delete-product/<%= allProducts[i]._id %>" class="btn btn-sm font-sm btn-danger rounded">
+                                                            <i class="material-icons md-delete_forever"></i> Delete
+                                                        </a>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </div> <!-- row.// -->
+                        </div> <!-- card-body end// -->
+                        
+                        
+                        
+                        
+                    </div> <!-- card end// -->
+                
+                    <div class="pagination-area mt-30 mb-50">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                                <li class="page-item"><a class="page-link" href="#"><i
+                                            class="material-icons md-chevron_right"></i></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </section>
+
+
+<!-- edit product form -->
+
+<form action="/admin/products/edit-product?id=<%=product._id%>" method="post" enctype="multipart/form-data">
+    <section class="content-main">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Edit Product</h2>
+                    <div>
+                        <button type="submit" class="btn btn-md rounded font-sm hover-up">
+                            Publish
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Product title</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="ProductName" value="<%=product.pname%>" required />
+                        </div>
+                        <div class="row gx-3"></div>
+
+                        <div class="mb-4">
+                            <label for="product_brand" class="form-label">Brand</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="ProductBrand" value="<%=product.brand%>" required />
+                        </div>
+                        <!-- <div class="mb-4">
+                            <label for="product_category" class="form-label">Category</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="ProductCategory" value="<%=product.category%>" required />
+                        </div> -->
+                        <div class="mb-4">
+                            <label for="product_category" class="form-label">Category</label>
+                            <select class="form-control" id="category" name="ProductCategory" required>
+                                <option value="" selected>None</option>
+                                <% categories.forEach(function(category) { %>
+                                    <option value="<%= category._id %>" <% if (category._id.equals(product.category)) { %> selected <% } %> >
+                                        <%= category.name %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                            <span id="ProductCategory-error" class="error-message"></span>
+                        </div>
+                        
+                        
+                        <div class="mb-4">
+                            <label for="product_color" class="form-label">Color</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="ProductColor" value="<%=product.color%>" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_material" class="form-label">Material</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="ProductMaterial" value="<%=product.material%>" required />
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_caseSize" class="form-label">Case Size</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="ProductCaseSize" value="<%=product.caseSize%>" required />
+                        </div>
+                    </div>
+                </div>
+                <!-- card end// -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label">Description</label>
+                            <textarea placeholder="Type here" class="form-control" name="ProductDetails" rows="4" required ><%=product.description%></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- card end// -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label">Images (Up to 4 images)</label>
+                            <input class="form-control" type="file" multiple name="ProductImage" accept="image/*" onchange="limitFiles(this, 4)" />
+                            <br>
+                            <% for (let i = 0; i < Math.min(product.images.length, 4); i++) { %>
+                                <!-- Display existing images -->
+                                <img src="/productAssets/<%= product.images[i] %>" alt="Product Image" style="max-height: 250px; max-width: 195px;">
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- card end// -->
+            </div>
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label">Price</label> 
+                           <input type="text" placeholder="Type here" name="ProductPrice" id="productPrice" value="<%=product.price%>" class="form-control" required />
+
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label"> Offer Price</label>
+                            <input type="text" placeholder="Type here" name="ProductPrice" id="productOffPrice" value="<%=product.offprice%>" class="form-control" required />
+                        </div>
+
+                        <!-- Status -->
+                        <h5 class="mb-3">Status</h5>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="listed" id="status1" value="false" <%=product.is_listed==="false" ? 'checked' : '' %>>
+                            <label class="form-check-label" for="status1">Draft</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="listed" id="status2" value="true" <%=product.is_listed==="true" ? 'checked' : '' %>>
+                            <label class="form-check-label" for="status2">Published</label>
+                        </div>
+                        
+                        
+                        <br>
+                        
+                        <!-- Categories -->
+                        <!-- <h5 class="mb-3">Categories</h5>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="productCategory" id="category" value="none"
+                                <%=product.category==='none' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="category">None</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="productCategory" id="category1" value="option1"
+                                <%=product.category==='option1' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="category1">Category 1</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="productCategory" id="category2" value="option2"
+                                <%=product.category==='option2' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="category2">Category 2</label>
+                        </div> -->
+
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+</form>
+

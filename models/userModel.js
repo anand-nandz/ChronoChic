@@ -18,6 +18,14 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    dob: {
+        type: String // Change the type to String
+    },
+    
+    gender: {
+        type: String,
+        enum: ["male", "female", "other"]
+    },
     is_admin:{
         type:Number,
         required:true
@@ -30,10 +38,7 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     }
-    // token:{
-    //     type:String,
-    //     default:''
-    // }
+
 
 });
 

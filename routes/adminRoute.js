@@ -1,10 +1,10 @@
 const express = require('express');
 const admin_route =express();
-
 const session = require("express-session");
 const config = require('../config/config');
 const multer = require("multer");
 const path = require("path");
+
 
 admin_route.use(session({secret:config.sessionSecret}))
 
@@ -16,6 +16,7 @@ admin_route.set('view engine' , 'ejs');
 admin_route.set('views', './views/admin');
 
 const adminController = require("../controllers/adminController");
+
 // const productController = require("../controllers/productController");
 
 // const auth = require('../middleware/adminAuth')
@@ -58,7 +59,7 @@ const storage = multer.diskStorage({
       cb(
         null,
         file.fieldname + "_" + Date.now() + path.extname(file.originalname)
-      ); // Specify the filename
+      ); 
     },
   });
   

@@ -213,68 +213,82 @@
             <div class="card mb-4">
                 <header class="card-header">
                     <div class="row align-items-center">
-                        <div class="col col-check flex-grow-0">Checkbox</div>
+                        <!-- <div class="col col-check flex-grow-0">Checkbox</div> -->
                         <div class="col-lg-2 col-sm-2 col-4 col-price">Phone Number</div>
-                        <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">Name / Email</div>
+                        <div class="col-lg-3 col-sm-3 col-5 flex-grow-1 col-name">Name / Email</div>
+                        <div class="col-lg-1 col-sm-1 col-3 col-gender">Gender</div>
                         <div class="col-lg-2 col-sm-2 col-4 col-status">Status</div>
                         <div class="col-lg-1 col-sm-2 col-4 col-date" hidden>Date</div>
                         <div class="col-lg-2 col-sm-2 col-4 col-action text-end">Action</div>
                     </div>
                 </header> <!-- card-header end// -->
                 <% userData.forEach(user=> { %>
-                    <article class="itemlist">
-
-                        <div class="row align-items-center user-item">
-                            <div class="col col-check flex-grow-0">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox">
+                <article class="itemlist">
+        
+                    <div class="row align-items-center user-item">
+                        <!-- <div class="col col-check flex-grow-0">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox">
+                            </div>
+                        </div> -->
+                        <div class="col-lg-2 col-sm-2 col-4 col-price">
+                            <span>
+                                <%= user.mobile %>
+                            </span>
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-5 flex-grow-1 col-name">
+                            <a class="itemside" href="#">
+                                <div class="info">
+                                    <h6 class="mb-0">
+                                        <%= user.name %>
+                                    </h6>
+                                    <span class="text-secondary">
+                                        <%= user.email %>
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-price">
-                                <span>
-                                    <%= user.mobile %>
-                                </span>
-                            </div>
-                            <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-                                <a class="itemside" href="#">
-                                    <div class="info">
-                                        <h6 class="mb-0">
-                                            <%= user.name %>
-                                        </h6>
-                                        <span class="text-secondary">
-                                            <%= user.email %>
-                                        </span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                <% if (user.is_blocked===false ) { %>
-                                    <span class="badge rounded-pill alert-success">Active</span>
-                                    <% } else { %>
-                                        <span class="badge rounded-pill alert-danger">Blocked</span>
-                                        <% } %>
-                            </div>
-                            <div class="col-lg-1 col-sm-2 col-4 col-date" hidden>
-                                <span>Current Time</span>
-                            </div>
-                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                <a href="/admin/users/edit?id=<%= user._id %>"
-                                    class="btn btn-sm font-sm rounded btn-brand m-2">
-                                    <i class="material-icons md-edit"></i> Edit
-                                </a>
-                                <% if (user.is_verified !=="1" ) { %>
-                                    <a href="/admin/users/delete?id=<%= user._id %>" class="btn btn-sm font-sm btn-light rounded delete-btn" id="delete-btn-<%= user._id %>" data-user-id="<%= user._id %>">
-                                        <i class="material-icons md-delete_forever"></i> Delete
-                                    </a>
-                                    
-                                    <% } %>
-                            </div>
-                        </div> <!-- row .// -->
-
-                    </article> <!-- itemlist  .// -->
-                    <% }); %>
-
-        </section> <!-- content-main end// -->
+                            </a>
+                        </div>
+                        <div class="col-lg-1 col-sm-1 col-3 col-gender">
+                            <span>
+                                <% 
+                                    if (user.gender) { // Check if user.gender is defined
+                                        const gender = user.gender.charAt(0).toUpperCase() + user.gender.slice(1);
+                                        // Capitalize the first letter of the gender input
+                                        %> <%= gender %> <% // Display the capitalized gender
+                                    } else {
+                                        %> Unknown <% // Display a default value if gender is undefined
+                                    }
+                                %>
+                            </span>
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-4 col-status">
+                            <% if (user.is_blocked===false ) { %>
+                            <span class="badge rounded-pill alert-success">Active</span>
+                            <% } else { %>
+                            <span class="badge rounded-pill alert-danger">Blocked</span>
+                            <% } %>
+                        </div>
+                        <div class="col-lg-1 col-sm-2 col-4 col-date" hidden>
+                            <span>Current Time</span>
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                            <a href="/admin/users/edit?id=<%= user._id %>" class="btn btn-sm font-sm rounded btn-brand m-2">
+                                <i class="material-icons md-edit"></i> Edit
+                            </a>
+                            <!-- <% if (user.is_verified !=="1" ) { %>
+                            <a href="/admin/users/delete?id=<%= user._id %>" class="btn btn-sm font-sm btn-light rounded delete-btn" id="delete-btn-<%= user._id %>" data-user-id="<%= user._id %>">
+                                <i class="material-icons md-delete_forever"></i> Delete
+                            </a>
+                            
+                            <% } %> -->
+                        </div>
+                    </div> <!-- row .// -->
+        
+                </article> <!-- itemlist  .// -->
+                <% }); %>
+            </div>
+        </section>
+        
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">

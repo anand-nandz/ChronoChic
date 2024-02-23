@@ -224,6 +224,15 @@
                                 placeholder="Type here" class="form-control" readonly />
                         </div>
                         <div class="col-md-4 mb-2">
+                            <label class="form-label" for="gender">Gender</label>
+                            <select id="gender" name="gender" class="form-select" >
+                                <option value="male" <%= userDetails.gender === 'male' ? 'selected' : '' %>>Male</option>
+                                <option value="female" <%= userDetails.gender === 'female' ? 'selected' : '' %>>Female</option>
+                                <option value="other" <%= userDetails.gender === 'other' ? 'selected' : '' %>>Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4 mb-2">
                             <label class="form-label" for="mobile">Mobile Number</label>
                             <input value="<%=userDetails.mobile%>" type="tel" id="mobile" name="mobile"
                                 placeholder="Type here" class="form-control" readonly />
@@ -244,17 +253,19 @@
                                 <textarea value="<%=userDetails.address%>" id="address" name="address" placeholder="Type here" class="form-control"
                                     rows="4"></textarea>
                                 </div> -->
-                                <div class="col-md-4 mb-2">
+
+                                
+                                <!-- <div class="col-md-4 mb-2">
                                     <label class="form-label" for="verificationStatus">Verification Status:</label>
                                     <div class="form-check">
                                         <input type="radio" id="verified" name="verified" class="form-check-input" value="1" <%=userDetails.is_verified === 1 ? 'checked' : '' %> disabled>
                                         <label for="verified" class="form-check-label">Verified</label>
                                     </div>
                                     <div class="form-check">
-                                        <input type="radio" id="notVerified" name="verified" class="form-check-input" value="0" <%=userDetails.is_verified === 0 ? 'checked' : '' %> disabled>
+                                        <input type="radio" id="notVerified" name="verified" class="form-check-input" value="0" <%=userDetails.is_verified === 0 ? 'checked' : '' %> disabled >
                                         <label for="notVerified" class="form-check-label">Not Verified</label>
                                     </div>
-                                </div>
+                                </div> -->
                                 
                                 <div class="col-md-4 mb-2">
                                     <label class="form-label" for="status">Status</label>
