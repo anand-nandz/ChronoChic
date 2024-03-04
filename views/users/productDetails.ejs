@@ -99,7 +99,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-4 col-5">
                             <div class="logo-area">
-                                <a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                                <a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -277,7 +277,7 @@
                         </div>
 
                         <div class="col-5 col-md-6 d-block d-lg-none">
-                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                            <div class="logo"><a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
 
@@ -534,7 +534,7 @@
                         <div class="product-details-view-content">
                             <div class="product-info">
                                 <h3><%= product.pname %></h3>
-                                <!-- <div class="product-rating d-flex">
+                                <div class="product-rating d-flex">
                                     <ul class="d-flex">
                                         <li><a href="#"><i class="icon-star"></i></a></li>
                                         <li><a href="#"><i class="icon-star"></i></a></li>
@@ -543,15 +543,15 @@
                                         <li><a href="#"><i class="icon-star"></i></a></li>
                                     </ul>
                                     <a href="#reviews">(<span class="count">1</span> customer review)</a>
-                                </div> -->
+                                </div>
                                 <div class="price-box">
-                                    <span>₹ </span><span class="new-price"><%= product.price %></span>
+                                    <span>₹ </span><span class="new-price" id="offerPrice"><%= product.price %></span>
                                     <!-- <span class="old-price">$78.00</span> -->
                                 </div>
                                 <p><%= product.description %></p>
 
                                 <div class="single-add-to-cart">
-                                    <button class="add-to-cart" type="submit"  >Add To Cart</button>
+                                    <button class="add-to-cart" type="submit" onclick="addCart('<%= product._id %>')" >Add To Cart</button>
                                     <!-- <form action="" class="cart-quantity d-flex">
                                         <div class="quantity">
                                             <div class="cart-plus-minus">
@@ -732,11 +732,11 @@
 
 
     <script>
-        function addCart(){
-            const id = document.getElementById('productId').value
+        function addCart(id){
+            // const id = document.getElementById('productId').value
             const pdtOffPrice = document.getElementById('offerPrice').innerHTML
 
-            alert(id)
+            // alert(id)
 
             $.ajax({
                 url:"/addCartLoad",

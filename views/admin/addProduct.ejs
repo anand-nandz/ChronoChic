@@ -157,14 +157,15 @@
                 </ul>
             </div>
         </header>
-        <form action="/admin/add-product" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <form action="/admin/add-product" method="post" enctype="multipart/form-data" id="submitform"
+            onsubmit="return validateForm()">
             <section class="content-main">
                 <div class="row">
                     <div class="col-9">
                         <div class="content-header">
                             <h2 class="content-title">Add Product</h2>
                             <div>
-                                <button type="submit" class="btn btn-md rounded font-sm hover-up">
+                                <button type="submit" id="submitButtonId" class="btn btn-md rounded font-sm hover-up">
                                     Publish
                                 </button>
                             </div>
@@ -176,7 +177,8 @@
                                 <div class="mb-4">
                                     <label for="product_title" class="form-label">Product title</label>
                                     <input type="text" placeholder="Type here" class="form-control" name="ProductName"
-                                        required />
+                                        required onblur="validateProductName()" />
+
                                     <span id="productTitle-error" class="error-message"></span>
 
                                 </div>
@@ -185,7 +187,8 @@
                                 <div class="mb-4">
                                     <label for="product_brand" class="form-label">Brand</label>
                                     <input type="text" placeholder="Type here" class="form-control" name="ProductBrand"
-                                        required />
+                                        required onblur="validateProductBrand()" />
+
                                     <span id="ProductBrand-error" class="error-message"></span>
                                 </div>
                                 <div class="mb-4">
@@ -196,33 +199,41 @@
                                             <option value="<%= category._id %>">
                                                 <%= category.name %>
                                             </option>
-                                        <% }); %>
+                                            <% }); %>
                                     </select>
-                                    
+
                                     <span id="ProductCategory-error" class="error-message"></span>
                                 </div>
-                                
+
 
                                 <div class="mb-4">
                                     <label for="product_color" class="form-label">Color</label>
                                     <input type="text" placeholder="Type here" class="form-control" name="ProductColor"
-                                        required />
+                                        required onblur="validateProductColor()" />
+
                                     <span id="ProductColor-error" class="error-message"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_material" class="form-label">Material</label>
                                     <input type="text" placeholder="Type here" class="form-control"
-                                        name="ProductMaterial" required />
+                                        name="ProductMaterial" required onblur="validateProductMaterial()" />
+
                                     <span id="ProductMaterial-error" class="error-message"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_caseSize" class="form-label">Case Size</label>
-                                    <input type="text" placeholder="Type here" class="form-control"
-                                        name="ProductCaseSize" required />
+                                    <select class="form-select" name="ProductCaseSize" required
+                                        onchange="validateProductCaseSize()">
+                                        <option value="">Select Case Size</option>
+                                        <option value="Large">Large</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Small">Small</option>
+                                    </select>
                                     <span id="ProductCaseSize-error" class="error-message"></span>
                                 </div>
-                                
-                            
+
+
+
                                 <!-- <div class="mb-4">
                                     <label class="form-label">Count In Stock</label>
                                     <input type="number" placeholder="Type here" name="ProductStock" class="form-control" min="0" max="300" required />
@@ -239,7 +250,8 @@
                                 <div>
                                     <label class="form-label">Description</label>
                                     <textarea placeholder="Type here" class="form-control" name="ProductDetails"
-                                        rows="4" required></textarea>
+                                        rows="4" required onblur="validateProductDetails()"></textarea>
+                                    <span id="productDetails-error" class="error-message"></span>
                                 </div>
                             </div>
                         </div>
@@ -260,38 +272,50 @@
                             <div class="card-body">
                                 <div class="mb-4">
                                     <label class="form-label">Price</label>
-                                    <input type="text" placeholder="Type here" name="ProductPrice" id="productPrice" class="form-control" required />
+                                    <input type="text" placeholder="Type here" name="ProductPrice" id="productPrice"
+                                        class="form-control" required onblur="validateProductPrice()" />
                                     <span id="productPrice-error" class="error-message"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Discount Percentage</label>
-                                    <input type="number" placeholder="Type here" name="DiscountPercentage" class="form-control" min="0" max="100" value="0" />
+                                    <input type="number" placeholder="Type here" name="DiscountPercentage"
+                                        class="form-control" min="0" max="80" value="0"
+                                        onblur="validateDiscountPercentage()" />
+                                    <span id="discountPercentage-error" class="error-message"></span>
+
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Offer Price</label>
-                                    <input type="text" placeholder="Type here" name="ProductOffPrice" id="ProductOffprice" class="form-control" required />
+                                    <input type="text" placeholder="Type here" name="ProductOffPrice"
+                                        id="ProductOffprice" class="form-control" required
+                                        onblur="validateProductOffPrice()" />
                                     <span id="ProductOffprice-error" class="error-message"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Count In Stock</label>
-                                    <input type="number" placeholder="Type here" name="ProductStock" class="form-control" min="0" max="300" required />
+                                    <input type="number" placeholder="Type here" name="ProductStock"
+                                        class="form-control" min="0" max="300" required
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                        onblur="validateProductStock()" />
                                     <span id="countInStock-error" class="error-message"></span>
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="mb-3">Status</h5>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="listed" id="status1" value="false" checked>
+                                        <input class="form-check-input" type="radio" name="listed" id="status1"
+                                            value="false" checked>
                                         <label class="form-check-label" for="status1">Unlisted</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="listed" id="status2" value="true">
+                                        <input class="form-check-input" type="radio" name="listed" id="status2"
+                                            value="true">
                                         <label class="form-check-label" for="status2">Listed</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </section>
         </form>
@@ -318,13 +342,21 @@
     <script src="/adminassets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/adminassets/js/main.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <script>
 
         function limitFiles(input, maxFiles) {
             var files = input.files;
             if (files.length > maxFiles) {
-                alert("You can only upload a maximum of " + maxFiles + " files.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "You can only upload a maximum of " + maxFiles + " files.",
+
+                });
+                // alert("You can only upload a maximum of " + maxFiles + " files.");
                 input.value = "";
             }
         }
@@ -334,7 +366,13 @@
             var priceInput = document.getElementById("productPrice");
             var price = parseFloat(priceInput.value);
             if (isNaN(price) || price <= 0 || (!/^\d+(\.\d{1,2})?$/.test(price))) {
-                alert("Please enter a valid, non-negative price.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Please enter a valid, non-negative price.",
+
+                });
+                // alert("Please enter a valid, non-negative price.");
                 priceInput.value = "";
             }
         });
@@ -378,26 +416,269 @@
     </script>
 
 
-<script>
-    // JavaScript to handle the calculation of offprice based on price and discountPercentage
-    document.addEventListener('DOMContentLoaded', function () {
-        const priceInput = document.getElementById('productPrice');
-        const discountInput = document.getElementsByName('DiscountPercentage')[0];
-        const offpriceInput = document.getElementById('ProductOffprice');
+    <script>
+        // JavaScript to handle the calculation of offprice based on price and discountPercentage
+        document.addEventListener('DOMContentLoaded', function () {
+            const priceInput = document.getElementById('productPrice');
+            const discountInput = document.getElementsByName('DiscountPercentage')[0];
+            const offpriceInput = document.getElementById('ProductOffprice');
 
-        // Function to update offprice when either price or discountPercentage changes
-        function updateOffprice() {
-            const price = parseFloat(priceInput.value) || 0;
-            const discountPercentage = parseFloat(discountInput.value) || 0;
-            const offprice = price - (price * discountPercentage / 100);
-            offpriceInput.value = offprice.toFixed(2);
-        }
+            // Function to update offprice when either price or discountPercentage changes
+            function updateOffprice() {
+                const price = parseFloat(priceInput.value) || 0;
+                const discountPercentage = parseFloat(discountInput.value) || 0;
+                const offprice = price - (price * discountPercentage / 100);
+                offpriceInput.value = offprice.toFixed(2);
+            }
 
-        // Attach event listeners to update offprice on input changes
-        priceInput.addEventListener('input', updateOffprice);
-        discountInput.addEventListener('input', updateOffprice);
-    });
-</script>
+            // Attach event listeners to update offprice on input changes
+            priceInput.addEventListener('input', updateOffprice);
+            discountInput.addEventListener('input', updateOffprice);
+        });
+    </script>
+
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("submitform");
+            const submitButton = document.getElementById("submitButtonId");
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                if (validateForm()) {
+                    form.submit();
+                } else {
+                    // Display error message or handle invalid form
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Please fill out all required fields correctly.",
+                    });
+
+                }
+            });
+
+            function validateForm() {
+                const isProductNameValid = validateProductName();
+                const isProductBrandValid = validateProductBrand();
+                const isProductCategoryValid = validateProductCategory();
+                const isProductColorValid = validateProductColor();
+                const isProductMaterialValid = validateProductMaterial();
+                const isProductCaseSizeValid = validateProductCaseSize();
+                const isProductDetailsValid = validateProductDetails();
+                const isProductPriceValid = validateProductPrice();
+                const isProductOffPriceValid = validateProductOffPrice();
+                const isProductStockValid = validateProductStock();
+                const isDiscountPercentageValid = validateDiscountPercentage();
+
+                return isProductNameValid && isProductBrandValid && isProductCategoryValid &&
+                    isProductColorValid && isProductMaterialValid && isProductCaseSizeValid &&
+                    isProductDetailsValid && isProductPriceValid && isProductOffPriceValid &&
+                    isProductStockValid && isDiscountPercentageValid;
+            }
+
+            // Your existing validation functions here...
+
+            function validateProductName() {
+                const productName = document.getElementsByName("ProductName")[0].value.trim();
+                const productNameError = document.getElementById("productTitle-error");
+                const nameRegex = /^[A-Za-z\s]*$/;
+                if (productName === '') {
+                    productNameError.textContent = "Product name is required";
+                    return false; // Invalid input, return false
+                } else if (!nameRegex.test(productName)) {
+                    productNameError.textContent = "Invalid Name: Only alphabets and spaces are allowed";
+                    return false; // Invalid input, return false
+                } else {
+                    productNameError.textContent = "";
+                    console.log("name")
+                    return true; // Valid input, return true
+                }
+            }
+
+            function validateProductBrand() {
+                const productBrand = document.getElementsByName("ProductBrand")[0].value.trim();
+                const productBrandError = document.getElementById("ProductBrand-error");
+                const nameRegex = /^[A-Za-z\s]*$/;
+                if (productBrand === '') {
+                    productBrandError.textContent = "Product brand is required";
+                    return false; // Invalid input, return false
+                } else if (!nameRegex.test(productBrand)) {
+                    productBrandError.textContent = "Invalid Brand: Only alphabets and spaces are allowed";
+                    return false; // Invalid input, return false
+                } else {
+                    productBrandError.textContent = "";
+                    console.log("brand")
+                    return true; // Valid input, return true
+                }
+            }
+
+            function validateProductCategory() {
+                const productCategory = document.getElementsByName("ProductCategory")[0].value;
+                const productCategoryError = document.getElementById("ProductCategory-error");
+                if (productCategory === '') {
+                    productCategoryError.textContent = "Product category is required";
+                    return false;
+                } else {
+                    productCategoryError.textContent = "";
+
+                    console.log("cate")
+                    return true;
+                }
+            }
+
+            function validateProductColor() {
+                const productColor = document.getElementsByName("ProductColor")[0].value.trim();
+                const productColorError = document.getElementById("ProductColor-error");
+                const nameRegex = /^[A-Za-z\s]*$/;
+                if (productColor === '') {
+                    productColorError.textContent = "Product color is required";
+                    return false; // Invalid input, return false
+                } else if (!nameRegex.test(productColor)) {
+                    productColorError.textContent = "Invalid Color: Only alphabets and spaces are allowed";
+                    return false; // Invalid input, return false
+                } else {
+                    productColorError.textContent = "";
+                    console.log("color")
+                    return true; // Valid input, return true
+                }
+            }
+
+            function validateProductMaterial() {
+                const productMaterial = document.getElementsByName("ProductMaterial")[0].value.trim();
+                const productMaterialError = document.getElementById("ProductMaterial-error");
+                const nameRegex = /^[A-Za-z\s]*$/;
+                if (productMaterial === '') {
+                    productMaterialError.textContent = "Product material is required";
+                    return false; // Invalid input, return false
+                } else if (!nameRegex.test(productMaterial)) {
+                    productMaterialError.textContent = "Invalid Material: Only alphabets and spaces are allowed";
+                    return false; // Invalid input, return false
+                } else {
+                    productMaterialError.textContent = "";
+
+                    console.log("mate")
+                    return true; // Valid input, return true
+                }
+            }
+            function validateProductCaseSize() {
+                const productCaseSize = document.getElementsByName("ProductCaseSize")[0].value;
+                const productCaseSizeError = document.getElementById("ProductCaseSize-error");
+                if (productCaseSize === '') {
+                    productCaseSizeError.textContent = "Product case size is required";
+                    return false;
+                } else {
+                    productCaseSizeError.textContent = "";
+
+                    console.log("case")
+                    return true;
+                }
+            }
+
+            function validateProductDetails() {
+                const productDetails = document.getElementsByName("ProductDetails")[0].value.trim();
+                const productDetailsError = document.getElementById("productDetails-error");
+                if (productDetails === '') {
+                    productDetailsError.textContent = "Product description is required";
+                    return false;
+                } else {
+                    productDetailsError.textContent = "";
+                    console.log("detail")
+
+                    return true;
+                }
+            }
+
+            function validateProductPrice() {
+                const productPrice = document.getElementsByName("ProductPrice")[0].value.trim();
+                const productPriceError = document.getElementById("productPrice-error");
+                if (productPrice === '') {
+                    productPriceError.textContent = "Product price is required";
+                    return false;
+                } else {
+                    productPriceError.textContent = "";
+                    console.log("price")
+
+                    return true;
+                }
+            }
+
+            function validateProductOffPrice() {
+                const productOffPrice = document.getElementsByName("ProductOffPrice")[0].value.trim();
+                const productOffPriceError = document.getElementById("ProductOffprice-error");
+                if (productOffPrice === '') {
+                    productOffPriceError.textContent = "Product offer price is required";
+                    return false;
+                } else {
+                    productOffPriceError.textContent = "";
+                    console.log("offer")
+
+                    return true;
+                }
+            }
+
+            function validateDiscountPercentage() {
+                const discountInput = document.getElementsByName('DiscountPercentage')[0];
+                const discountError = document.getElementById('discountPercentage-error');
+                const discountPercentage = parseFloat(discountInput.value);
+                console.log(discountPercentage)
+
+                if (isNaN(discountPercentage)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Discount percentage must be a number",
+                    });
+                    discountError.textContent = 'Discount percentage must be a number';
+                } else if (discountPercentage < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Discount percentage cannot be negative",
+                    });
+                    discountError.textContent = 'Discount percentage cannot be negative';
+                } else if (discountPercentage > 80) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Discount percentage cannot be greater than 80",
+                    });
+                    discountError.textContent = 'Discount percentage cannot be greater than 80';
+                } else {
+                    discountError.textContent = ''; // Clear the error message if the input is valid
+                    console.log('percent');
+                    return true
+                }
+            }
+            function validateProductStock() {
+                const productStockInput = document.getElementsByName("ProductStock")[0];
+                const productStock = parseInt(productStockInput.value.trim());
+                const productStockError = document.getElementById("countInStock-error");
+
+                if (isNaN(productStock)) {
+                    productStockError.textContent = "Product stock count must be a number";
+                } else if (productStock < 0) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Product stock count cannot be negative"
+                    });
+                    productStockError.textContent = "Product stock count cannot be negative";
+                } else {
+                    productStockError.textContent = "";
+                    console.log('stock');
+                    return true;
+                }
+            }
+
+        });
+
+
+    </script>
+
 
 
 

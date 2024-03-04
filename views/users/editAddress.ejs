@@ -46,10 +46,9 @@
             background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
             -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
             box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-            padding: 60px;
+            padding: 30px;
             text-align: left;
             width: 100%;
-            max-width: 600px;
             margin: 0 auto;
         }
 
@@ -124,7 +123,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-4 col-5">
                             <div class="logo-area">
-                                <a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                                <a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -302,7 +301,7 @@
                         </div>
 
                         <div class="col-5 col-md-6 d-block d-lg-none">
-                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                            <div class="logo"><a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
 
@@ -530,66 +529,88 @@
         <div class="tab-pane" id="editaddress">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-6 addre">
+                    <div class="col-md-12 addre">
                         <div class="addAddress-form-container">
                             <div class="login-register-form">
                                 <form id="editAddressForm" action="/edit-address/<%= addressId %>" method="post">
-                                    <!-- Edit address form fields -->
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Full Name</label>
-                                        <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" value="<%= address.name %>" required>
+                                    <!-- First Row (Name and Phone) -->
+                                    <div class="form-row d-flex">
+                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
+                                            <label for="name" class="form-label">Full Name</label>
+                                            <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" value="<%= address.name %>" required oninput="validateName()">
+                                            <div id="nameError" class="error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="phone" class="form-label">Phone</label>
+                                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone" value="<%= address.phone %>" required oninput="validatePhone()">
+                                            <div id="phoneError" class="error"></div>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="addressType" class="form-label">Address Type</label>
-                                        <select id="addressType" name="addressType" class="form-select" required>
-                                            <option value="">Select Address Type</option>
-                                            <option value="Home" <%= address.addressType === 'Home' ? 'selected' : '' %>>Home</option>
-                                            <option value="Work" <%= address.addressType === 'Work' ? 'selected' : '' %>>Work</option>
-                                            <option value="Other" <%= address.addressType === 'Other' ? 'selected' : '' %>>Other</option>
-                                        </select>
+                                    <!-- Second Row (Alternate Phone and Pincode) -->
+                                    <div class="form-row d-flex">
+                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
+                                            <label for="altPhone" class="form-label">Alternate Phone</label>
+                                            <input type="text" id="altPhone" name="altPhone" class="form-control" placeholder="Alternate Phone" value="<%= address.altPhone %>" required oninput="validateAltPhone()">
+                                            <div id="altPhoneError" class="error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="pincode" class="form-label">Pincode</label>
+                                            <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Pincode" value="<%= address.pincode %>" required oninput="validatePincode()">
+                                            <div id="pincodeError" class="error"></div>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="city" class="form-label">City</label>
-                                   
-                                        <input type="text" id="city" name="city" class="form-control" placeholder="City" value="<%= address.city %>" required>
+                                    <!-- Third Row (Landmark and City) -->
+                                    <div class="form-row d-flex">
+                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
+                                            <label for="landMark" class="form-label">Landmark</label>
+                                            <input type="text" id="landMark" name="landMark" class="form-control" placeholder="Landmark" value="<%= address.landMark %>" required oninput="validateLandMark()">
+                                            <div id="landMarkError" class="error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="city" class="form-label">City</label>
+                                            <input type="text" id="city" name="city" class="form-control" placeholder="City" value="<%= address.city %>" required oninput="validateCity()">
+                                            <div id="cityError" class="error"></div>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="homeAddress" class="form-label">Home Address</label>
-                                        <input type="text" id="homeAddress" name="homeAddress" class="form-control" placeholder="Home Address" value="<%= address.homeAddress %>" required>
+                                    <!-- Fourth Row (State and Address Type) -->
+                                    <div class="form-row d-flex">
+                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
+                                            <label for="state" class="form-label">State</label>
+                                            <input type="text" id="state" name="state" class="form-control" placeholder="State" value="<%= address.state %>" required oninput="validateState()">
+                                            <div id="stateError" class="error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label for="addressType" class="form-label">Address Type</label>
+                                            <select id="addressType" name="addressType" class="form-select" required onchange="validateAddressType()">
+                                                <option value="">Select Address Type</option>
+                                                <option value="Home" <%= address.addressType === 'Home' ? 'selected' : '' %>>Home</option>
+                                                <option value="Work" <%= address.addressType === 'Work' ? 'selected' : '' %>>Work</option>
+                                                <option value="Other" <%= address.addressType === 'Other' ? 'selected' : '' %>>Other</option>
+                                            </select>
+                                            <div id="addressTypeError" class="error"></div>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="landMark" class="form-label">Landmark</label>
-                                        <input type="text" id="landMark" name="landMark" class="form-control" placeholder="Landmark" value="<%= address.landMark %>" required>
+                                    <!-- Fifth Row (Address) -->
+                                    <div class="form-row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="homeAddress" class="form-label">Home Address</label>
+                                            <input type="text" id="homeAddress" name="homeAddress" class="form-control" placeholder="Home Address" value="<%= address.homeAddress %>" required oninput="validateHomeAddress()">
+                                            <div id="homeAddressError" class="error"></div>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="state" class="form-label">State</label>
-                                        <input type="text" id="state" name="state" class="form-control" placeholder="State" value="<%= address.state %>" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="pincode" class="form-label">Pincode</label>
-                                        <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Pincode" value="<%= address.pincode %>" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="phone" class="form-label">Phone</label>
-                                        <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone" value="<%= address.phone %>" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="altPhone" class="form-label">Alternate Phone</label>
-                                        <input type="text" id="altPhone" name="altPhone" class="form-control" placeholder="Alternate Phone" value="<%= address.altPhone %>" required>
-                                    </div>
-                                    <!-- Add any additional fields here if needed -->
-                                    
+                                    <!-- Button Box -->
                                     <div class="button-box mt-3">
-                                        <button class="register-btn btn" type="submit"><span>Save Edited Address</span></button>
+                                        <input id="submitButton" class="register-btn btn" type="submit" value="Save Edited Address">
+                                        <!-- <button class="register-btn btn" type="submit"><span>Save Edited Address</span></button> -->
                                     </div>
                                 </form>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
         <!-- main-content-wrap end -->
 
         <!-- footer Start -->
@@ -726,6 +747,87 @@
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('editAddressForm');
+            const submitButton = document.getElementById('submitButton');
+    
+            // Function to get element value by ID
+            function getElementValue(id) {
+                const element = document.getElementById(id);
+                return element ? element.value.trim() : '';
+            }
+    
+            // Function to validate input
+            function validateInput(inputId, pattern, errorId, errorMessage) {
+                const inputValue = getElementValue(inputId);
+                const errorElement = document.getElementById(errorId);
+    
+                if (!inputValue) {
+                    errorElement.innerText = errorMessage + ' is required.';
+                    return false;
+                } else if (pattern && !pattern.test(inputValue)) {
+                    errorElement.innerText = 'Please enter a valid ' + errorMessage.toLowerCase() + '.';
+                    return false;
+                } else {
+                    errorElement.innerText = '';
+                    return true;
+                }
+            }
+    
+            // Function to enable/disable submit button based on validation
+            function enableSubmitButton() {
+                submitButton.disabled = !(
+                    validateInput('name', /^[A-Za-z\s]+$/, 'nameError', 'Full Name') &&
+                    validateInput('phone', /^(91)?0?[6-9]\d{9}$/, 'phoneError', 'Phone') &&
+                    validateInput('altPhone', /^(91)?0?[6-9]\d{9}$/, 'altPhoneError', 'Alternate Phone') &&
+                    validateInput('pincode', /^\d{6}$/, 'pincodeError', 'Pincode (6 digits)') &&
+                    validateInput('landMark', null, 'landMarkError', 'Landmark') &&
+                    validateInput('city', /^[a-zA-Z\s]+$/, 'cityError', 'City') &&
+                    validateInput('state', /^[a-zA-Z\s]+$/, 'stateError', 'State') &&
+                    validateInput('addressType', null, 'addressTypeError', 'Address Type') &&
+                    validateInput('homeAddress', null, 'homeAddressError', 'Address')
+                );
+            }
+    
+            // Event listeners for input fields
+            form.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('input', function () {
+                    const errorId = this.id + 'Error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) {
+                        validateInput(this.id, null, errorId, ''); // Reset error message
+                    }
+                    enableSubmitButton();
+                });
+            });
+    
+            // Event listener for form submission
+            form.addEventListener('submit', function (event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                    alert('Please fix validation errors before submitting the form.');
+                }
+            });
+    
+            // Function to validate form
+            function validateForm() {
+                return (
+                    validateInput('name', /^[A-Za-z\s]+$/, 'nameError', 'Full Name') &&
+                    validateInput('phone', /^(91)?0?[6-9]\d{9}$/, 'phoneError', 'Phone') &&
+                    validateInput('altPhone', /^(91)?0?[6-9]\d{9}$/, 'altPhoneError', 'Alternate Phone') &&
+                    validateInput('pincode', /^\d{6}$/, 'pincodeError', 'Pincode (6 digits)') &&
+                    validateInput('landMark', null, 'landMarkError', 'Landmark') &&
+                    validateInput('city', /^[a-zA-Z\s]+$/, 'cityError', 'City') &&
+                    validateInput('state', /^[a-zA-Z\s]+$/, 'stateError', 'State') &&
+                    validateInput('addressType', null, 'addressTypeError', 'Address Type') &&
+                    validateInput('homeAddress', null, 'homeAddressError', 'Address')
+                );
+            }
+        });
+    </script>
+    
 
 </body>
 

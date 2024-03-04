@@ -3,8 +3,8 @@ const sessionSecret = "mysitesessionsecret";
 
 // a.config();
 
-const emailUser = "chronochic1@gmail.com"
-const emailPassword = "zdrh vybm xjfi ckrt"
+const emailUser = process.env.emailUser
+const emailPassword = process.env.emailPassword
 
 module.exports= {
     sessionSecret,

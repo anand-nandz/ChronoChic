@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Ruiz - Watch Store HTML Template</title>
+    <title>ChronoChic</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -99,9 +99,10 @@
                             <div class="top-info-wrap text-end">
                                 <ul class="my-account-container">
                                     <li><a href="my-account.html">My account</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
+                                    <li><a href="cart">Cart</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>
+                                    <li><a href="landingpage">Logout</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -117,7 +118,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-4 col-5">
                             <div class="logo-area">
-                                <a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                                <a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -224,7 +225,7 @@
                                     <ul>
                                         <li class="active"><a href="home">Home <i class="fa fa-angle-down"></i></a>
                                             <ul class="sub-menu">
-                                                <li><a href="index.html">Home Page 1</a></li>
+                                                <li><a href="home">Home Page 1</a></li>
                                                 <li><a href="index-2.html">Home Page 2</a></li>
                                             </ul>
                                         </li>
@@ -294,7 +295,7 @@
                         </div>
 
                         <div class="col-5 col-md-6 d-block d-lg-none">
-                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                            <div class="logo"><a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
 
@@ -398,7 +399,7 @@
                                 <ul class="mobile-menu">
                                     <li class="menu-item-has-children"><a href="#">Home</a>
                                         <ul class="dropdown">
-                                            <li><a href="index.html">Home Page 1</a></li>
+                                            <li><a href="home">Home Page 1</a></li>
                                             <li><a href="index-2.html">Home Page 2</a></li>
                                         </ul>
                                     </li>
@@ -544,7 +545,7 @@
                                                             <p class="user-name">Hello <span>
                                                                     <%= userData ? userData.email : '' %>
                                                                 </span></p>
-                                                            <p>(not yourmail@info? <a href="#">Log Out</a>)</p>
+                                                            <p>(not yourmail@info? <a href="landingpage">Log Out</a>)</p>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-md-12">
@@ -561,7 +562,7 @@
                                                     </div>
                                                     <div class="col-lg-2 col-md-12">
                                                         <div class="d-single-info text-lg-center">
-                                                            <a href="cart.html" class="view-cart"><i
+                                                            <a href="cart" class="view-cart"><i
                                                                     class="fa fa-cart-plus"></i>view
                                                                 cart</a>
                                                         </div>
@@ -690,7 +691,7 @@
                                                                 <td><%= order.orderDate %></td>
                                                                 <td><%= order.status %></td>
                                                                 <td>₹<%= order.totalAmount %></td>
-                                                                <td><a href="/orderDetails/<%= order._id %>" class="view">View</a></td>
+                                                                <td><a href="/orderView?id=<%= order._id %>" class="view">View</a></td>
                                                             </tr>
                                                         <% }); %>
                                                     </tbody>
@@ -1001,7 +1002,7 @@
                                 <div class="widget-footer mt-40">
                                     <h6 class="title-widget">Information</h6>
                                     <ul class="footer-list">
-                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="home">Home</a></li>
                                         <li><a href="about-us.html">About Us</a></li>
                                         <li><a href="contact.html">Quick Contact</a></li>
                                         <li><a href="blog.html">Blog Pages</a></li>

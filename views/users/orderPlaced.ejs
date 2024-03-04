@@ -3,10 +3,11 @@
 
 
 <!-- Mirrored from template.hasthemes.com/ruiz/ruiz/error404.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Jan 2024 11:50:58 GMT -->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Ruiz - Watch Store HTML Template</title>
+    <title>ChronoChic</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -40,12 +41,180 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
 
+
+    <style>
+        body {
+            letter-spacing: 0.8px;
+            background: linear-gradient(0deg, #fff, 50%, #242323);
+            background-repeat: no-repeat;
+        }
+
+        .container-fluid {
+            margin-top: 80px !important;
+            margin-bottom: 80px !important;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        
+        .bold {
+            font-weight: 600;
+        }
+
+        .small {
+            font-size: 12px !important;
+            letter-spacing: 0.5px !important;
+        }
+
+        .Today {
+            color: rgb(83, 83, 83);
+        }
+
+        .btn-outline-primary {
+            background-color: #fff !important;
+            color: #4bb8a9 !important;
+            border: 1.3px solid #4bb8a9;
+            font-size: 12px;
+            border-radius: 0.4em !important;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #4bb8a9 !important;
+            color: #fff !important;
+            border: 1.3px solid #4bb8a9;
+        }
+
+        .btn-outline-primary:focus,
+        .btn-outline-primary:active {
+            outline: none !important;
+            box-shadow: none !important;
+            border-color: #42A5F5 !important;
+        }
+
+        #progressbar {
+            margin-bottom: 30px;
+            overflow: hidden;
+            color: #455A64;
+            padding-left: 0px;
+            margin-top: 30px
+        }
+
+        #progressbar li {
+            list-style-type: none;
+            font-size: 13px;
+            width: 33.33%;
+            float: left;
+            position: relative;
+            font-weight: 400;
+            color: #455A64 !important;
+
+        }
+
+        #progressbar #step1:before {
+            content: "1";
+            color: #fff;
+            width: 29px;
+            margin-left: 15px !important;
+            padding-left: 11px !important;
+        }
+
+
+        #progressbar #step2:before {
+            content: "2";
+            color: #fff;
+            width: 29px;
+
+        }
+
+        #progressbar #step3:before {
+            content: "3";
+            color: #fff;
+            width: 29px;
+            margin-right: 15px !important;
+            padding-right: 11px !important;
+        }
+
+        #progressbar li:before {
+            line-height: 29px;
+            display: block;
+            font-size: 12px;
+            background: #455A64;
+            border-radius: 50%;
+            margin: auto;
+        }
+
+        #progressbar li:after {
+            content: '';
+            width: 121%;
+            height: 2px;
+            background: #455A64;
+            position: absolute;
+            left: 0%;
+            right: 0%;
+            top: 15px;
+            z-index: -1;
+        }
+
+        #progressbar li:nth-child(2):after {
+            left: 50%;
+        }
+
+        #progressbar li:nth-child(1):after {
+            left: 25%;
+            width: 121%;
+        }
+
+        #progressbar li:nth-child(3):after {
+            left: 25% !important;
+            width: 50% !important;
+        }
+
+        #progressbar li.active:before,
+        #progressbar li.active:after {
+            background: #4bb8a9;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 2px 4px 15px 0px rgb(0, 0, 0);
+            z-index: 0;
+        }
+
+        small {
+            font-size: 12px !important;
+        }
+
+        .a {
+            justify-content: space-between !important;
+        }
+
+        .border-line {
+            border-right: 1px solid rgb(226, 206, 226)
+        }
+
+        .card-footer img {
+            opacity: 0.3;
+        }
+
+        .card-footer h5 {
+            font-size: 1.1em;
+            color: #8C9EFF;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="main-wrapper">
-        
+
         <!--  Header Start -->
         <header class="header">
 
@@ -75,10 +244,11 @@
                         <div class="col-lg-6">
                             <div class="top-info-wrap text-end">
                                 <ul class="my-account-container">
-                                    <li><a href="my-account.html">My account</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
+                                    <li><a href="userProfile">My account</a></li>
+                                    <li><a href="cart">Cart</a></li>
+                                    <!-- <li><a href="wishlist.html">Wishlist</a></li> -->
+                                    <!-- <li><a href="checkout.html">Checkout</a></li> -->
+                                    <li><a href="landingpage">Logout</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -94,7 +264,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-4 col-5">
                             <div class="logo-area">
-                                <a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                                <a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -129,7 +299,8 @@
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
-                                    <a href="wishlist.html"><span class="cart-total">2</span> <i class="icon-heart"></i></a>
+                                    <a href="wishlist.html"><span class="cart-total">2</span> <i
+                                            class="icon-heart"></i></a>
                                 </div>
 
                                 <div class="shopping-cart-wrap">
@@ -137,7 +308,8 @@
                                     <ul class="mini-cart">
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-02.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-02.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -152,7 +324,8 @@
                                         </li>
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-03.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-03.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -162,7 +335,8 @@
                                                     <span class="quantity">1 ×</span>
                                                     <div class="price-box"><span class="new-price">$130.00</span></div>
                                                 </div>
-                                                <a class="remove_from_cart" href="#"><i class="icon-trash icons"></i></a>
+                                                <a class="remove_from_cart" href="#"><i
+                                                        class="icon-trash icons"></i></a>
                                             </div>
                                         </li>
                                         <li class="subtotal-box">
@@ -180,7 +354,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -195,33 +369,40 @@
                                 <!--  Start Mainmenu Nav-->
                                 <nav class="main-navigation text-center">
                                     <ul>
-                                        <li class="active"><a href="index.html">Home <i class="fa fa-angle-down"></i></a>
-                                            <ul class="sub-menu">
-                                                <li><a href="index.html">Home Page 1</a></li>
+                                        <li class="active"><a href="home">Home <i class="fa fa-angle-down"></i></a>
+                                            <!-- <ul class="sub-menu">
+                                                <li><a href="home">Home Page 1</a></li>
                                                 <li><a href="index-2.html">Home Page 2</a></li>
-                                            </ul>
+                                            </ul> -->
                                         </li>
 
-                                        <li><a href="#">Shop <i class="fa fa-angle-down"></i></a>
+                                        <li><a href="shop">Shop <i class="fa fa-angle-down"></i></a>
                                             <ul class="mega-menu">
                                                 <li><a href="#">Shop Layouts</a>
                                                     <ul>
-                                                        <li><a href="shop.html">Shop Left Sidebar</a></li>
-                                                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
-                                                        <li><a href="shop-list-left.html">Shop List Left Sidebar</a></li>
-                                                        <li><a href="shop-list-right.html">Shop List Right Sidebar</a></li>
-                                                        <li><a href="shop-fullwidth.html">Shop Full Width</a></li>
+                                                        <li><a href="shop">Shop</a></li>
+                                                        <!-- <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a>
+                                                        </li>
+                                                        <li><a href="shop-list-left.html">Shop List Left Sidebar</a>
+                                                        </li>
+                                                        <li><a href="shop-list-right.html">Shop List Right Sidebar</a>
+                                                        </li>
+                                                        <li><a href="shop-fullwidth.html">Shop Full Width</a></li> -->
                                                     </ul>
                                                 </li>
                                                 <li><a href="blog.html">Product Details</a>
                                                     <ul>
-                                                        <li><a href="product-details.html">Single Product Details</a></li>
-                                                        <li><a href="variable-product-details.html">Variable Product Details</a></li>
-                                                        <li><a href="affiliate-product-details.html">affiliatel Product Details</a></li>
-                                                        <li><a href="gallery-product-details.html">Gallery Product Details</a></li>
+                                                        <li><a href="product-details.html">Single Product Details</a>
+                                                        </li>
+                                                        <!-- <li><a href="variable-product-details.html">Variable Product
+                                                                Details</a></li>
+                                                        <li><a href="affiliate-product-details.html">affiliatel Product
+                                                                Details</a></li>
+                                                        <li><a href="gallery-product-details.html">Gallery Product
+                                                                Details</a></li> -->
                                                     </ul>
                                                 </li>
-                                                <li><a href="#">Shop Pages</a>
+                                                <!-- <li><a href="#">Shop Pages</a>
                                                     <ul>
                                                         <li><a href="error404.html">Error 404</a></li>
                                                         <li><a href="compare.html">Compare Page</a></li>
@@ -229,11 +410,11 @@
                                                         <li><a href="checkout.html">Checkout Page</a></li>
                                                         <li><a href="wishlist.html">Wish List Page</a></li>
                                                     </ul>
-                                                </li>
+                                                </li> -->
                                             </ul>
 
                                         </li>
-                                        <li><a href="blog.html">Blog <i class="fa fa-angle-down"></i></a>
+                                        <!-- <li><a href="blog.html">Blog <i class="fa fa-angle-down"></i></a>
 
                                             <ul class="sub-menu">
                                                 <li><a href="blog.html">Blog Left Sidebar</a></li>
@@ -242,33 +423,34 @@
                                                 <li><a href="blog-largeimage.html">Blog Large Image</a></li>
                                                 <li><a href="blog-details.html">Blog Details Page</a></li>
                                             </ul>
-                                        </li>
+                                        </li> -->
 
                                         <li><a href="#">Pages <i class="fa fa-angle-down"></i></a>
                                             <ul class="sub-menu">
-                                                <li><a href="frequently-questions.html">FAQ</a></li>
+                                                <!-- <li><a href="frequently-questions.html">FAQ</a></li> -->
                                                 <li><a href="my-account.html">My Account</a></li>
-                                                <li><a href="login-register.html">login &amp; register</a></li>
+                                                <!-- <li><a href="login">login </a></li>
+                                                <li><a href="register">register</a></li> -->
                                             </ul>
                                         </li>
-                                        <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="contact-us.html">Contact</a></li>
+                                        <li><a href="">About Us</a></li>
+                                        <li><a href="">Contact</a></li>
                                     </ul>
                                 </nav>
-
                             </div>
                         </div>
 
                         <div class="col-5 col-md-6 d-block d-lg-none">
-                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a></div>
+                            <div class="logo"><a href="home"><img src="assets/images/logo/logo.png" alt=""></a></div>
                         </div>
-                        
-                        
+
+
                         <div class="col-lg-3 col-md-6 col-7 d-block d-lg-none">
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
-                                    <a href="wishlist.html"><span class="cart-total">2</span> <i class="icon-heart"></i></a>
+                                    <a href="wishlist.html"><span class="cart-total">2</span> <i
+                                            class="icon-heart"></i></a>
                                 </div>
 
                                 <div class="shopping-cart-wrap">
@@ -276,7 +458,8 @@
                                     <ul class="mini-cart">
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-02.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-02.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -291,7 +474,8 @@
                                         </li>
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-03.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-03.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -301,7 +485,8 @@
                                                     <span class="quantity">1 ×</span>
                                                     <div class="price-box"><span class="new-price">$130.00</span></div>
                                                 </div>
-                                                <a class="remove_from_cart" href="#"><i class="icon-trash icons"></i></a>
+                                                <a class="remove_from_cart" href="#"><i
+                                                        class="icon-trash icons"></i></a>
                                             </div>
                                         </li>
                                         <li class="subtotal-box">
@@ -326,14 +511,14 @@
 
                             </div>
                         </div>
-                        
-                        
-                        
+
+
+
                     </div>
                 </div>
             </div>
             <!-- haeader bottom End -->
-            
+
             <!-- off-canvas menu start -->
             <aside class="off-canvas-wrapper">
                 <div class="off-canvas-overlay"></div>
@@ -359,30 +544,33 @@
                                 <ul class="mobile-menu">
                                     <li class="menu-item-has-children"><a href="#">Home</a>
                                         <ul class="dropdown">
-                                            <li><a href="index.html">Home Page 1</a></li>
-                                            <li><a href="index-2.html">Home Page 2</a></li>
+                                            <li><a href="home">Home Page 1</a></li>
+                                            <!-- <li><a href="index-2.html">Home Page 2</a></li> -->
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children"><a href="#">Shop</a>
+                                    <li class="menu-item-has-children"><a href="shop">Shop</a>
                                         <ul class="megamenu dropdown">
                                             <li class="mega-title has-children"><a href="#">Shop Layouts</a>
                                                 <ul class="dropdown">
-                                                    <li><a href="shop.html">Shop Left Sidebar</a></li>
-                                                    <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
+                                                    <li><a href="shop">Shop</a></li>
+                                                    <!-- <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
                                                     <li><a href="shop-list-left.html">Shop List Left Sidebar</a></li>
                                                     <li><a href="shop-list-right.html">Shop List Right Sidebar</a></li>
-                                                    <li><a href="shop-fullwidth.html">Shop Full Width</a></li>
+                                                    <li><a href="shop-fullwidth.html">Shop Full Width</a></li> -->
                                                 </ul>
                                             </li>
                                             <li class="mega-title has-children"><a href="#">Product Details</a>
                                                 <ul class="dropdown">
                                                     <li><a href="product-details.html">Single Product Details</a></li>
-                                                    <li><a href="variable-product-details.html">Variable Product Details</a></li>
-                                                    <li><a href="affiliate-product-details.html">affiliatel Product Details</a></li>
-                                                    <li><a href="gallery-product-details.html">Gallery Product Details</a></li>
+                                                    <!-- <li><a href="variable-product-details.html">Variable Product
+                                                            Details</a></li>
+                                                    <li><a href="affiliate-product-details.html">affiliatel Product
+                                                            Details</a></li>
+                                                    <li><a href="gallery-product-details.html">Gallery Product
+                                                            Details</a></li> -->
                                                 </ul>
                                             </li>
-                                            <li class="mega-title has-children"><a href="#">Shop Pages</a>
+                                            <!-- <li class="mega-title has-children"><a href="#">Shop Pages</a>
                                                 <ul class="dropdown">
                                                     <li><a href="error404.html">Error 404</a></li>
                                                     <li><a href="compare.html">Compare Page</a></li>
@@ -390,10 +578,10 @@
                                                     <li><a href="checkout.html">Checkout Page</a></li>
                                                     <li><a href="wishlist.html">Wish List Page</a></li>
                                                 </ul>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children "><a href="#">Blog</a>
+                                    <!-- <li class="menu-item-has-children "><a href="#">Blog</a>
                                         <ul class="dropdown">
                                             <li><a href="blog.html">Blog Left Sidebar</a></li>
                                             <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
@@ -401,12 +589,13 @@
                                             <li><a href="blog-largeimage.html">Blog Large Image</a></li>
                                             <li><a href="blog-details.html">Blog Details Page</a></li>
                                         </ul>
-                                    </li>
+                                    </li> -->
                                     <li class="menu-item-has-children "><a href="#">Pages</a>
                                         <ul class="dropdown">
-                                            <li><a href="frequently-questions.html">FAQ</a></li>
+                                            <!-- <li><a href="frequently-questions.html">FAQ</a></li> -->
                                             <li><a href="my-account.html">My Account</a></li>
-                                            <li><a href="login-register.html">login &amp; register</a></li>
+                                            <!-- <li><a href="login">login </a></li>
+                                            <li><a href="register">register</a></li> -->
                                         </ul>
                                     </li>
                                     <li><a href="about-us.html">About Us</a></li>
@@ -454,10 +643,10 @@
                 </div>
             </aside>
             <!-- off-canvas menu end -->
-            
+
         </header>
         <!--  Header Start -->
-        
+
         <!-- breadcrumb-area start -->
         <div class="breadcrumb-area">
             <div class="container">
@@ -481,18 +670,93 @@
                 <div class="row">
                     <div class="col-lg-8 offset-lg-2 text-center">
                         <div class="order-confirmation-wrapper">
+
                             <h1>Order Confirmed</h1>
                             <h2>Thank you for your order!</h2>
-                            <p class="order-details">Your order number is: <span class="order-number">123456789</span></p>
-                            <p class="order-summary">Here is a summary of your order:</p>
-                            <!-- Display order details here -->
-                            <a href="home" class="home-back-button">Back to home page</a>
+                            <% for( let i = 0; i < pdtData.length; i++ ) { %>
+                            
+                            
+                                <p class="order-details">Your order number is: <span class="order-number">
+                                        <%= orders.orderNumber %>
+                                    </span></p>
+                                <!-- <p class="order-summary">To view the Order details Please click on the View Button</p> -->
+
+                                <!-- boottttttttttttttttttttttttttttttt -->
+
+                                <div class="container-fluid my-5 d-sm-flex justify-content-center">
+                                    <div class="card px-2 w-75">
+                                        <div class="card-header bg-white">
+                                            <div class="row ">
+                                                <div class="col">
+                                                    <p class="text-muted"> Order Number : <span
+                                                            class="font-weight-bold text-dark"><%= orders.orderNumber %></span></p>
+                                                    <p class="text-muted"> Placed On : <span
+                                                            class="font-weight-bold text-dark"><%= orders.orderDate %></span> </p>
+                                                </div>
+                                                
+                                                <div class="col my-auto">
+                                                    <h6 class="ml-auto mr-3">
+                                                        <a href="/orderView?id=<%= orders._id %>">View Order Details</a>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="media flex-column flex-sm-row ">
+                                                <div class="media-body ">
+                                                    <h5 class="bold"><%= pdtData[i].pname %></h5>
+                                                    <p class="text-muted">Qty - <%= orders.items[i].quantity %></p>
+                                                    <h4 class="mt-3 mb-4 bold"> <span class="mt-5">&#x20B9;</span><%= orders.totalAmount %>
+                                                        <span class="small text-muted"> via <%= orders.orderType %> </span></h4>
+                                                    
+                                                    <!-- <p class="text-muted">Tracking Status on: <span
+                                                            class="Today">11:30pm, Today</span></p>
+                                                    <button type="button"
+                                                        class="btn  btn-outline-primary d-flex">Reached Hub,
+                                                        Delhi</button> -->
+                                                </div><img class="align-self-center img-fluid"
+                                                    src="/productAssets/<%=pdtData[i].images[0]%>" width="180 " height="180">
+                                            </div>
+                                            <a href="home" class="button-box">Back to home page</a>
+                                        </div>
+                                        <!-- <div class="row px-3">
+                                            <div class="col">
+                                                <ul id="progressbar">
+                                                    <li class="step0 active " id="step1">PLACED</li>
+                                                    <li class="step0 active text-center" id="step2">SHIPPED</li>
+                                                    <li class="step0  text-muted text-right" id="step3">DELIVERED</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer  bg-white px-sm-3 pt-sm-4 px-0">
+                                            <div class="row text-center  ">
+                                                <div class="col my-auto  border-line ">
+                                                    <h5>Track</h5>
+                                                </div>
+                                                <div class="col  my-auto  border-line ">
+                                                    <h5>Cancel</h5>
+                                                </div>
+                                                <div class="col my-auto   border-line ">
+                                                    <h5>Pre-pay</h5>
+                                                </div>
+                                                <div class="col  my-auto mx-0 px-0 "><img
+                                                        class="img-fluid cursor-pointer"
+                                                        src="https://img.icons8.com/ios/50/000000/menu-2.png" width="30"
+                                                        height="30"></div>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                
+
+
+                                <% } %>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- main-content-wrap end -->
 
         <!-- footer Start -->
@@ -516,19 +780,24 @@
 
                                 <ul class="social-icons">
                                     <li>
-                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i
+                                                class="fa fa-facebook"></i></a>
                                     </li>
                                     <li>
-                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i
+                                                class="fa fa-twitter"></i></a>
                                     </li>
                                     <li>
-                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i class="fa fa-instagram"></i></a>
+                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i
+                                                class="fa fa-instagram"></i></a>
                                     </li>
                                     <li>
-                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>
+                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i
+                                                class="fa fa-linkedin"></i></a>
                                     </li>
                                     <li>
-                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i class="fa fa-rss"></i></a>
+                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i
+                                                class="fa fa-rss"></i></a>
                                     </li>
                                 </ul>
 
@@ -539,7 +808,7 @@
                             <div class="widget-footer mt-40">
                                 <h6 class="title-widget">Information</h6>
                                 <ul class="footer-list">
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="home">Home</a></li>
                                     <li><a href="about-us.html">About Us</a></li>
                                     <li><a href="contact.html">Quick Contact</a></li>
                                     <li><a href="blog.html">Blog Pages</a></li>
@@ -552,7 +821,7 @@
                             <div class="widget-footer mt-40">
                                 <h6 class="title-widget">Extras</h6>
                                 <ul class="footer-list">
-                                   
+
                                     <li><a href="#">Concord History</a></li>
                                     <li><a href="#">Client Feed</a></li>
                                     <li><a href="about-us.html">About Us</a></li>
@@ -574,7 +843,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <div class="container">
                     <div class="row align-items-center">
@@ -604,16 +873,16 @@
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
 
-    <!-- jquery -->		
+    <!-- jquery -->
     <script src="assets/js/vendor/jquery-3.6.1.min.js"></script>
-    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>		
+    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="assets/js/vendor/bootstrap.min.js"></script>
 
     <!-- Plugins JS -->
     <script src="assets/js/plugins/slick.min.js"></script>
-    
+
     <script src="assets/js/plugins/jquery.nice-select.min.js"></script>
     <script src="assets/js/plugins/countdown.min.js"></script>
     <script src="assets/js/plugins/image-zoom.min.js"></script>
@@ -635,4 +904,5 @@
 
 
 <!-- Mirrored from template.hasthemes.com/ruiz/ruiz/error404.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Jan 2024 11:50:58 GMT -->
+
 </html>

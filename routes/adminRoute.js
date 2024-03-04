@@ -16,6 +16,7 @@ admin_route.set('view engine' , 'ejs');
 admin_route.set('views', './views/admin');
 
 const adminController = require("../controllers/adminController");
+const orderController = require('../controllers/orderController');
 
 // const productController = require("../controllers/productController");
 
@@ -45,7 +46,11 @@ admin_route.get('/products/edit-product',adminController.editProduct);
 
 admin_route.get("/delete-product/:productId", adminController.deleteProduct);
 
-admin_route.get('/category',adminController.loadCategory)
+admin_route.get('/category',adminController.loadCategory);
+
+admin_route.get('/order',orderController.loadOrder);
+admin_route.get('/orderDetails',orderController.loadOrderDetail);
+admin_route.post("/orderSave",orderController.saveOrder)
 
 
 const storage = multer.diskStorage({

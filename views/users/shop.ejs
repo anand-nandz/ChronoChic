@@ -40,6 +40,32 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
 
+    <style>
+        .single-product-area {
+            position: relative;
+            /* Ensure relative positioning for the parent container */
+        }
+    
+        .out-of-stock {
+            position: absolute;
+            /* Position the message absolutely within the parent container */
+            bottom: 10px;
+            /* Adjust the distance from the bottom as needed */
+            left: 0;
+            right: 0;
+            text-align: center;
+            /* Set left and right to 0 to span the full width */
+            background: linear-gradient(to right, rgba(186, 23, 23, 0.2) 0%, rgba(186, 23, 23, 0.5) 25%, rgba(186, 23, 23, 1) 50%, rgba(186, 23, 23, 0.5) 75%, rgba(186, 23, 23, 0.2) 100%);
+            /* Use linear gradient for shaded effect */
+            color: white;
+            /* Set text color to white */
+            padding: 5px 10px;
+            /* Add padding for better visibility */
+            border-radius: 5px;
+            /* Optional: Add border radius for rounded corners */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -75,8 +101,8 @@
                         <div class="col-lg-6">
                             <div class="top-info-wrap text-end">
                                 <ul class="my-account-container">
-                                    <li><a href="my-account.html">My account</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
+                                    <li><a href="userProfile">My account</a></li>
+                                    <li><a href="cart">Cart</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>
                                 </ul>
@@ -94,7 +120,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-4 col-5">
                             <div class="logo-area">
-                                <a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                                <a href="home"><img src="assets/images/logo/logo.png" alt=""></a>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -125,7 +151,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <!-- <div class="col-lg-3">
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
@@ -179,7 +205,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         
                     </div>
                 </div>
@@ -196,15 +222,15 @@
                                 <nav class="main-navigation text-center">
                                     <ul>
                                         <li class="active"><a href="home">Home <i class="fa fa-angle-down"></i></a>
-                                            <ul class="sub-menu">
+                                            <!-- <ul class="sub-menu">
                                                 <li><a href="index.html">Home Page 1</a></li>
                                                 <li><a href="index-2.html">Home Page 2</a></li>
-                                            </ul>
+                                            </ul> -->
                                         </li>
 
-                                        <li><a href="#">Shop <i class="fa fa-angle-down"></i></a>
+                                        <li><a href="shop">Shop <i class="fa fa-angle-down"></i></a>
                                             <ul class="mega-menu">
-                                                <li><a href="#">Shop Layouts</a>
+                                                <!-- <li><a href="#">Shop Layouts</a>
                                                     <ul>
                                                         <li><a href="shop.html">Shop Left Sidebar</a></li>
                                                         <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
@@ -212,8 +238,8 @@
                                                         <li><a href="shop-list-right.html">Shop List Right Sidebar</a></li>
                                                         <li><a href="shop-fullwidth.html">Shop Full Width</a></li>
                                                     </ul>
-                                                </li>
-                                                <li><a href="blog.html">Product Details</a>
+                                                </li> -->
+                                                <!-- <li><a href="blog.html">Product Details</a>
                                                     <ul>
                                                         <li><a href="product-details.html">Single Product Details</a></li>
                                                         <li><a href="variable-product-details.html">Variable Product Details</a></li>
@@ -229,11 +255,11 @@
                                                         <li><a href="checkout.html">Checkout Page</a></li>
                                                         <li><a href="wishlist.html">Wish List Page</a></li>
                                                     </ul>
-                                                </li>
+                                                </li> -->
                                             </ul>
 
                                         </li>
-                                        <li><a href="blog.html">Blog <i class="fa fa-angle-down"></i></a>
+                                        <!-- <li><a href="blog.html">Blog <i class="fa fa-angle-down"></i></a>
 
                                             <ul class="sub-menu">
                                                 <li><a href="blog.html">Blog Left Sidebar</a></li>
@@ -250,7 +276,7 @@
                                                 <li><a href="my-account.html">My Account</a></li>
                                                 <li><a href="login-register.html">login &amp; register</a></li>
                                             </ul>
-                                        </li>
+                                        </li> -->
                                         <li><a href="about-us.html">About Us</a></li>
                                         <li><a href="contact-us.html">Contact</a></li>
                                     </ul>
@@ -260,11 +286,11 @@
                         </div>
 
                         <div class="col-5 col-md-6 d-block d-lg-none">
-                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a></div>
+                            <div class="logo"><a href="home"><img src="assets/images/logo/logo.png" alt=""></a></div>
                         </div>
                         
                         
-                        <div class="col-lg-3 col-md-6 col-7 d-block d-lg-none">
+                        <!-- <div class="col-lg-3 col-md-6 col-7 d-block d-lg-none">
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
@@ -326,7 +352,7 @@
 
                             </div>
                         </div>
-                        
+                         -->
                         
                         
                     </div>
@@ -357,9 +383,9 @@
                             <!-- mobile menu navigation start -->
                             <nav>
                                 <ul class="mobile-menu">
-                                    <li class="menu-item-has-children"><a href="#">Home</a>
+                                    <li class="menu-item-has-children"><a href="home">Home</a>
                                         <ul class="dropdown">
-                                            <li><a href="index.html">Home Page 1</a></li>
+                                            <li><a href="home">Home Page 1</a></li>
                                             <li><a href="index-2.html">Home Page 2</a></li>
                                         </ul>
                                     </li>
@@ -441,8 +467,8 @@
                             <div class="top-info-wrap text-left text-black">
                                 <h5>My Account</h5>
                                 <ul class="offcanvas-account-container">
-                                    <li><a href="my-account.html">My account</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
+                                    <li><a href="userProfile">My account</a></li>
+                                    <li><a href="cart">Cart</a></li>
                                     <li><a href="wishlist.html">Wishlist</a></li>
                                     <li><a href="checkout.html">Checkout</a></li>
                                 </ul>
@@ -465,7 +491,7 @@
                         <!-- breadcrumb-list start -->
                         <ul class="breadcrumb-list">
                             <li class="breadcrumb-item"><a href="home">Home</a></li>
-                            <li class="breadcrumb-item active">Shop Fullwidth</li>
+                            <li class="breadcrumb-item active">Shop</li>
                         </ul>
                         <!-- breadcrumb-list end -->
                     </div>
@@ -482,173 +508,201 @@
                     <div class="col-lg-12">
 
                         <!-- shop-product-wrapper start -->
-                        <div class="shop-product-wrapper">
-                            <div class="row align-itmes-center">
-                                <div class="col">
-                                    <!-- shop-top-bar start -->
-                                    <div class="shop-top-bar">
-                                        <!-- product-view-mode start -->
-
-                                        <div class="product-mode">
-                                            <!--shop-item-filter-list-->
-                                            <ul class="nav shop-item-filter-list" role="tablist">
-                                                <li class="active"><a class="active grid-view" data-bs-toggle="tab" href="#grid"><i class="fa fa-th"></i></a></li>
-                                                <li><a class="list-view" data-bs-toggle="tab" href="#list"><i class="fa fa-th-list"></i></a></li>
-                                            </ul>
-                                            <!-- shop-item-filter-list end -->
+                      
+                            <div class="shop-product-wrapper">
+                                <div class="row align-itmes-center">
+                                    <div class="col">
+                                        <!-- shop-top-bar start -->
+                                        <div class="shop-top-bar">
+                                            <!-- product-view-mode start -->
+    
+                                            <div class="product-mode">
+                                                <!--shop-item-filter-list-->
+                                                <ul class="nav shop-item-filter-list" role="tablist">
+                                                    <li class="active"><a class="active grid-view" data-bs-toggle="tab" href="#grid"><i class="fa fa-th"></i></a></li>
+                                                    <li><a class="list-view" data-bs-toggle="tab" href="#list"><i class="fa fa-th-list"></i></a></li>
+                                                </ul>
+                                                <!-- shop-item-filter-list end -->
+                                            </div>
+                                            <!-- product-view-mode end -->
+                                            <!-- product-short start -->
+                                            <div class="product-short">
+                                                <p>Sort By :</p>
+                                                <select class="nice-select" id="sortby">
+                                                    <option value="relevance">Relevance</option>
+                                                    <option value="name_az">Name(A - Z)</option>
+                                                    <option value="name_za">Name(Z - A)</option>
+                                                    <option value="price_low_high">Price(Low > High)</option>
+                                                    <option value="price_high_low">Price(High > Low)</option>
+                                                    <option value="rating_lowest">Rating(Lowest)</option>
+                                                </select>
+                                            </div>
+                                            <!-- product-short end -->
                                         </div>
-                                        <!-- product-view-mode end -->
-                                        <!-- product-short start -->
-                                        <div class="product-short">
-                                            <p>Sort By :</p>
-                                            <select class="nice-select" name="sortby">
-                                                <option value="trending">Relevance</option>
-                                                <option value="sales">Name(A - Z)</option>
-                                                <option value="sales">Name(Z - A)</option>
-                                                <option value="rating">Price(Low > High)</option>
-                                                <option value="date">Rating(Lowest)</option>
-                                            </select>
-                                        </div>
-                                        <!-- product-short end -->
+                                        <!-- shop-top-bar end -->
                                     </div>
-                                    <!-- shop-top-bar end -->
                                 </div>
-                            </div>
-
-                            <!-- shop-products-wrap start -->
-                            <div class="shop-products-wrap">
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="grid">
-                                        <div class="shop-product-wrap">
-                                            <div class="row">
-                                                <% for (let i=0; i < Math.min(product.length, 12); i++) { %>
-                                                    <% let productList = product[i]; %>
-                                                    <div class="col-lg-3 col-md-6">
-                                                        <!-- single-product-area start -->
-                                                        <div class="single-product-area mt-30">
-                                                            <div class="product-thumb">
-                                                                <a href="/productDetails?id=<%= productList._id %>">
-                                                                    <img class="primary-image" src="/productAssets/<%= productList.images[0] %>" alt="">
-                                                                </a>
-                                                                <!-- <div class="label-product label_new">New</div> -->
-                                                                <div class="action-links">
-                                                                    <input type="hidden" id="productId<%= i %>" value="<%= productList._id %>">
-                                                                    <a  class="cart-btn" title="Add to Cart" onclick="addCart('<%= i %>')"><i class="icon-basket-loaded"></i></a>
-                                                                    <a href="#" class="wishlist-btn" title="Add to Wish List"><i class="icon-heart"></i></a>
-                                                                    <a href="#" class="quick-view" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="icon-magnifier icons"></i></a>
+    
+                                <!-- shop-products-wrap start -->
+                                <div class="shop-products-wrap">
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="grid">
+                                            <div class="shop-product-wrap">
+                                                <div class="row">
+                                                    <% for (let i=0; i < Math.min(product.length, 12); i++) { %>
+                                                        <% let productList = product[i]; %>
+                                                        <div class="col-lg-3 col-md-6">
+                                                            <!-- single-product-area start -->
+                                                            <div class="single-product-area mt-30">
+                                                                <div class="product-thumb">
+                                                                    <a href="/productDetails?id=<%= productList._id %>">
+                                                                        <img class="primary-image" src="/productAssets/<%= productList.images[0] %>" alt="">
+                                                                        <img class="hover-img" src="/productAssets/<%= productList.images[1] %>" alt="">
+                                                                    </a>
+                                                                    <% if (productList.countInStock === 0) { %>
+                                                                        <!-- Show the "Out of Stock" message -->
+                                                                        <span class="out-of-stock">Out of Stock</span>
+                                                                    <% } %>
+                                                                    <div class="action-links">
+                                                                        <% if (productList.countInStock !== 0) { %>
+                                                                            <!-- Show the "Add to Cart" button -->
+                                                                            <input type="hidden" id="productId<%= i %>" value="<%= productList._id %>">
+                                                                            <a class="cart-btn" title="Add to Cart" onclick="addCart('<%= i %>')">
+                                                                                <i class="icon-basket-loaded"></i>
+                                                                            </a>
+                                                                        <% } %>
+                                                                        <a href="wishlist.html" class="wishlist-btn" title="Add to Wish List">
+                                                                            <i class="icon-heart"></i>
+                                                                        </a>
+                                                                        <a href="#" class="quick-view" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                                                                            <i class="icon-magnifier icons"></i>
+                                                                        </a>
+                                                                    </div>
                                                                 </div>
-                                                                <!-- <ul class="watch-color">
-                                                                    <li class="twilight"><span></span></li>
-                                                                    <li class="portage"><span></span></li>
-                                                                    <li class="pigeon"><span></span></li>
-                                                                </ul> -->
-                                                            </div>
-                                                            <div class="product-caption">
-                                                                <h4 class="product-name"><a href="/productDetails?id=<%= productList._id %>"><%= productList.pname %></a></h4>
-                                                                <div class="price-box">
-                                                                    <span id="offerPrice<%=i%>" class="new-price">₹<%= productList.offprice %></span>
-                                                                    <span class="old-price">₹<%= productList.price %></span>
+                                                                
+                                                                <div class="product-caption">
+                            
+                                                                    <h4 class="product-name"><a href="product-details.html">
+                                                                            <%= productList.pname %>
+                                                                        </a></h4>
+                                                                    <div class="price-box">
+                                                                        <span class="new-price">
+                                                                            <%= productList.brand %>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="price-box">
+                                                                        <span id="offerPrice<%= i %>" class="new-price">₹<%= productList.offprice %>
+                                                                                </span>
+                                                                        <span class="old-price">₹<%= productList.price %></span>
+                                                                        <span class="text-danger">
+                                                                            <%= productList.discountPercentage %>% OFF
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <!-- single-product-area end -->
                                                         </div>
-                                                        <!-- single-product-area end -->
-                                                    </div>
-                                                <% } %>
+                                                    <% } %>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="tab-pane" id="list">
-                                        <div class="shop-product-list-wrap">
-                                            <div class="row product-layout-list mt-30">
-                                                <% for (let i = 0; i < product.length; i++) { %>
-                                                    <% let productItem = product[i]; %>
-                                                    <div class="col-lg-3 col-md-3">
-                                                        <!-- single-product-wrap start -->
-                                                        <div class="single-product">
-                                                            <div class="product-image">
-                                                                <a href="/productDetails?id=<%= productItem._id %>"><img src="/productAssets/<%= productItem.images[0] %>" alt="Produce Images"></a>
+                                        
+                                        <div class="tab-pane" id="list">
+                                            <div class="shop-product-list-wrap">
+                                                <div class="row product-layout-list mt-30">
+                                                    <% for (let i = 0; i < product.length; i++) { %>
+                                                        <% let productItem = product[i]; %>
+                                                        <div class="col-lg-3 col-md-3">
+                                                            <!-- single-product-wrap start -->
+                                                            <div class="single-product">
+                                                                <div class="product-image">
+                                                                    <a href="/productDetails?id=<%= productItem._id %>"><img src="/productAssets/<%= productItem.images[0] %>" alt="Product Images"></a>
+                                                                </div>
+                                                            </div>
+                                                            <!-- single-product-wrap end -->
+                                                        </div>
+                                        
+                                                        <div class="col-lg-6 col-md-6">
+                                                            <div class="product-content-list text-left">
+                                                                <h4><a href="/productDetails?id=<%= productItem._id %>" class="product-name"><%= productItem.pname %></a></h4>
+                                                                <div class="price-box">
+                                                                    <span class="new-price" id="offerPrice<%=i%>">₹<%= productItem.offprice %></span>
+                                                                    <% if (productItem.discountPercentage > 0) { %>
+                                                                        <span class="old-price" style="margin-left: 5px;">₹<%= productItem.price %></span>
+                                                                        <span class="text-danger" style="margin-left: 5px;"><%= productItem.discountPercentage %>% OFF</span>
+                                                                    <% } %>
+                                                                </div>
+                                        
+                                                                <!-- Add product rating and description if available -->
+                                        
+                                                                <!-- Example of product rating -->
+                                                                <!-- <div class="product-rating">
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="#"><i class="icon-star"></i></a></li>
+                                                                        <li><a href="#"><i class="icon-star"></i></a></li>
+                                                                        <li><a href="#"><i class="icon-star"></i></a></li>
+                                                                        <li><a href="#"><i class="icon-star"></i></a></li>
+                                                                        <li class="bad-reting"><a href="#"><i class="icon-star"></i></a></li>
+                                                                    </ul>
+                                                                </div> -->
+                                        
+                                                                <!-- Example of product description -->
+                                                                <p><%= productItem.description %></p>
                                                             </div>
                                                         </div>
-                                                        <!-- single-product-wrap end -->
-                                                    </div>
-                                    
-                                                    <div class="col-lg-6 col-md-6">
-                                                        <div class="product-content-list text-left">
-                                                            <h4><a href="/productDetails?id=<%= productItem._id %>" class="product-name"><%= productItem.pname %></a></h4>
-                                                            <div class="price-box">
-                                                                <span class="new-price" id="offerPrice<%=i%>">₹<%= productItem.offprice %></span>
-                                                                <% if (productItem.discountPercentage > 0) { %>
-                                                                    <span class="old-price" style="margin-left: 5px;">₹<%= productItem.price %></span>
-                                                                    <span class="text-danger" style="margin-left: 5px;"><%= productItem.discountPercentage %>% OFF</span>
-                                                                <% } %>
-                                                            </div>
-                                    
-                                                            <!-- Add product rating and description if available -->
-                                    
-                                                            <!-- Example of product rating -->
-                                                            <!-- <div class="product-rating">
-                                                                <ul class="d-flex">
-                                                                    <li><a href="#"><i class="icon-star"></i></a></li>
-                                                                    <li><a href="#"><i class="icon-star"></i></a></li>
-                                                                    <li><a href="#"><i class="icon-star"></i></a></li>
-                                                                    <li><a href="#"><i class="icon-star"></i></a></li>
-                                                                    <li class="bad-reting"><a href="#"><i class="icon-star"></i></a></li>
+                                        
+                                                        <div class="col-lg-3 col-md-3">
+                                                            <div class="block2">
+                                                                <ul class="stock-cont">
+                                                                    <!-- <li class="product-sku">Sku: <span><%= productItem.sku %></span></li> -->
+                                                                    <li class="product-stock-status">Availability: <span ><%= productItem.countInStock > 0 ? 'In Stock' : 'Out of Stock' %></span></li>
                                                                 </ul>
-                                                            </div> -->
-                                    
-                                                            <!-- Example of product description -->
-                                                            <p><%= productItem.description %></p>
-                                                        </div>
-                                                    </div>
-                                    
-                                                    <div class="col-lg-3 col-md-3">
-                                                        <div class="block2">
-                                                            <ul class="stock-cont">
-                                                                <!-- <li class="product-sku">Sku: <span><%= productItem.sku %></span></li> -->
-                                                                <li class="product-stock-status">Availability: <span class="<%= productItem.countInStock > 0 ? 'in-stock' : 'out-of-stock' %>"><%= productItem.countInStock > 0 ? 'In Stock' : 'Out of Stock' %></span></li>
-                                                            </ul>
-                                                            <div class="product-button">
-                                                                <ul class="actions">
-                                                                    <li class="add-to-wishlist">
-                                                                        <a href="#" class="add_to_wishlist"><i class="icon-heart"></i> Add to Wishlist</a>
-                                                                    </li>
-                                                                </ul>
-                                                                <div class="add-to-cart">
-                                                                    <div class="product-button-action">
-                                                                        <input type="hidden" id="productId<%= i %>" value="<%= productItem._id %>">
-                                                                        <a  class="add-to-cart" onclick="addCart('<%= i %>')">Add to cart</a>
+                                                                <div class="product-button">
+                                                                    <ul class="actions">
+                                                                        <li class="add-to-wishlist">
+                                                                            <a href="#" class="add_to_wishlist"><i class="icon-heart"></i> Add to Wishlist</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="add-to-cart">
+                                                                        <div class="product-button-action">
+                                                                            <% if (productItem.countInStock !== 0) { %>
+                                                                                <!-- Show the "Add to Cart" button -->
+                                                                                <input type="hidden" id="productId<%= i %>" value="<%= productItem._id %>">
+                                                                                <a  class="add-to-cart" onclick="addCart('<%= i %>')">Add to cart</a>
+                                                                            <% } %>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                <% } %>
+                                                    <% } %>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <!-- shop-products-wrap end -->
-
-                            <!-- paginatoin-area start -->
-                            <div class="paginatoin-area">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12">
-                                        <ul class="pagination-box">
-                                            <li class="active"><a href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li>
-                                                <a class="Next" href="#">Next</a>
-                                            </li>
-                                        </ul>
+                                        
                                     </div>
                                 </div>
+                                <!-- shop-products-wrap end -->
+    
+                                <!-- paginatoin-area start -->
+                                <div class="paginatoin-area">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <ul class="pagination-box">
+                                                <li class="active"><a href="#">1</a></li>
+                                                <li><a href="#">2</a></li>
+                                                <li><a href="#">3</a></li>
+                                                <li>
+                                                    <a class="Next" href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- paginatoin-area end -->
                             </div>
-                            <!-- paginatoin-area end -->
-                        </div>
+                 
+                        
                         <!-- shop-product-wrapper end -->
                     </div>
                 </div>
@@ -790,7 +844,54 @@
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
 
+
+
+
     <script>
+
+$(document).ready(function() {
+    $(document).on('change', '#sortby', function() {
+        const sortBy = $(this).val(); 
+        $.ajax({
+            url: "/shop",
+            method: "GET",
+            data: {
+                sortby: sortBy
+            },
+            success: function(data) {
+                // Assuming data is HTML received from the server
+                $('.shop-product-wrap').html(data);
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});
+
+
+function sorting(){
+    const sortin =document.getElementById("sortby").value
+
+    $.ajax({
+        url:"/shop",
+        method:get,
+        data:{
+            sortin
+        },
+        success:(response)=>{
+                    if(response.status === true){
+                        window.location.href = "http://localhost:8080/shop"
+                    }
+                    else if (response.status == "viewCart") {
+                        window.location.href = "http://localhost:8080/shop"
+                }
+                }
+    })
+}
+
+
+
         function addCart(index){
             const id = document.getElementById("productId"+index).value;
             // alert(id)
@@ -817,6 +918,10 @@
             })
 
         }
+
+
+        
+
     </script>
 
 </body>

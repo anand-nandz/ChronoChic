@@ -33,12 +33,12 @@ const loadCart = async (req, res) => {
             console.log("usercart entered log....");
             const pdtCart = await Cart.findOne({ 'items.productId': id });
 
-            // console.log(pdtCart, 'padtcart.........');
+            console.log(pdtCart, 'padtcart.........');
             if (pdtCart) {
                 res.json({ status: "viewCart" });
             }
             else {
-                // console.log("anand@1234");
+                console.log("anand@1234");
                 const updateCart = await Cart.findOneAndUpdate(
                     { userId: userData._id },
                     {
@@ -86,13 +86,13 @@ const loadCart = async (req, res) => {
 }
 
 const loadCartpage = async (req, res) => {
-   
+
     try {
-       
+
         const userData = await User.findOne(req.session.user);
-        
+
         const cartData = await Cart.findOne({ userId: userData._id });
-        
+
         const array = [];
         for (let i = 0; i < cartData.items.length; i++) {
             array.push(cartData.items[i].productId.toString())
@@ -102,7 +102,7 @@ const loadCartpage = async (req, res) => {
         for (let i = 0; i < array.length; i++) {
             pdtData.push(await Product.findById({ _id: array[i] }))
         }
-        
+
         res.render('cart', { pdtData, cartData });
 
 
@@ -119,7 +119,7 @@ const loadCartpage = async (req, res) => {
 //     try {
 //         const userData = await User.findOne(req.session.user);
 //         const cartData = await Cart.findOne({ userId: userData._id });
-        
+
 //         // Check if cartData exists and has items
 //         if (cartData && cartData.items.length > 0) {
 //             const array = [];
@@ -340,7 +340,7 @@ const addOrder = async (req, res) => {
         for (let i = 0; i < cartData.items.length; i++) {
             pdtData.push(cartData.items[i]);
         }
-          console.log(pdtData,"okkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+        console.log(pdtData, "okkkkkkkkkkkkkkkkkkkkkkkkkkkk");
 
         const orderNum = generateOrder.generateOrder();
         //   console.log(orderNum,"onnnnnnnnnnnnnnnnnnnnnnnnn");
@@ -355,12 +355,12 @@ const addOrder = async (req, res) => {
         const orderData = new Order({
             userId: userData._id,
             orderNumber: orderNum,
-            email: userData.email,
+            userEmail: userData.email,
             items: pdtData,
             totalAmount: cartData.total,
             orderType: checkedOption,
             orderDate: date,
-            status: "pending",
+            status: "Processing",
             shippingAddress: address,
         });
 
@@ -374,21 +374,19 @@ const addOrder = async (req, res) => {
             const product = await Product.findById(item.productId);
             product.countInStock -= item.quantity; // Reduce countInStock by the ordered quantity
             await product.save();
-            console.log(product,"saved");
+            // console.log(product,"saved");
         }
 
-        
-        
-        res.json({ status: true });
+
+
+        res.json({ status: true, order: orderData });
         await Cart.findByIdAndDelete({ _id: cartData._id });
 
 
         // const deleteCart = await Cart.findByIdAndDelete({ _id: cartData._id });
 
-        
+
         // console.log(product,"pdtIdddddddddddddddddd");
-
-
 
 
 
@@ -401,16 +399,37 @@ const addOrder = async (req, res) => {
 
 
 
+
 const loadorderPlaced = async (req, res) => {
     try {
+        const id = req.query.id;
+        // const orders = await Order.find({})
+        //     .sort({ _id: -1 })
+        //     .limit(1)
+        //     .populate('items.productId') // Populate the productId field within the items array
+        //     .exec(); // Execute the query
 
-        res.render('orderPlaced');
+        // console.log('Populated orders:', orders);
+        // res.render('orderPlaced', { orders });
 
-    }
-    catch {
+        const orders = await Order.findOne({ orderNumber: id });
+        const pdt = [];
+
+        for (let i = 0; i < orders.items.length; i++) {
+            pdt.push(orders.items[i].productId)
+        }
+
+        const pdtData = [];
+        for (let i = 0; i < pdt.length; i++) {
+            pdtData.push(await Product.findById({ _id: pdt[i] }))
+        }
+        res.render('orderPlaced', { orders, pdtData })
+
+    } catch (error) {
         console.log(error.message);
+        res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 

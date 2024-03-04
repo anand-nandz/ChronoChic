@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from template.hasthemes.com/ruiz/ruiz/login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Jan 2024 11:50:58 GMT -->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -41,32 +42,52 @@
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
 
     <!-- CDN for bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="..." crossorigin="anonymous" />
-  
-<style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="..." crossorigin="anonymous" />
+
+    <style>
         .error {
             border-color: red;
         }
-    .error-message {
-        color: red;
-        font-size: 0.8em;
-        margin-top: 4px;
+
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 4px;
         }
-    .error::after {
+
+        .error::after {
             content: attr(data-error);
             color: red;
             font-size: 0.8em;
             display: block;
             margin-top: 4px;
         }
-</style>
+
+        .gender-container {
+            margin-bottom: 20px;
+        }
+
+        .gender-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .gender-container select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 
 <body>
 
     <div class="main-wrapper">
-        
+
         <!--  Header Start -->
         <header class="header">
 
@@ -150,7 +171,8 @@
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
-                                    <a href="wishlist.html"><span class="cart-total">0</span> <i class="icon-heart"></i></a>
+                                    <a href="wishlist.html"><span class="cart-total">0</span> <i
+                                            class="icon-heart"></i></a>
                                 </div>
 
                                 <div class="shopping-cart-wrap">
@@ -158,7 +180,8 @@
                                     <ul class="mini-cart">
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-02.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-02.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -173,7 +196,8 @@
                                         </li>
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-03.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-03.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -183,7 +207,8 @@
                                                     <span class="quantity">1 ×</span>
                                                     <div class="price-box"><span class="new-price">$130.00</span></div>
                                                 </div>
-                                                <a class="remove_from_cart" href="#"><i class="icon-trash icons"></i></a>
+                                                <a class="remove_from_cart" href="#"><i
+                                                        class="icon-trash icons"></i></a>
                                             </div>
                                         </li>
                                         <li class="subtotal-box">
@@ -201,7 +226,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -216,7 +241,8 @@
                                 <!--  Start Mainmenu Nav-->
                                 <nav class="main-navigation text-center">
                                     <ul>
-                                        <li class="active"><a href="index.html">Home <i class="fa fa-angle-down"></i></a>
+                                        <li class="active"><a href="index.html">Home <i
+                                                    class="fa fa-angle-down"></i></a>
                                             <ul class="sub-menu">
                                                 <li><a href="index.html">Home Page 1</a></li>
                                                 <li><a href="index-2.html">Home Page 2</a></li>
@@ -228,18 +254,25 @@
                                                 <li><a href="#">Shop Layouts</a>
                                                     <ul>
                                                         <li><a href="shop.html">Shop Left Sidebar</a></li>
-                                                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a></li>
-                                                        <li><a href="shop-list-left.html">Shop List Left Sidebar</a></li>
-                                                        <li><a href="shop-list-right.html">Shop List Right Sidebar</a></li>
+                                                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a>
+                                                        </li>
+                                                        <li><a href="shop-list-left.html">Shop List Left Sidebar</a>
+                                                        </li>
+                                                        <li><a href="shop-list-right.html">Shop List Right Sidebar</a>
+                                                        </li>
                                                         <li><a href="shop-fullwidth.html">Shop Full Width</a></li>
                                                     </ul>
                                                 </li>
                                                 <li><a href="blog.html">Product Details</a>
                                                     <ul>
-                                                        <li><a href="product-details.html">Single Product Details</a></li>
-                                                        <li><a href="variable-product-details.html">Variable Product Details</a></li>
-                                                        <li><a href="affiliate-product-details.html">affiliatel Product Details</a></li>
-                                                        <li><a href="gallery-product-details.html">Gallery Product Details</a></li>
+                                                        <li><a href="product-details.html">Single Product Details</a>
+                                                        </li>
+                                                        <li><a href="variable-product-details.html">Variable Product
+                                                                Details</a></li>
+                                                        <li><a href="affiliate-product-details.html">affiliatel Product
+                                                                Details</a></li>
+                                                        <li><a href="gallery-product-details.html">Gallery Product
+                                                                Details</a></li>
                                                     </ul>
                                                 </li>
                                                 <li><a href="#">Shop Pages</a>
@@ -281,15 +314,17 @@
                         </div>
 
                         <div class="col-5 col-md-6 d-block d-lg-none">
-                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a></div>
+                            <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a>
+                            </div>
                         </div>
-                        
-                        
+
+
                         <div class="col-lg-3 col-md-6 col-7 d-block d-lg-none">
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
-                                    <a href="wishlist.html"><span class="cart-total">0</span> <i class="icon-heart"></i></a>
+                                    <a href="wishlist.html"><span class="cart-total">0</span> <i
+                                            class="icon-heart"></i></a>
                                 </div>
 
                                 <div class="shopping-cart-wrap">
@@ -297,7 +332,8 @@
                                     <ul class="mini-cart">
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-02.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-02.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -312,7 +348,8 @@
                                         </li>
                                         <li class="cart-item">
                                             <div class="cart-image">
-                                                <a href="product-details.html"><img alt="" src="assets/images/product/product-03.png"></a>
+                                                <a href="product-details.html"><img alt=""
+                                                        src="assets/images/product/product-03.png"></a>
                                             </div>
                                             <div class="cart-title">
                                                 <a href="product-details.html">
@@ -322,7 +359,8 @@
                                                     <span class="quantity">1 ×</span>
                                                     <div class="price-box"><span class="new-price">$130.00</span></div>
                                                 </div>
-                                                <a class="remove_from_cart" href="#"><i class="icon-trash icons"></i></a>
+                                                <a class="remove_from_cart" href="#"><i
+                                                        class="icon-trash icons"></i></a>
                                             </div>
                                         </li>
                                         <li class="subtotal-box">
@@ -347,14 +385,14 @@
 
                             </div>
                         </div>
-                        
-                        
-                        
+
+
+
                     </div>
                 </div>
             </div>
             <!-- haeader bottom End -->
-            
+
             <!-- off-canvas menu start -->
             <aside class="off-canvas-wrapper">
                 <div class="off-canvas-overlay"></div>
@@ -398,9 +436,12 @@
                                             <li class="mega-title has-children"><a href="#">Product Details</a>
                                                 <ul class="dropdown">
                                                     <li><a href="product-details.html">Single Product Details</a></li>
-                                                    <li><a href="variable-product-details.html">Variable Product Details</a></li>
-                                                    <li><a href="affiliate-product-details.html">affiliatel Product Details</a></li>
-                                                    <li><a href="gallery-product-details.html">Gallery Product Details</a></li>
+                                                    <li><a href="variable-product-details.html">Variable Product
+                                                            Details</a></li>
+                                                    <li><a href="affiliate-product-details.html">affiliatel Product
+                                                            Details</a></li>
+                                                    <li><a href="gallery-product-details.html">Gallery Product
+                                                            Details</a></li>
                                                 </ul>
                                             </li>
                                             <li class="mega-title has-children"><a href="#">Shop Pages</a>
@@ -475,10 +516,10 @@
                 </div>
             </aside>
             <!-- off-canvas menu end -->
-            
+
         </header>
         <!--  Header Start -->
-        
+
         <!-- breadcrumb-area start -->
         <div class="breadcrumb-area">
             <div class="container">
@@ -538,33 +579,60 @@
                                 <div id="lg2" class="tab-pane active">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <form id="registrationForm" action="/register" method="post" onsubmit="return validateForm()">
+                                            <form id="registrationForm" action="/register" method="post"
+                                                onsubmit="return validateForm()">
                                                 <div class="login-input-box">
-                                                    <input type="text" id="name" name="name" placeholder="Full Name" onkeyup="validateName()" required>
-                                                    <input type="email" id="email" name="email" placeholder="Email" onkeyup="validateEmail()" required>
-                                                    <label for="gender">Gender</label>
-                                                    <select id="gender" name="gender" required>
-                                                        <option value="">Select Gender</option>
-                                                        <option value="male">Male</option>
-                                                        <option value="female">Female</option>
-                                                        <option value="other">Other</option>
-                                                    </select>
+                                                    <input type="text" id="name" name="name" placeholder="Full Name"
+                                                        onkeyup="validateName()" onblur="checkEmailExists()" required>
+                                                        <input type="email" id="email" name="email" placeholder="Email" onkeyup="validateEmail()" required>
 
-                                                    <input type="text" id="mobileno" name="mobileno" placeholder="Enter Mobile" onblur="validateMobile()" required>
-                                                    <!-- <input type="password" id="userpassword" name="userpassword" placeholder="Password" onblur="validatePassword()" required> -->
-                                                    <input type="password" id="userpassword" name="userpassword" placeholder="Password" onkeyup="validatePassword()" required>
-                                                    <span class="toggle-password" onclick="togglePasswordVisibility('userpassword')">
-                                                        <i class="fas fa-eye-slash"></i> <!-- Set initial state to closed -->
-                                                    </span>
-                                                    
-                                                    <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password" onkeyup="validateConfirmPassword()" required>
-                                                    <span class="toggle-password" onclick="togglePasswordVisibility('confirmpassword')">
-                                                        <i class="fas fa-eye-slash"></i> <!-- Set initial state to closed -->
-                                                    </span>
-                                                    
+                                                        <% if (error) { %>
+                                                            <div id="error-message" class="alert alert-danger" role="alert">
+                                                                <%= error %>
+                                                            </div>
+                                                        <% } %>
+
+                                                            <!-- Your existing HTML form goes here -->
+
+                                                            <div class="gender-container">
+                                                                <!-- <label for="gender">Gender</label> -->
+                                                                <select id="gender" name="gender" required>
+                                                                    <option value="">Select Gender</option>
+                                                                    <option value="male">Male</option>
+                                                                    <option value="female">Female</option>
+                                                                    <option value="other">Other</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <input type="text" id="mobileno" name="mobileno"
+                                                                placeholder="Enter Mobile" onblur="validateMobile()"
+                                                                required>
+                                                            <!-- <input type="password" id="userpassword" name="userpassword" placeholder="Password" onblur="validatePassword()" required> -->
+                                                            <input type="password" id="userpassword" name="userpassword"
+                                                                placeholder="Password" onkeyup="validatePassword()"
+                                                                required>
+                                                            <span class="toggle-password"
+                                                                onclick="togglePasswordVisibility('userpassword')">
+                                                                <i class="fas fa-eye-slash"></i>
+                                                                <!-- Set initial state to closed -->
+                                                            </span>
+
+                                                            <input type="password" id="confirmpassword"
+                                                                name="confirmpassword" placeholder="Confirm Password"
+                                                                onkeyup="validateConfirmPassword()" required>
+                                                            <span class="toggle-password"
+                                                                onclick="togglePasswordVisibility('confirmpassword')">
+                                                                <i class="fas fa-eye-slash"></i>
+                                                                <!-- Set initial state to closed -->
+                                                            </span>
+
                                                 </div>
                                                 <div class="button-box">
-                                                    <button class="register-btn btn" type="submit"><span>Generate OTP</span></button>
+                                                   
+                                                    <button class="register-btn btn" type="submit" id="generateBtn"><span>Generate
+                                                            OTP</span></button>
+                                                            
+
                                                 </div>
                                                 <br>
                                                 <div class="register-link">
@@ -581,9 +649,9 @@
             </div>
         </div>
         <!-- main-content-wrap end -->
-      
 
-<!-- footer Start -->
+
+        <!-- footer Start -->
         <footer>
             <div class="footer-top section-pb section-pt-60">
                 <div class="container">
@@ -604,19 +672,24 @@
 
                                 <ul class="social-icons">
                                     <li>
-                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i
+                                                class="fa fa-facebook"></i></a>
                                     </li>
                                     <li>
-                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i
+                                                class="fa fa-twitter"></i></a>
                                     </li>
                                     <li>
-                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i class="fa fa-instagram"></i></a>
+                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i
+                                                class="fa fa-instagram"></i></a>
                                     </li>
                                     <li>
-                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>
+                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i
+                                                class="fa fa-linkedin"></i></a>
                                     </li>
                                     <li>
-                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i class="fa fa-rss"></i></a>
+                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i
+                                                class="fa fa-rss"></i></a>
                                     </li>
                                 </ul>
 
@@ -640,7 +713,7 @@
                             <div class="widget-footer mt-40">
                                 <h6 class="title-widget">Extras</h6>
                                 <ul class="footer-list">
-                                   
+
                                     <li><a href="#">Concord History</a></li>
                                     <li><a href="#">Client Feed</a></li>
                                     <li><a href="about-us.html">About Us</a></li>
@@ -662,7 +735,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <div class="container">
                     <div class="row align-items-center">
@@ -692,16 +765,16 @@
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
 
-    <!-- jquery -->		
+    <!-- jquery -->
     <script src="assets/js/vendor/jquery-3.6.1.min.js"></script>
-    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>		
+    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="assets/js/vendor/bootstrap.min.js"></script>
 
     <!-- Plugins JS -->
     <script src="assets/js/plugins/slick.min.js"></script>
-    
+
     <script src="assets/js/plugins/jquery.nice-select.min.js"></script>
     <script src="assets/js/plugins/countdown.min.js"></script>
     <script src="assets/js/plugins/image-zoom.min.js"></script>
@@ -711,180 +784,260 @@
     <script src="assets/js/plugins/ajax-contact.js"></script>
 
     <!-- Vendor & Plugins JS (Please remove the comment from below vendor.min.js & plugins.min.js for better website load performance and remove js files from avobe) -->
-    <!--
-<script src="assets/js/vendor/vendor.min.js"></script>
-<script src="assets/js/plugins/plugins.min.js"></script>
--->
+
+    <script src="assets/js/vendor/vendor.min.js"></script>
+    <script src="assets/js/plugins/plugins.min.js"></script>
+
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
 
 
-<!-- validate form -->
-<script>
-    function showError(inputId, message) {
-        var errorElement = document.getElementById(inputId + "-error");
-        if (!errorElement) {
-            errorElement = document.createElement("div");
-            errorElement.id = inputId + "-error";
-            errorElement.className = "error-message";
-            document.getElementById(inputId).insertAdjacentElement("afterend", errorElement);
+    <!-- validate form -->
+    <script>
+
+        // Function to check if email exists using fetch
+        function checkEmailExists(email) {
+            fetch("/checkEmailExists", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: email  })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        showError("email", "Email already exists. Please use a different email.");
+                        disableGenerateButton(); 
+                    } else {
+                        hideError("email");
+                        enableGenerateButton(); 
+                    }
+                })
+                .catch(error => {
+                    console.error("Error checking email existence:", error);
+                });
         }
-        errorElement.textContent = message;
-    }
-    
-    function hideError(inputId) {
-        var errorElement = document.getElementById(inputId + "-error");
-        if (errorElement) {
-            errorElement.remove();
-        }
-    }
-    
-    function validateName() {
-    var nameInput = document.getElementById("name");
-    var name = nameInput.value.trim();
-    var nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-    if (!nameRegex.test(name)) {
-        showError("name", "Name must contain only characters with spaces between names.");
-    } else {
-        hideError("name");
-    }
+
+
+
+        function disableGenerateButton() {
+    document.getElementById("generateBtn").setAttribute("disabled", "disabled");
 }
 
-    
-    function validatePassword() {
-        var passwordInput = document.getElementById("userpassword");
-        var password = passwordInput.value;
-        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
-        if (!passwordRegex.test(password)) {
-            showError("userpassword", "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long");
-        } else {
+function enableGenerateButton() {
+    document.getElementById("generateBtn").removeAttribute("disabled");
+}
+        // Attach event listener to email input to trigger the checkEmailExists function
+        // Attach event listener to email input to trigger the checkEmailExists function
+        document.getElementById("email").addEventListener("blur", function () {
+            var email = this.value;
+            if (email.trim() !== "") {
+                checkEmailExists(email);
+            }
+        });
+
+
+
+
+
+
+
+        // Check if error message exists and hide it after 5 seconds
+        window.addEventListener('load', () => {
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000); // 5000 milliseconds = 5 seconds
+            }
+        });
+
+
+        function showError(inputId, message) {
+            var errorElement = document.getElementById(inputId + "-error");
+            if (!errorElement) {
+                errorElement = document.createElement("div");
+                errorElement.id = inputId + "-error";
+                errorElement.className = "error-message";
+                document.getElementById(inputId).insertAdjacentElement("afterend", errorElement);
+            }
+            errorElement.textContent = message;
+        }
+
+        function hideError(inputId) {
+            var errorElement = document.getElementById(inputId + "-error");
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+
+        function validateName() {
+            var nameInput = document.getElementById("name");
+            var name = nameInput.value.trim();
+            var nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+            if (!nameRegex.test(name)) {
+                showError("name", "Name must contain only characters with spaces between names.");
+            } else {
+                hideError("name");
+            }
+        }
+
+
+        function validatePassword() {
+            var passwordInput = document.getElementById("userpassword");
+            var password = passwordInput.value;
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                showError("userpassword", "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long");
+            } else {
+                hideError("userpassword");
+            }
+        }
+
+        function validateConfirmPassword() {
+            var passwordInput = document.getElementById("userpassword");
+            var confirmPasswordInput = document.getElementById("confirmpassword");
+            var confirmPassword = confirmPasswordInput.value;
+            if (passwordInput.value !== confirmPassword) {
+                showError("confirmpassword", "Passwords do not match");
+            } else {
+                hideError("confirmpassword");
+            }
+        }
+
+        function validateEmail() {
+            var emailInput = document.getElementById("email");
+            var email = emailInput.value;
+            var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                showError("email", "Please enter a valid email address");
+            } else {
+                hideError("email");
+            }
+        }
+
+        function validateGender() {
+            var genderSelect = document.getElementById("gender");
+            var selectedValue = genderSelect.value;
+            if (selectedValue === "") {
+                showError("gender", "Please select a gender");
+            } else {
+                hideError("gender");
+            }
+        }
+
+
+
+        function validateMobile() {
+            var mobileInput = document.getElementById("mobileno");
+            var mobile = mobileInput.value.trim();
+
+            // Regular expression for mobile number validation
+            // var mobileRegex = /^(91)?[6-9]\d{9}$/;
+            var mobileRegex = /^(91)?0?[6-9]\d{9}$/;
+            // Check for 10-digit number without country code
+            if (mobile.length === 10 && /^[6-9]\d{9}$/.test(mobile)) {
+                hideError("mobileno");
+            }
+            // Check for 11-digit number with optional 0 at the front
+            else if (mobile.length === 11 && /^0[6-9]\d{9}$/.test(mobile)) {
+                hideError("mobileno");
+            }
+            // Check for 12-digit number with country code 91
+            else if (mobile.length === 12 && mobileRegex.test(mobile)) {
+                hideError("mobileno");
+            }
+            // Display error for invalid cases
+            else {
+                showError("mobileno", "Please enter a valid mobile number ");
+            }
+        }
+
+        function togglePasswordVisibility(inputId) {
+            var passwordInput = document.getElementById(inputId);
+            var toggleButton = document.querySelector("#" + inputId + " + .toggle-password i");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleButton.classList.remove("fa-eye-slash");
+                toggleButton.classList.add("fa-eye");
+            } else {
+                passwordInput.type = "password";
+                toggleButton.classList.remove("fa-eye");
+                toggleButton.classList.add("fa-eye-slash");
+            }
+        }
+
+
+        function validateForm() {
+            validateName();
+            validatePassword();
+            validateConfirmPassword();
+            validateGender();
+            validateEmail();
+            validateMobile();
+
+            var errorMessages = document.querySelectorAll(".error-message");
+            if (errorMessages.length > 0) {
+                errorMessages[0].previousElementSibling.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // Event listeners for blur to validate and show error messages
+        document.getElementById("name").addEventListener("blur", function () {
+            validateAndShow("name", validateName);
+        });
+        document.getElementById("userpassword").addEventListener("blur", function () {
+            validateAndShow("userpassword", validatePassword);
+        });
+        document.getElementById("confirmpassword").addEventListener("blur", function () {
+            validateAndShow("confirmpassword", validateConfirmPassword);
+        });
+        document.getElementById("email").addEventListener("blur", function () {
+            validateAndShow("email", validateEmail);
+        });
+        document.getElementById("mobileno").addEventListener("blur", function () {
+            validateAndShow("mobileno", validateMobile);
+        });
+        document.getElementById("gender").addEventListener("blur", function () {
+            validateAndShow("gender", validateGender);
+        });
+
+
+        // Event listener for focus to hide error messages
+        document.getElementById("name").addEventListener("focus", function () {
+            hideError("name");
+        });
+        document.getElementById("userpassword").addEventListener("focus", function () {
             hideError("userpassword");
-        }
-    }
-    
-    function validateConfirmPassword() {
-        var passwordInput = document.getElementById("userpassword");
-        var confirmPasswordInput = document.getElementById("confirmpassword");
-        var confirmPassword = confirmPasswordInput.value;
-        if (passwordInput.value !== confirmPassword) {
-            showError("confirmpassword", "Passwords do not match");
-        } else {
+        });
+        document.getElementById("confirmpassword").addEventListener("focus", function () {
             hideError("confirmpassword");
-        }
-    }
-    
-    function validateEmail() {
-        var emailInput = document.getElementById("email");
-        var email = emailInput.value;
-        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            showError("email", "Please enter a valid email address");
-        } else {
+        });
+        document.getElementById("email").addEventListener("focus", function () {
             hideError("email");
-        }
-    }
-
-
-    function validateMobile() {
-        var mobileInput = document.getElementById("mobileno");
-        var mobile = mobileInput.value.trim();
-        
-        // Regular expression for mobile number validation
-        // var mobileRegex = /^(91)?[6-9]\d{9}$/;
-        var mobileRegex = /^(91)?0?[6-9]\d{9}$/;
-        // Check for 10-digit number without country code
-        if (mobile.length === 10 && /^[6-9]\d{9}$/.test(mobile)) {
+        });
+        document.getElementById("mobileno").addEventListener("focus", function () {
             hideError("mobileno");
-        } 
-        // Check for 11-digit number with optional 0 at the front
-        else if (mobile.length === 11 && /^0[6-9]\d{9}$/.test(mobile)) {
-            hideError("mobileno");
-        }
-        // Check for 12-digit number with country code 91
-        else if (mobile.length === 12 && mobileRegex.test(mobile)) {
-            hideError("mobileno");
-        } 
-        // Display error for invalid cases
-        else {
-            showError("mobileno", "Please enter a valid mobile number ");
-        }
-    }
-
-    function togglePasswordVisibility(inputId) {
-    var passwordInput = document.getElementById(inputId);
-    var toggleButton = document.querySelector("#" + inputId + " + .toggle-password i");
-
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        toggleButton.classList.remove("fa-eye-slash");
-        toggleButton.classList.add("fa-eye");
-    } else {
-        passwordInput.type = "password";
-        toggleButton.classList.remove("fa-eye");
-        toggleButton.classList.add("fa-eye-slash");
-    }
-}
-
-
-    function validateForm() {
-        validateName();
-        validatePassword();
-        validateConfirmPassword();
-        validateEmail();
-        validateMobile();
-    
-        var errorMessages = document.querySelectorAll(".error-message");
-        if (errorMessages.length > 0) {
-            errorMessages[0].previousElementSibling.focus();
-            return false;
-        }
-    
-        return true;
-    }
-
-    // Event listeners for blur to validate and show error messages
-    document.getElementById("name").addEventListener("blur", function() {
-        validateAndShow("name", validateName);
-    });
-    document.getElementById("userpassword").addEventListener("blur", function() {
-        validateAndShow("userpassword", validatePassword);
-    });
-    document.getElementById("confirmpassword").addEventListener("blur", function() {
-        validateAndShow("confirmpassword", validateConfirmPassword);
-    });
-    document.getElementById("email").addEventListener("blur", function() {
-        validateAndShow("email", validateEmail);
-    });
-    document.getElementById("mobileno").addEventListener("blur", function() {
-        validateAndShow("mobileno", validateMobile);
-    });
-
-    // Event listener for focus to hide error messages
-    document.getElementById("name").addEventListener("focus", function() {
-        hideError("name");
-    });
-    document.getElementById("userpassword").addEventListener("focus", function() {
-        hideError("userpassword");
-    });
-    document.getElementById("confirmpassword").addEventListener("focus", function() {
-        hideError("confirmpassword");
-    });
-    document.getElementById("email").addEventListener("focus", function() {
-        hideError("email");
-    });
-    document.getElementById("mobileno").addEventListener("focus", function() {
-        hideError("mobileno");
-    });
+        });
+        document.getElementById("gender").addEventListener("focus", function () {
+            hideError("gender");
+        });
 
     </script>
-    
 
-    
+
+
 
 
 </body>
 
 
 <!-- Mirrored from template.hasthemes.com/ruiz/ruiz/login-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Jan 2024 11:50:58 GMT -->
+
 </html>

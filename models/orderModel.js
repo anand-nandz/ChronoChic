@@ -6,6 +6,10 @@ const orderSchema=new mongoose.Schema({
         ref:"users",
         require:true,
     },
+    userEmail:{
+        type:String,
+        require:true,
+    },
     orderNumber:{
         type:String,
         require:true,
@@ -19,7 +23,7 @@ const orderSchema=new mongoose.Schema({
         {
             productId:{
                 type:mongoose.Schema.Types.ObjectId,
-                ref:"products",
+                ref:"Product",
                 require:true,
             },
             subTotal:{
@@ -89,7 +93,7 @@ const orderSchema=new mongoose.Schema({
         }
     }]
 
-},{versionKey:false});
+},{versionKey:false},{strictPopulate:false});
 
 module.exports = mongoose.model("Order", orderSchema);
 

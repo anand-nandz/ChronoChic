@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require("body-parser");
 const session = require('express-session');
 const flash = require('connect-flash');
+require("dotenv").config();
 
 app.set('view engine','ejs');
 
@@ -39,7 +40,7 @@ app.use("/admin/products", express.static(path.join(__dirname, "public")));
 
 
 app.use(session({
-    secret: "chroNO@9876",
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
 }));

@@ -2,8 +2,8 @@ const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Category = require("../models/categoryModel");
 const { body, validationResult } = require('express-validator');
-const flash = require('connect-flash');
-// const flash = require('express-flash');
+// const flash = require('connect-flash');
+const flash = require('express-flash');
 
 const bcrypt = require("bcrypt");
 // const config = require('../config/config');
@@ -310,7 +310,7 @@ const loadProducts = async (req, res) => {
     const categories = await Category.find({ is_blocked: false });
 
     // console.log(allProducts)
-    res.render('products', { allProducts,categories })
+    res.render('products', { allProducts, categories })
   } catch (error) {
     console.log(error.message)
   }
@@ -336,9 +336,9 @@ const add_Product = async (req, res) => {
     console.log(req.body.ProductName);
     const newProduct = new Product({
       pname: req.body.ProductName,
-      price: parseFloat(req.body.ProductPrice), // Parse price as a float
-      offprice: parseFloat(req.body.ProductOffPrice), // Parse offprice as a float
-      discountPercentage: parseInt(req.body.DiscountPercentage), 
+      price: parseFloat(req.body.ProductPrice),
+      offprice: parseFloat(req.body.ProductOffPrice),
+      discountPercentage: parseInt(req.body.DiscountPercentage),
       description: req.body.ProductDetails,
       images: images,
       category: req.body.ProductCategory,
@@ -413,9 +413,9 @@ const edit_product = async (req, res) => {
 
     const updatedProduct = {
       pname: req.body.ProductName,
-      price: parseFloat(req.body.ProductPrice), // Parse price as a float
-      offprice: parseFloat(req.body.ProductOffPrice), // Parse offprice as a float
-      discountPercentage: parseInt(req.body.DiscountPercentage), 
+      price: parseFloat(req.body.ProductPrice),
+      offprice: parseFloat(req.body.ProductOffPrice),
+      discountPercentage: parseInt(req.body.DiscountPercentage),
       description: req.body.ProductDetails,
       category: updatedCategory,
       brand: req.body.ProductBrand,
@@ -504,7 +504,10 @@ const deleteProduct = async (req, res) => {
 const loadCategory = async (req, res) => {
   try {
     const categories = await Category.find();
-    res.render("category", { categories });
+    const messages = req.flash('error');
+    const successMessages = req.flash('success');
+
+    res.render("category", { categories, messages,successMessages });
 
   } catch (error) {
     console.log(error.message);
@@ -512,43 +515,51 @@ const loadCategory = async (req, res) => {
 };
 
 
+
+
 const createCategory = async (req, res) => {
   try {
 
-    if (!req.body.name || !req.body.description) {
-      return res.status(400).send("Category name and description are required.");
+    console.log("en tooo");
+    const { name, description } = req.body;
 
+    var nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+
+    if(!nameRegex.test(name)){
+      req.flash("error", "Category Name must contain only characters with spaces between names.");
+      return res.redirect('/admin/category');
+  } 
+
+
+    if (!name || !name.trim()) {
+
+      req.flash('error', 'Category name cannot be empty or contain only spaces.');
+      return res.redirect('/admin/category');
     }
 
+    const existingCategory = await Category.findOne({ name: name.trim() });
+    console.log(existingCategory, 'existing');
 
-    const newCategory = new Category({
-      name: req.body.name.trim(),
-      description: req.body.description.trim(),
-    });
+    if (existingCategory) {
+      req.flash('error', 'Category name already exists.');
+      return res.redirect('/admin/category');
+    }
+    else {
+      const newCategory = new Category({
+        name: name.trim().toLowerCase(),
+        description: description.trim()
+      });
 
 
-    await newCategory.save();
-
-    res.redirect(`/admin/category`);
-
-    // res.redirect(`/admin/category/${savedCategory._id}`);
-
-    // res.render(`editCategory${savedCategory._id}`)
+      await newCategory.save();
+      req.flash('success', 'Category created successfully.');
+      return res.redirect('/admin/category');
+    }
   } catch (error) {
-
     console.error(error);
-    res.status(500).send("Failed to create category. Please try again later.");
+    res.status(500).json({ error: "Failed to create category. Please try again later." });
   }
-};
-
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -556,32 +567,83 @@ const editCategory = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findById(categoryId);
-    res.render('editCategory', { category });
+    const messages = req.flash('error');
+    const successMessages = req.flash('success');
+    res.render('editCategory', { category,messages,successMessages});
   } catch (err) {
     console.error(err);
+    req.flash('error', 'Failed to load category for editing.');
+
     res.status(500).send('Internal Server Error');
   }
 };
 
 
+// const edit_Category = async (req, res) => {
+//   try {
+//     const categoryId = req.params.id;
+//     const { name, description, status } = req.body;
+//     const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name, description, is_blocked: status === 'Unlist' });
+
+
+//     if (!updatedCategory) {
+//       return res.status(404).send('Category not found');
+//     }
+//     req.flash('success', 'Category updated successfully.');
+//     res.redirect('/admin/category');
+//   } catch (err) {
+//     console.error(err);
+//     req.flash('error', 'Failed to update category.');
+//     res.status(500).send('Internal Server Error');
+//   }
+// }
+
 const edit_Category = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const { name, description, status } = req.body;
+    var nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+
+    if(!nameRegex.test(name)){
+      req.flash("error", "Category Name must contain only characters with spaces between names.");
+      return res.redirect('/admin/category/edit/' + categoryId);
+
+
+  } 
+    // Validate name and description
+    if (!name || !name.trim() ) {
+        req.flash('error', 'Category name cannot be empty.');
+        return res.redirect('/admin/category/edit/' + categoryId);
+    }
+    if(!description || !description.trim()){
+      req.flash('error', 'Category description cannot be empty.');
+        return res.redirect('/admin/category/edit/' + categoryId);
+    }
+    // const existingCategory = await Category.findOne({ name: name.trim() });
+    // console.log(existingCategory, 'existing');
+
+    // if (existingCategory) {
+    //   req.flash('error', 'Category name already exists.');
+    //   return res.redirect('/admin/category');
+    // }
     const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name, description, is_blocked: status === 'Unlist' });
 
-
     if (!updatedCategory) {
-      return res.status(404).send('Category not found');
+      req.flash('error', 'Category not found.');
+      return res.redirect('/admin/category');
+    }else{
+      // await updatedCategory.save();
+      req.flash('success', 'Category updated successfully.');
+    res.redirect('/admin/category');
     }
 
-    res.redirect('/admin/category');
+    
   } catch (err) {
     console.error(err);
-    res.status(500).send('Internal Server Error');
+    req.flash('error', 'Failed to update category.');
+    res.redirect('/admin/category');
   }
 }
-
 
 
 

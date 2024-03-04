@@ -234,23 +234,42 @@
                 </div>
             </form>
          -->
-         <form action="/admin/category" method="post" id="categoryForm">
+                <form action="/admin/category" method="post" id="categoryForm">
+                    <div class="mb-4">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" placeholder="Type here" class="form-control" name="name" id="categoryName"
+                            required />
+                        <div id="categoryNameErr" class="text-danger"></div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Description</label>
+                        <textarea placeholder="Type here" class="form-control" name="description" id="description"
+                            required></textarea>
+                        <div id="descriptionErr" class="text-danger"></div>
+                    </div>
+                    <% if (messages && messages.length > 0) { %>
+                        <% messages.forEach(message => { %>
+                          <div class="alert alert-danger" role="alert">
+                            <%= message %>
+                          </div>
+                        <% }); %>
+                      <% } %>
+                      
+                      
+                      <% if (successMessages && successMessages.length > 0) { %>
+                        <% successMessages.forEach(message => { %>
+                          <div class="alert alert-success" role="alert">
+                            <%= message %>
+                          </div>
+                        <% }); %>
+                      <% } %>
+                      
 
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Create category</button>
+                    </div>
+                </form>
 
-            <div class="mb-4">
-                <label for="category_name" class="form-label">Category Name</label>
-                <input type="text" placeholder="Type here" class="form-control" name="name" id="categoryName" required />
-                <span id="categoryName-error" class="error-message"></span>
-            </div>
-            <div class="mb-4">
-                <label class="form-label">Description</label>
-                <textarea placeholder="Type here" class="form-control" name="description" id="description" required></textarea>
-                <span id="description-error" class="error-message"></span>
-            </div>
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Create category</button>
-            </div>
-        </form>
 
 
 
@@ -307,11 +326,11 @@
                                     class="btn btn-sm font-sm rounded btn-brand m-2">
                                     <i class="material-icons md-edit"></i> Edit
                                 </a>
-                                <a href="/admin/category/delete?id=<%= category._id %>"
+                                <!-- <a href="/admin/category/delete?id=<%= category._id %>"
                                     class="btn btn-sm font-sm btn-light rounded delete-btn"
                                     id="delete-btn-<%= category._id %>" data-category-id="<%= category._id %>">
                                     <i class="material-icons md-delete_forever"></i> Delete
-                                </a>
+                                </a> -->
                             </div>
 
 
@@ -351,15 +370,78 @@
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
 
-
     <script>
-        document.getElementById("categoryName").addEventListener("blur", function(event) {
+        // Automatically remove flash messages after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.remove();
+            });
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
+    <script>
+
+document.getElementById("categoryName").addEventListener("blur", function (event) {
+        validateName();
+    });
+
+    document.getElementById("description").addEventListener("blur", function (event) {
+        validateDescription();
+    });
+
+    document.getElementById("categoryForm").addEventListener("submit", function (event) {
+        if (!isValidForm()) {
+            event.preventDefault();
+        }
+    });
+
+    function validateName() {
+        var name = document.getElementById("categoryName").value.trim();
+        if (!name || !name.trim()) {
+            showError("categoryNameErr", "Category name cannot be empty or contain only spaces.");
+        } else {
+            hideError("categoryNameErr");
+        }
+    }
+
+    function validateDescription() {
+        var description = document.getElementById("description").value.trim();
+        if (description === "") {
+            showError("descriptionErr", "Description is required.");
+        } else {
+            hideError("descriptionErr");
+        }
+    }
+
+    function isValidForm() {
+        validateName();
+        validateDescription();
+
+        var errorElements = document.querySelectorAll(".text-danger");
+        for (var i = 0; i < errorElements.length; i++) {
+            if (errorElements[i].textContent !== "") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+        document.getElementById("categoryName").addEventListener("blur", function (event) {
             var categoryName = this.value.trim();
             if (categoryName !== "") {
                 checkCategoryUniqueness(categoryName);
             }
         });
-    
+
         function checkCategoryUniqueness(categoryName) {
             // Send an AJAX request to the server to check if the category name is unique
             // You need to implement this endpoint in your backend
@@ -376,30 +458,30 @@
                     console.error("Error checking category uniqueness:", error);
                 });
         }
-    
+
         // Other validation functions and event listeners for description validation
-    
+
         // Other validation functions (e.g., for description)
-    
+
         // Event listener for form submission
-        document.getElementById("categoryForm").addEventListener("submit", function(event) {
+        document.getElementById("categoryForm").addEventListener("submit", function (event) {
             // Prevent form submission if there are validation errors
             if (!isValidForm()) {
                 event.preventDefault();
             }
         });
-    
+
         // Function to validate the entire form
         function isValidForm() {
             var categoryName = document.getElementById("categoryName").value.trim();
             var description = document.getElementById("description").value.trim();
-    
+
             // Perform individual validations for category name and description
             // Return false if any validation fails, otherwise return true
-    
+
             return true; // Return true if form is valid
         }
-    
+
         // Function to show error message
         function showError(inputId, message) {
             var errorElement = document.getElementById(inputId + "-error");
@@ -411,7 +493,7 @@
             }
             errorElement.textContent = message;
         }
-    
+
         // Function to hide error message
         function hideError(inputId) {
             var errorElement = document.getElementById(inputId + "-error");
@@ -420,7 +502,7 @@
             }
         }
     </script>
-    
+
 
 </body>
 

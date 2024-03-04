@@ -15,6 +15,7 @@ user_route.set('views', './views/users')
 const userController = require('../controllers/userController');
 const cartController = require('../controllers/cartController');
 const productController = require('../controllers/productController');
+const orderController = require('../controllers/orderController');
 
 // user_route.get('/',(req,res)=>{
 //     req.session.hi="hello"
@@ -41,16 +42,18 @@ user_route.post('/register', userController.insertUser);
 
 user_route.get('/verifyOTP', userController.loadOtp);
 user_route.post('/verifyOTP', userController.getOtp);
+user_route.post('/resendOTP', userController.resendOTP);
+
 
 user_route.get('/', auth.checkAuth, auth.isBlocked, userController.loadHome);
 user_route.get('/landingpage', auth.checkAuth, userController.logout)
 
-user_route.get('/forgotPassword', auth.checkAuth, userController.loadForgotPassword);
+user_route.get('/forgotPassword', userController.loadForgotPassword);
 user_route.post('/forgotPassword', userController.forgotPassword);
 
-// user_route.get('/verifyOTP',userController.loadForgotOTP);
+user_route.post('/checkEmailExists',userController.checkEmailExists);
 
-user_route.get('/resetPassword', auth.checkAuth, userController.loadPasswordReset)
+user_route.get('/resetPassword', userController.loadPasswordReset)
 user_route.post('/resetPassword', userController.passwordReset)
 
 
@@ -61,20 +64,14 @@ user_route.post('/edit-address/:addressId', auth.checkAuth, userController.editA
 user_route.post('/delete-address/:addressId', userController.deleteAddress);
 
 
-
-
-
 user_route.get('/home', auth.checkAuth, auth.isBlocked, productController.loadProduct);
 user_route.get('/productDetails', auth.checkAuth, auth.isBlocked, productController.loadIndividualProduct);
 user_route.get('/showproduct', productController.loadProduct);
-user_route.get('/shop', productController.loadShop);
+user_route.get('/shop', auth.checkAuth, auth.isBlocked,productController.loadShop);
 
 
-
-
-
-user_route.get("/cart", cartController.loadCartpage);
-user_route.post("/addCartLoad", cartController.loadCart)
+user_route.get("/cart", auth.checkAuth, auth.isBlocked,cartController.loadCartpage);
+user_route.post("/addCartLoad",auth.checkAuth, auth.isBlocked, cartController.loadCart)
 user_route.post('/cartadd', auth.checkAuth, auth.isBlocked, cartController.increment);
 user_route.post('/decrement', auth.checkAuth, auth.isBlocked, cartController.decrement);
 user_route.post('/pro-del', auth.checkAuth, auth.isBlocked, cartController.removeCart);
@@ -83,6 +80,9 @@ user_route.get('/checkout', auth.checkAuth, auth.isBlocked, cartController.loadC
 user_route.get('/checkOutPage', auth.checkAuth, auth.isBlocked, cartController.loadCheckOutPage);
 user_route.post('/checkOutData', auth.checkAuth, auth.isBlocked, cartController.addOrder);
 user_route.get('/orderPlaced',auth.checkAuth,auth.isBlocked,cartController.loadorderPlaced)
+
+user_route.get('/orderView',auth.checkAuth,auth.isBlocked,orderController.loadViewOrder);
+user_route.post("/cancelOrder",auth.checkAuth,auth.isBlocked,orderController.cancelOrder)
 
 
 module.exports = user_route;

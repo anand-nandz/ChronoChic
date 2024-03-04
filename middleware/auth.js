@@ -32,10 +32,10 @@ const User = require("../models/userModel");
 
 const checkAuth = (req, res, next) => {
     if (req.session.user) {
-        // User is logged in, proceed
+        
         next();
     } else {
-        // User is not logged in, redirect to login page
+        
         res.redirect('/login');
     }
 };
@@ -45,7 +45,7 @@ const isBlocked = async (req, res, next) => {
         if (req.session.user) {
             const user = await User.findById(req.session.user);
             if (user && user.is_blocked) {
-                req.session.destroy(); // Clear session data
+                req.session.destroy(); 
                 // req.flash('error', 'Your account has been blocked by the admin.');
                 return res.redirect('/login');
             }
