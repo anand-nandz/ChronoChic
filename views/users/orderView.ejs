@@ -496,6 +496,7 @@
                                         <th scope="col">Image</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Date</th>
+                                        <th scope="col">Payment Type</th>
                                         <th scope="col">Address</th>
                                         <th scope="col">Subtotal</th>
                                         <th scope="col">Quantity</th>
@@ -520,6 +521,9 @@
                                                 </td>
                                                 <td class="price" data-title="Price"><span>
                                                         <%= findOrder.orderDate %>
+                                                    </span></td>
+                                                    <td class="price" data-title="Price"><span>
+                                                        <%= findOrder.orderType %>
                                                     </span></td>
 
                                                 <td class="text-right" data-title="Cart">
@@ -607,10 +611,10 @@
                                                 style="color: rgb(20, 226, 30); font-size: 20px; font-weight: bold; margin-bottom: 30px;">
                                                 Delivered</p>
 
-                                            <!-- <button onclick="Return()"
-                                                style="padding: 8px 16px; font-size: 14px; background-color: #2c52fc; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 30px;">
+                                            <button onclick="Return()" class="single-add-to-cart"
+                                                style="padding: 8px 16px; font-size: 14px; background-color: #c89979; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 30px;">
                                                 Request Return
-                                            </button> -->
+                                            </button>
 
                                             <div id="reason" style="display: none;">
                                                 <input type="radio" id="dont_want" name="reason"
@@ -646,10 +650,10 @@
 
 
 
-                                            <% }else if(findOrder.status=="Return proccess" ){ %>
+                                            <% }else if(findOrder.status=="Return process" ){ %>
 
 
-                                                <a onclick="cancel('<%= findOrder._id %>')" class="btn btn-rounded"> <i
+                                                <a onclick="cancelReturn('<%= findOrder._id %>')" class="btn btn-rounded"> <i
                                                         class="fa fa-share-square mr-10"></i> Cancel Return</a>
 
                                                 <%}else if(findOrder.status=="Returned"){%>
@@ -848,7 +852,7 @@
                                 text: "Your Order has been Canceled.",
                                 icon: "success"
                             }).then((result) => {
-                                location.href = "/userProfile"
+                                location.href = "/orders"
                             })
                         }
                     })
@@ -857,6 +861,73 @@
 
 
 
+                }
+            }
+        })
+    }
+
+    function Return(){
+        document.getElementById("reason").style.display ="block"
+    }
+
+    function submit(id){
+        var selectedReason = document.querySelector('input[name="reason"]:checked');
+
+        if(selectedReason){
+            var reason = selectedReason.value;
+
+            alert(id)
+
+            $.ajax({
+                url:"/return",
+                method: "post",
+                data:{
+                    id,
+                    reason
+                },
+                success:(response)=>{
+                    if(response.status ==true){
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "bottom",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            // timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: "Request send successfull"
+                        }).then((result) => {
+
+                            window.location.href = "/orders"
+                        })
+                    }
+                }
+            })
+        }
+        else{
+            document.getElementById("error").style.display = "block"
+
+            setTimeout(()=>{
+                document.getElementById("error").style.display = "none"
+            },2000)
+        }
+    }
+
+    function cancelReturn(id){
+        $.ajax({
+            url:"/cancelReturn",
+            method: "post",
+            data:{
+                id,
+            },
+            success:(response)=>{
+                if(response.status==true){
+                    location.href = "/orders"
                 }
             }
         })

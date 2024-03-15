@@ -5,8 +5,21 @@ const Address = require("../models/addressModel");
 const generateDate = require("../utils/dateGenrator");
 const generateOrder = require("../utils/otphandle")
 const Order = require("../models/orderModel")
+require("dotenv").config();
+
+const Razorpay =require('razorpay');
 
 
+const keyId = process.env.RAZORPAYID
+const keySecret = process.env.RAZORPAYSECRET
+
+
+var instance = new Razorpay({
+    key_id: keyId,
+    key_secret: keySecret,
+  });
+
+  const crypto = require("crypto");
 
 
 const loadCart = async (req, res) => {
@@ -253,136 +266,111 @@ const removeCart = async (req, res) => {
 }
 
 
-const loadCheckOut = async (req, res) => {
-    // console.log("enter to checkout");
-    try {
-        const userData = await User.findOne(req.session.user);
-        // console.log(userData,"userData.................");
-        const cartData = await Cart.findOne({ userId: userData._id });
-        //   console.log(cartData,"cartData...............");
-        const quantity = [];
-
-        for (let i = 0; i < cartData.items.length; i++) {
-            quantity.push(cartData.items[i].quantity);
-        }
-        //   console.log(quantity);
-        const proId = [];
-        for (let i = 0; i < cartData.items.length; i++) {
-            proId.push(cartData.items[i].productId);
-        }
-        //   console.log(proId,"proId");
-        const proData = [];
-
-        for (let i = 0; i < proId.length; i++) {
-            proData.push(await Product.findById({ _id: proId[i] }));
-        }
-        //   console.log(proData,"proData");
-        for (let i = 0; i < proData.length; i++) {
-            for (let j = 0; j < quantity.length; j++) {
-                if (proData[i].countInStock < quantity[i]) {
-                    res.json({ status: "checked" });
-                }
-            }
-        }
-
-        res.json({ status: true });
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
-
-
-const loadCheckOutPage = async (req, res) => {
-    // console.log("anand ........");
-    try {
-        const userData = await User.findOne(req.session.user);
-        // console.log("userData",userData);
-        const cartData = await Cart.findOne({ userId: userData._id });
-
-        const proId = [];
-
-        for (let i = 0; i < cartData.items.length; i++) {
-            proId.push(cartData.items[i].productId);
-        }
-
-        const pdtData = [];
-
-        for (let i = 0; i < proId.length; i++) {
-            pdtData.push(await Product.findById({ _id: proId[i] }));
-        }
-
-        //   console.log(pdtData,"pdtdata...........................");
-
-        const cartItems = cartData.items;
-        //   console.log(cartItems,"itemss...................");
-        const address = await Address.find({ userId: userData._id });
-        //   console.log(address,"...addrerss");
-        res.render("checkout", { pdtData, cartItems, cartData, address });
-    } catch (error) {
-        console.log(error.message);
-
-
-    }
-};
-
 
 const addOrder = async (req, res) => {
     try {
-        const { addressId, cartid, checkedOption, index } = req.body;
+        const { addressId, cartid, checkedOption,paymentOption, index } = req.body;
 
-        const userData = await User.findOne(req.session.user);
-        // console.log(userData,"user.........");
-        const cartData = await Cart.findOne({ userId: userData._id });
 
-        const pdtData = [];
-
-        for (let i = 0; i < cartData.items.length; i++) {
-            pdtData.push(cartData.items[i]);
+        if(!addressId || !paymentOption){
+            res.json({status:"fill the options"})
         }
-        console.log(pdtData, "okkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-
-        const orderNum = generateOrder.generateOrder();
-        //   console.log(orderNum,"onnnnnnnnnnnnnnnnnnnnnnnnn");
-
-        const addressData = await Address.findOne({ "address._id": addressId });
-
-        let address = addressData.address[index]
-
-        const date = generateDate()
-        //   console.log(date,"dateeee");
-
-        const orderData = new Order({
-            userId: userData._id,
-            orderNumber: orderNum,
-            userEmail: userData.email,
-            items: pdtData,
-            totalAmount: cartData.total,
-            orderType: checkedOption,
-            orderDate: date,
-            status: "Processing",
-            shippingAddress: address,
-        });
-
-        //   console.log(s,"shippingg................");
-
-        console.log(orderData, "orderrrrrrrrrrrrrrr");
-
-        await orderData.save();
-
-        for (const item of cartData.items) {
-            const product = await Product.findById(item.productId);
-            product.countInStock -= item.quantity; // Reduce countInStock by the ordered quantity
-            await product.save();
-            // console.log(product,"saved");
+        else if(paymentOption == "Cash On Delivery"){
+            const userData = await User.findOne(req.session.user);
+            const cartData = await Cart.findOne({ userId: userData._id });
+    
+            const pdtData = [];
+    
+            for (let i = 0; i < cartData.items.length; i++) {
+                pdtData.push(cartData.items[i]);
+            }
+    
+            const orderNum = generateOrder.generateOrder();
+    
+            const addressData = await Address.findOne({ "address._id": addressId });
+    
+            let address = addressData.address[index]
+    
+            const date = generateDate()
+            //   console.log(date,"dateeee");
+    
+            const orderData = new Order({
+                userId: userData._id,
+                orderNumber: orderNum,
+                userEmail: userData.email,
+                items: pdtData,
+                totalAmount: cartData.total,
+                orderType: paymentOption,
+                orderDate: date,
+                status: "Processing",
+                shippingAddress: address,
+            });
+    
+            //   console.log(s,"shippingg................");
+    
+            console.log(orderData, "orderrrrrrrrrrrrrrr");
+    
+            await orderData.save();
+    
+            for (const item of cartData.items) {
+                const product = await Product.findById(item.productId);
+                product.countInStock -= item.quantity; // Reduce countInStock by the ordered quantity
+                await product.save();
+                // console.log(product,"saved");
+            }
+    
+    
+    
+            res.json({ status: true, order: orderData });
+            await Cart.findByIdAndDelete({ _id: cartData._id });
+    
         }
+        else if(paymentOption == "Razorpay"){
+            const userData = await User.findOne(req.session.user);
+            const cartData = await Cart.findOne({ userId: userData._id });
+    
+            const pdtData = [];
+    
+            for (let i = 0; i < cartData.items.length; i++) {
+                pdtData.push(cartData.items[i]);
+            }
+    
+            const orderNum = generateOrder.generateOrder();
+            console.log(orderNum,"numorderr");
+            const stringOrder_id=orderNum.toString()
+    console.log(stringOrder_id);
+            const addressData = await Address.findOne({ "address._id": addressId });
+    console.log(addressData,"dataadress");
+            let address = addressData.address[index]
+    console.log(address,'log address');
+            const date = generateDate()
+            //   console.log(date,"dateeee");
+        
+            // for (const item of cartData.items) {
+            //     const product = await Product.findById(item.productId);
+            //     product.countInStock -= item.quantity; // Reduce countInStock by the ordered quantity
+            //     await product.save();
+            //     // console.log(product,"saved");
+            // }
 
+            var options = {
+                amount: cartData.total *100,
+                currency: "INR",
+                receipt: stringOrder_id
+              };
+              console.log(options,"optuionsss");
+              instance.orders.create(options, function(err, razpayOrder) {
+                if(!err){
+                    console.log(razpayOrder);
+                    res.json({status:"razorpay",order:razpayOrder,orderNumber:orderNum,address:addressData})
+                }
+                else{                   
+                     console.log("error else ");
 
-
-        res.json({ status: true, order: orderData });
-        await Cart.findByIdAndDelete({ _id: cartData._id });
-
-
+                    console.error(err);
+                }
+              });
+        }
         // const deleteCart = await Cart.findByIdAndDelete({ _id: cartData._id });
 
 
@@ -435,16 +423,17 @@ const loadorderPlaced = async (req, res) => {
 
 
 
+
+
 module.exports = {
     loadCart,
     loadCartpage,
     increment,
     decrement,
     removeCart,
-    loadCheckOut,
-    loadCheckOutPage,
     addOrder,
     loadorderPlaced
+    
 
 
 }

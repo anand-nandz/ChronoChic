@@ -765,12 +765,44 @@
             });
 
 
+            // document.getElementById("otpForm").addEventListener("submit", async (event) => {
+            //     event.preventDefault();
+            //     try {
+            //         const response = await fetch('/verifyOTP', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/json'
+            //             },
+            //             body: JSON.stringify({
+            //                 otp: document.getElementById("otp").value
+            //             })
+            //         });
+            //         const responseData = await response.json();
+            //         if (response.ok) {
+            //             // OTP verification successful
+            //             console.log("OTP verified successfully");
+            //             // Redirect or perform further actions
+            //             res.redirect('/login?registration=complete');
+            //         } else {
+            //             if (responseData.error === "OTP has expired") {
+            //                 // Display error message for expired OTP
+            //                 console.error("Expired OTP:", responseData.error);
+            //                 document.querySelector(".message").innerHTML = responseData.error;
+            //             } else {
+            //                 // Display general error message
+            //                 console.error("Failed to verify OTP:", responseData.error);
+            //                 document.querySelector(".message").innerHTML = responseData.error;
+            //             }
+            //             // Reset the timer
+            //             timer(60)
+            //         }
+            //     } catch (error) {
+            //         console.error("Error while verifying OTP:", error);
+            //     }
+            // });
 
 
         });
-
-
-        
     </script>
 
 

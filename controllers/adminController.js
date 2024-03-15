@@ -5,6 +5,10 @@ const { body, validationResult } = require('express-validator');
 // const flash = require('connect-flash');
 const flash = require('express-flash');
 
+const fs = require('fs');
+const path = require('path');
+
+
 const bcrypt = require("bcrypt");
 // const config = require('../config/config');
 
@@ -306,15 +310,36 @@ const delete_User = async (req, res) => {
 
 const loadProducts = async (req, res) => {
   try {
+    const perPage = 5;
+    let page = parseInt(req.query.page) || 1;
+
+    const totalProducts = await Product.countDocuments({});
+    const totalPage = Math.ceil(totalProducts / perPage);
+
+    if (page < 1) {
+      page = 1;
+    } else if (page > totalPage) {
+      page = totalPage;
+    }
+
+    const startSerialNumber = (page - 1) * perPage + 1;
+
     const allProducts = await Product.find({})
+      .sort({ _id: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+
+   
+    
     const categories = await Category.find({ is_blocked: false });
 
-    // console.log(allProducts)
-    res.render('products', { allProducts, categories })
+    res.render('products', { allProducts, categories, totalPage, page, startSerialNumber });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
   }
 }
+
 
 
 const addProduct = async (req, res) => {
@@ -368,8 +393,9 @@ const editProduct = async (req, res) => {
   try {
     const id = req.query.id;
     const product = await Product.findById(id);
+    console.log(product.images);
     const categories = await Category.find({ is_blocked: false });
-    if (!product) {
+    if (!product) { 
       return res.status(404).send("Product not found");
     }
 
@@ -386,50 +412,72 @@ const editProduct = async (req, res) => {
 
 const edit_product = async (req, res) => {
   try {
+    console.log(req.body);
+    console.log("loggged edit");
     const productId = req.query.id;
+    console.log(productId, "idd");
     const existingProduct = await Product.findById(productId);
-
+console.log(existingProduct,"existing");
     if (!existingProduct) {
       return res.status(404).send("Product not found.");
+    } else {
+      console.log("else inside");
+      const updatedCategory = req.body.ProductCategory;
+
+
+
+      console.log(req.body.ProductName);  
+      console.log(req.body.ProductPrice);
+      console.log(req.body.ProductOffPrice);
+      console.log(req.body.DiscountPercentage);
+      console.log(req.body.ProductDetails);
+      console.log(req.body.ProductBrand);
+      console.log(req.body.ProductColor);
+      console.log(req.body.ProductMaterial);
+      console.log(req.body.ProductStock);
+      console.log(updatedCategory);
+      console.log(req.body.ProductCaseSize);
+
+
+
+
+
+
+      const updatedProduct = {
+        pname: req.body.ProductName,
+        price: parseFloat(req.body.ProductPrice),
+        offprice: parseFloat(req.body.ProductOffPrice),
+        discountPercentage: parseInt(req.body.DiscountPercentage),
+        description: req.body.ProductDetails,
+        category: updatedCategory,
+        brand: req.body.ProductBrand,
+        color: req.body.ProductColor,
+        material: req.body.ProductMaterial,
+        countInStock: parseInt(req.body.ProductStock),
+        caseSize: req.body.ProductCaseSize,
+        is_listed: req.body.listed === 'true'
+      };
+
+      const data = await Product.findByIdAndUpdate(productId, updatedProduct);
+      console.log(data,'saved');
+      res.redirect("/admin/products");
     }
 
-    let existingImages = existingProduct.images || [];
-    const newImages = req.files ? req.files.map(file => file.filename) : [];
+    // let existingImages = existingProduct.images || [];
+    // const newImages = req.files ? req.files.map(file => file.filename) : [];
 
 
-    for (let i = 0; i < Math.min(newImages.length, existingImages.length); i++) {
-      existingImages[i] = newImages[i];
-    }
+    // for (let i = 0; i < Math.min(newImages.length, existingImages.length); i++) {
+    //   existingImages[i] = newImages[i];
+    // }
 
-    if (newImages.length > existingImages.length) {
-      existingImages.push(...newImages.slice(existingImages.length));
-    }
+    // if (newImages.length > existingImages.length) {
+    //   existingImages.push(...newImages.slice(existingImages.length));
+    // }
 
-    existingImages = existingImages.slice(0, 4);
-
-    const updatedCategory = req.body.ProductCategory;
+    // existingImages = existingImages.slice(0, 4);
 
 
-
-    const updatedProduct = {
-      pname: req.body.ProductName,
-      price: parseFloat(req.body.ProductPrice),
-      offprice: parseFloat(req.body.ProductOffPrice),
-      discountPercentage: parseInt(req.body.DiscountPercentage),
-      description: req.body.ProductDetails,
-      category: updatedCategory,
-      brand: req.body.ProductBrand,
-      color: req.body.ProductColor,
-      images: existingImages,
-      material: req.body.ProductMaterial,
-      countInStock: parseInt(req.body.ProductStock),
-      caseSize: req.body.ProductCaseSize,
-      is_listed: req.body.listed === 'true'
-    };
-
-    await Product.findByIdAndUpdate(productId, updatedProduct);
-
-    res.redirect("/admin/products");
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error ...........");
@@ -437,48 +485,163 @@ const edit_product = async (req, res) => {
 };
 
 
+const editproductImagePOST = async (req, res) => {
+  try {
+    console.log(req.file);
+    const image = req.body.imagename;
+    const index = parseInt(req.body.index);
+    const productID = req.body.productID;
+    console.log(image , index , productID);
 
+    if (image) {
+      const productDetails = await Product.findOne({ _id: productID });
+      console.log(productDetails.images);
+      productDetails.images.splice(index, 1, image);
+      console.log(productDetails.images);
+      await productDetails.save();
+      console.log(productDetails.images);
+      res.json({ status: "okay" })
+    } else {
+      res.json({ status: "oops" })
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-
-// const edit_product = async (req, res) => {
+// const editProduct = async (req, res) => {
 //   try {
-//       const productId = req.query.id;
-//       const existingProduct = await Product.findById(productId);
+//       const id = req.query.id;
+//       const image = req.query.delete;
 
-//       if (!existingProduct) {
-//           return res.status(404).send("Product not found.");
+//       if (image) {
+//           const product = await Product.findById(id);
+//           const index = product.images.indexOf(image);
+
+//           if (index > -1) {
+//               await Product.findByIdAndUpdate(id, { $unset: { [`images.${index}`]: 1 } });
+//               await Product.findByIdAndUpdate(id, { $pull: { images: null } });
+//               return res.status(200).send("Image deleted successfully");
+//           } else {
+//               return res.status(404).send("Image not found in the array");
+//           }
 //       }
 
-//       let existingImages = existingProduct.images || [];
-//       const newImages = req.files ? req.files.map(file => file.filename) : [];
+//       const product = await Product.findById(id);
+//       const categories = await Category.find({ is_blocked: false });
 
-//       // Combine existing and new images, ensuring only 4 images are kept
-//     const updatedImages = [...existingImages, ...newImages].slice(0, 4);
+//       if (!product) {
+//           return res.status(404).send("Product not found");
+//       }
 
-//       // Replace existing images with new images
-//       // existingImages = newImages;
-
-//       const updatedProduct = {
-//           pname: req.body.ProductName,
-//           price: req.body.ProductPrice,
-//           description: req.body.ProductDetails,
-//           category: req.body.ProductCategory,
-//           brand: req.body.ProductBrand,
-//           color: req.body.ProductColor,
-//           images: updatedImages,
-//           material: req.body.ProductMaterial,
-//           caseSize: req.body.ProductCaseSize,
-//           is_listed: req.body.listed === 'true' // Convert string to boolean
-//       };
-
-//       await Product.findByIdAndUpdate(productId, updatedProduct);
-
-//       res.redirect("/admin/products");
+//       res.render("editProduct", { product, categories });
 //   } catch (error) {
 //       console.error(error);
 //       res.status(500).send("Internal Server Error");
 //   }
 // };
+
+// const edit_product = async (req, res) => {
+//   try {
+//     const productId = req.query.id;
+//     const existingProduct = await Product.findById(productId);
+
+//     if (!existingProduct) {
+//       return res.status(404).send("Product not found.");
+//     }
+
+//     let existingImages = existingProduct.images || [];
+//     const newImages = req.files ? req.files.map(file => file.filename) : [];
+
+//     // Remove images based on index
+//     const removeIndices = req.body.remove_image || [];
+//     removeIndices.forEach(index => {
+//       existingImages.splice(index, 1);
+//     });
+
+//     // Handle image deletion based on image name
+//     const deletedImageName = req.query.delete;
+//     if (deletedImageName) {
+//       const index = existingImages.indexOf(deletedImageName);
+//       if (index !== -1) {
+//         // Delete the existing image file
+//         fs.unlinkSync(path.join(__dirname, 'public', 'productAssets', deletedImageName));
+//         existingImages.splice(index, 1);
+//       }
+//     }
+
+//     // Replace image if provided
+//     const imageToReplaceIndex = req.body.imageToReplace;
+//     if (imageToReplaceIndex !== undefined && req.file) {
+//       // Delete the existing image
+//       const imageToReplace = existingImages[imageToReplaceIndex];
+//       if (imageToReplace) {
+//         // Delete the replaced image file
+//         fs.unlinkSync(path.join(__dirname, 'public', 'productAssets', imageToReplace));
+//       }
+//       // Add the new image
+//       existingImages[imageToReplaceIndex] = req.file.filename;
+//     }
+
+//     // Limit to 4 images
+//     existingImages = existingImages.slice(0, 4);
+
+//     // Update other product details
+//     const updatedCategory = req.body.ProductCategory;
+//     const updatedProduct = {
+//       pname: req.body.ProductName,
+//       price: parseFloat(req.body.ProductPrice),
+//       offprice: parseFloat(req.body.ProductOffPrice),
+//       discountPercentage: parseInt(req.body.DiscountPercentage),
+//       description: req.body.ProductDetails,
+//       category: updatedCategory,
+//       brand: req.body.ProductBrand,
+//       color: req.body.ProductColor,
+//       images: existingImages,
+//       material: req.body.ProductMaterial,
+//       countInStock: parseInt(req.body.ProductStock),
+//       caseSize: req.body.ProductCaseSize,
+//       is_listed: req.body.listed === 'true'
+//     };
+
+//     // Update the product in the database
+//     await Product.findByIdAndUpdate(productId, updatedProduct);
+
+//     // Redirect to the products page after successful update
+//     res.redirect("/admin/products");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Internal Server Error.");
+//   }
+// };
+
+
+
+
+
+// // Define the route handler function for image replacement
+// const replaceImage = (req, res) => {
+//     const imageToReplace = req.body.imageToReplace;
+//     const newImage = req.file;
+
+//     if (!newImage) {
+//         return res.status(400).send('No new image provided');
+//     }
+
+//     // Logic to delete the existing image (if it exists)
+//     if (imageToReplace && fs.existsSync(path.join(__dirname, 'public', 'productAssets', imageToReplace))) {
+//         fs.unlinkSync(path.join(__dirname, 'public', 'productAssets', imageToReplace));
+//     }
+
+//     // Logic to save the new image
+//     const imagePath = path.join(__dirname, 'public', 'productAssets', newImage.filename);
+//     fs.renameSync(newImage.path, imagePath);
+
+//     // Optionally, you can update the database or send a response to the client
+//     res.sendStatus(200); // Send a success status code
+// };
+
+
 
 
 
@@ -507,7 +670,7 @@ const loadCategory = async (req, res) => {
     const messages = req.flash('error');
     const successMessages = req.flash('success');
 
-    res.render("category", { categories, messages,successMessages });
+    res.render("category", { categories, messages, successMessages });
 
   } catch (error) {
     console.log(error.message);
@@ -525,10 +688,10 @@ const createCategory = async (req, res) => {
 
     var nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
 
-    if(!nameRegex.test(name)){
+    if (!nameRegex.test(name)) {
       req.flash("error", "Category Name must contain only characters with spaces between names.");
       return res.redirect('/admin/category');
-  } 
+    }
 
 
     if (!name || !name.trim()) {
@@ -569,7 +732,7 @@ const editCategory = async (req, res) => {
     const category = await Category.findById(categoryId);
     const messages = req.flash('error');
     const successMessages = req.flash('success');
-    res.render('editCategory', { category,messages,successMessages});
+    res.render('editCategory', { category, messages, successMessages });
   } catch (err) {
     console.error(err);
     req.flash('error', 'Failed to load category for editing.');
@@ -604,20 +767,20 @@ const edit_Category = async (req, res) => {
     const { name, description, status } = req.body;
     var nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
 
-    if(!nameRegex.test(name)){
+    if (!nameRegex.test(name)) {
       req.flash("error", "Category Name must contain only characters with spaces between names.");
       return res.redirect('/admin/category/edit/' + categoryId);
 
 
-  } 
-    // Validate name and description
-    if (!name || !name.trim() ) {
-        req.flash('error', 'Category name cannot be empty.');
-        return res.redirect('/admin/category/edit/' + categoryId);
     }
-    if(!description || !description.trim()){
+    // Validate name and description
+    if (!name || !name.trim()) {
+      req.flash('error', 'Category name cannot be empty.');
+      return res.redirect('/admin/category/edit/' + categoryId);
+    }
+    if (!description || !description.trim()) {
       req.flash('error', 'Category description cannot be empty.');
-        return res.redirect('/admin/category/edit/' + categoryId);
+      return res.redirect('/admin/category/edit/' + categoryId);
     }
     // const existingCategory = await Category.findOne({ name: name.trim() });
     // console.log(existingCategory, 'existing');
@@ -631,13 +794,13 @@ const edit_Category = async (req, res) => {
     if (!updatedCategory) {
       req.flash('error', 'Category not found.');
       return res.redirect('/admin/category');
-    }else{
+    } else {
       // await updatedCategory.save();
       req.flash('success', 'Category updated successfully.');
-    res.redirect('/admin/category');
+      res.redirect('/admin/category');
     }
 
-    
+
   } catch (err) {
     console.error(err);
     req.flash('error', 'Failed to update category.');
@@ -711,5 +874,7 @@ module.exports = {
   createCategory,
   editCategory,
   edit_Category,
-  deleteCategory
+  deleteCategory,
+  editproductImagePOST
+  // replaceImage
 }

@@ -16,6 +16,7 @@ const userController = require('../controllers/userController');
 const cartController = require('../controllers/cartController');
 const productController = require('../controllers/productController');
 const orderController = require('../controllers/orderController');
+const checkoutController = require("../controllers/checkoutController")
 
 // user_route.get('/',(req,res)=>{
 //     req.session.hi="hello"
@@ -59,6 +60,7 @@ user_route.post('/resetPassword', userController.passwordReset)
 
 user_route.get('/userProfile', auth.checkAuth, userController.userProfile)
 user_route.post('/userProfile', auth.checkAuth, userController.addAddress);
+user_route.get('/orders',auth.checkAuth,userController.orders);
 user_route.get('/edit-address', auth.checkAuth, userController.renderEditAddress);
 user_route.post('/edit-address/:addressId', auth.checkAuth, userController.editAddress);
 user_route.post('/delete-address/:addressId', userController.deleteAddress);
@@ -76,13 +78,29 @@ user_route.post('/cartadd', auth.checkAuth, auth.isBlocked, cartController.incre
 user_route.post('/decrement', auth.checkAuth, auth.isBlocked, cartController.decrement);
 user_route.post('/pro-del', auth.checkAuth, auth.isBlocked, cartController.removeCart);
 
-user_route.get('/checkout', auth.checkAuth, auth.isBlocked, cartController.loadCheckOut);
-user_route.get('/checkOutPage', auth.checkAuth, auth.isBlocked, cartController.loadCheckOutPage);
+user_route.get('/checkout', auth.checkAuth, auth.isBlocked, checkoutController.loadCheckOut);
+user_route.get('/checkOutPage', auth.checkAuth, auth.isBlocked, checkoutController.loadCheckOutPage);
 user_route.post('/checkOutData', auth.checkAuth, auth.isBlocked, cartController.addOrder);
-user_route.get('/orderPlaced',auth.checkAuth,auth.isBlocked,cartController.loadorderPlaced)
+user_route.get('/orderPlaced',auth.checkAuth,auth.isBlocked,cartController.loadorderPlaced);
+user_route.post("/verify-payment",auth.checkAuth,auth.isBlocked,checkoutController.rezopayment)
 
 user_route.get('/orderView',auth.checkAuth,auth.isBlocked,orderController.loadViewOrder);
-user_route.post("/cancelOrder",auth.checkAuth,auth.isBlocked,orderController.cancelOrder)
+user_route.post("/cancelOrder",auth.checkAuth,auth.isBlocked,orderController.cancelOrder);
+user_route.post("/cancelReturn",auth.checkAuth,auth.isBlocked,orderController.cancelReturn);
+user_route.post("/return",auth.checkAuth,auth.isBlocked,orderController.returnRequest);
+
+
+user_route.get('/wishlist',auth.checkAuth,auth.isBlocked,productController.loadWishList);
+user_route.post('/addToWishlist',auth.checkAuth,auth.isBlocked,productController.addToWishlist);
+user_route.post('/removefromWishlist',auth.checkAuth,auth.isBlocked,productController.removeWish)
+user_route.post("/removeWish",auth.checkAuth,auth.isBlocked,productController.removeFromWishlist);
+
+
+user_route.get("/wallet",auth.checkAuth,auth.isBlocked,checkoutController.loadWallet)
+
+user_route.post("/addCash",auth.checkAuth,auth.isBlocked,checkoutController.addWalletCash)
+
+user_route.post("/addAmount",auth.checkAuth,auth.isBlocked,checkoutController.addCash)
 
 
 module.exports = user_route;

@@ -18,6 +18,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="/adminassets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/adminassets/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body>
@@ -229,7 +231,7 @@
                         </div> -->
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
 
-                            <select class="form-select">
+                            <select class="form-select" id="sortby" onchange="sorting()">
                                 <option selected>All category</option>
                                 <% categories.forEach(function(category) { %>
                                     <option value="<%= category._id %>">
@@ -242,9 +244,9 @@
                                    
                                 
                         </div>
-                        <div class="col-md-2 col-6">
+                        <!-- <div class="col-md-2 col-6">
                             <input type="date" value="02.05.2021" class="form-control">
-                        </div>
+                        </div> -->
                         <!-- <div class="col-md-2 col-6">
                             <select class="form-select">
                                 <option selected>Status</option>
@@ -256,66 +258,83 @@
                     </div>
                 </header> <!-- card-header end// -->
                 <div class="card-body">
-                    <% for (let i = 0; i < allProducts.length; i++) { %>
-                        <article class="itemlist">
-                            <div class="row align-items-center">
-                                <!-- <div class="col col-check flex-grow-0">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="">
-                                    </div>
-                                </div> -->
-                                <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-                                    <a class="itemside" href="#">
-                                        <div class="left">
-                                            <img src="/productAssets/<%= allProducts[i].images[0] %>" class="img-sm img-thumbnail" alt="Item">
-                                        </div>
-                                        <div class="info">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="15%">Product Image</th>
+                                    <th width="20%">Product Name</th>
+                                    <th width="15%">Price</th>
+                                    <th width="15%">Stock Left</th>
+                                    <th width="20%">Listed/Unlisted</th>
+                                    <th width="30%" class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let i = 0; i < allProducts.length; i++) { %>
+                                    <tr>
+                                        <td>
+                                            <a class="itemside" href="#">
+                                               
+                                                    <img src="/productAssets/<%= allProducts[i].images[0] %>" class="img-sm img-thumbnail" style="height: 80px; width: 80px; align-items: center;" alt="Item">
+                                               
+                                               
+                                            </a>
+                                        </td>
+                                        <td> <div class="info" >
                                             <h6 class="mb-0"><%= allProducts[i].pname %></h6><br>
-                                            <span>Stock left :  <%= allProducts[i].countInStock %></span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-price"> <span><%= allProducts[i].offprice %></span> </div>
-                               
-                                <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                    <span class="badge rounded-pill alert-success"><%= allProducts[i].status %></span>
-                                </div>
-                                <div class="col-lg-2 col-sm-2 col-4 col-status">
-                                    <% if (allProducts[i].is_listed) { %>
-                                        <span class="badge rounded-pill alert-success">Listed</span>
-                                    <% } else { %>
-                                        <span class="badge rounded-pill alert-danger">Unlisted</span>
-                                    <% } %>
-                                </div>
-                                
-                                
-                                <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                    <a href="/admin/products/edit-product?id=<%=allProducts[i]._id %>" class="btn btn-sm font-sm rounded btn-brand">
-                                        <i class="material-icons md-edit"></i> Edit
-                                    </a>
-                                    <% if (allProducts[i].is_listed !== true) { %>
-                                        <a href="/admin/delete-product/<%= allProducts[i]._id %>" class="btn btn-sm font-sm btn-light rounded">
-                                            <i class="material-icons md-delete_forever"></i> Delete
-                                        </a>
-                                    <% } %>
-                                </div>
-                            </div> <!-- row .// -->
-                        </article> <!-- itemlist  .// -->
-                    <% } %>
-                </div> <!-- card-body end// -->
+                                            
+                                        </div></td>
+                                        <td><span><%= allProducts[i].offprice %></span></td>
+                                        <td>
+                                            <% if( (allProducts[i].countInStock) == 0 ) {%>
+                                                <span class="badge rounded-pill alert-danger">Out of Stock</span>
+                                            <% } else { %>
+                                                <span class="badge rounded-pill alert-success d-inline-block px-3 py-2"><%= allProducts[i].countInStock %></span>
+                                            <% } %>
+                                            
+                                        </td>
+                                        <td>
+                                            <% if (allProducts[i].is_listed) { %>
+                                                <span class="badge rounded-pill alert-success">Listed</span>
+                                            <% } else { %>
+                                                <span class="badge rounded-pill alert-danger">Unlisted</span>
+                                            <% } %>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="/admin/products/edit-product?id=<%=allProducts[i]._id %>" class="btn btn-sm font-sm rounded btn-brand">
+                                                <i class="material-icons md-edit"></i> Edit
+                                            </a>
+                                            <% if (allProducts[i].is_listed !== true) { %>
+                                                <a href="/admin/delete-product/<%= allProducts[i]._id %>" class="btn btn-sm font-sm btn-light rounded">
+                                                    <i class="material-icons md-delete_forever"></i> Delete
+                                                </a>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- card-body end// -->
             </div> <!-- card end// -->
-            <div class="pagination-area mt-30 mb-50">
+            <div class="pagination-area mt-15 mb-50">
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    <ul class="pagination justify-content-center">
+                        <% if (page > 1) { %>
+                            <li class="page-item"><a class="page-link" href="/admin/products?page=<%= page - 1 %>"><i class="fa-solid fa-backward"></i></a></li>
+                        <% } %>
+                        <% for (let i = 1; i <= totalPage; i++) { %>
+                            <li class="page-item <%= page === i ? 'active' : '' %>"><a class="page-link" href="/admin/products?page=<%= i %>"><%= i %></a></li>
+                        <% } %>
+                        <% if (page < totalPage) { %>
+                            <li class="page-item"><a class="page-link" href="/admin/products?page=<%= page + 1 %>"><i class="fa-solid fa-forward"></i></a></li>
+                        <% } %>
                     </ul>
                 </nav>
             </div>
+            
         </section>
         
         
@@ -341,6 +360,29 @@
     <script src="/adminassets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/adminassets/js/main.js" type="text/javascript"></script>
+
+    <script>
+                function sorting() {
+            const selectedSortBy = document.getElementById('sortby').value;
+            fetch(`/products?sortby=${selectedSortBy}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    } else {
+
+
+                        window.location.href = `/products?sortby=${selectedSortBy}`;
+
+
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    console.error("Error updating sorting:", error);
+                    // You can handle errors here, such as displaying an error message to the user
+                });
+        }
+    </script>
 </body>
 
 

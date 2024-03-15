@@ -501,6 +501,40 @@ const userProfile = async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 }
+const orders = async (req, res) => {
+    try {
+        const userData = await User.findById(req.session.user._id);
+        const address = await Address.findOne({ userId: req.session.user._id });
+
+        const perPage = 5; 
+        let page = parseInt(req.query.page) || 1;
+
+        const totalOrders = await Order.countDocuments({ userId: req.session.user._id });
+        const totalPage = Math.ceil(totalOrders / perPage);
+
+        if (page < 1) {
+            page = 1;
+        } else if (page > totalPage) {
+            page = totalPage;
+        }
+
+        const orders = await Order.find({ userId: req.session.user._id })
+            .sort({ _id: -1 })
+            .skip(perPage * (page - 1))
+            .limit(perPage);
+
+        const pdtDataArray = await Promise.all(orders.map(async (order) => {
+            const pdtId = order.items.map(item => item.productId);
+            const pdtData = await Product.find({ _id: { $in: pdtId } });
+            return pdtData;
+        }));
+
+        res.render('orders', { userData, address, orders, pdtDataArray, page, totalPage,perPage  });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+}
 
 
 const addAddress = async (req, res) => {
@@ -566,68 +600,6 @@ const addAddress = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
-
-
-
-// const addAddress = async (req, res) => {
-//     try {
-//         console.log(req.body.name,'name');
-
-//         // Extract address data from the request body
-//         const { addressType, name, city, homeAddress, landMark, state, pincode, phone, altPhone } = req.body;
-//         console.log(req.body,'name.................');
-//         // Check if the user already has 3 addresses
-//         const existingAddresses = await Address.findOne({ userId: req.session.user._id });
-//         if (existingAddresses && existingAddresses.address.length >= 3) {
-//             req.flash('error', 'You can only have up to 3 addresses.');
-//             return res.redirect('/userProfile'); 
-//         }
-
-//         // Validate phone and alternate phone
-//         if (phone === altPhone) {
-//             req.flash('error', 'Phone and Alternate Phone must be different.');
-//             return res.redirect('/userProfile'); 
-//         }
-
-//         // Validate pincode format (only numbers allowed)
-//         const pincodeRegex = /^\d{6}$/;
-//         if (!pincodeRegex.test(pincode)) {
-//             req.flash('error', 'Pincode must be a 6-digit number.');
-//             return res.redirect('/userProfile'); 
-//         }
-
-//         // Create a new address object
-//         const newAddress = {
-//             addressType,
-//             name,
-//             city,
-//             homeAddress,
-//             landMark,
-//             state,
-//             pincode,
-//             phone,
-//             altPhone
-//         };
-
-//         // Update or create the user's addresses
-//         if (existingAddresses) {
-//             existingAddresses.address.push(newAddress);
-//             await existingAddresses.save();
-//         } else {
-//             const address = new Address({
-//                 userId: req.session.user._id,
-//                 address: [newAddress]
-//             });
-//             await address.save();
-//         }
-
-//         // Redirect to the user profile page
-//         res.redirect('/userProfile');
-//     } catch (error) {
-//         console.error(error.message);
-//         res.status(500).send('Internal Server Error');
-//     }
-// }
 
 
 
@@ -737,76 +709,6 @@ const deleteAddress = async (req, res) => {
 
 
 
-
-// const loadProduct = async (req, res) => {
-//     try {
-//         const userData = await User.findById(req.session.user_id);
-//         const productData = await Product.find({}).limit(12)
-//         const categoryData = await Category.find({});
-//         // console.log(productData,'pdtdata........................');
-//         // console.log(userData,'userdata........................');
-//         res.render('home', { user: userData, product: productData, category: categoryData })
-
-
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).send("Internal Server Error");
-//     }
-// };
-
-
-// const loadIndividualProduct = async (req, res) => {
-//     try {
-
-//         const id = req.query.id;
-//         const userData = await User.findById(req.session.user_id);
-//         const productData = await Product.findById({ _id: id, is_listed:true });
-//         const categoryData = await Category.find({});
-//         console.log(productData, 'id.........................');
-//         if (productData) {
-//             res.render('productDetails', {
-//                 product: productData,
-//                 user: userData,
-//                 category: categoryData
-//             })
-//         }
-//         else {
-//             res.redirect('/home')
-//         }
-//     }
-//     catch (error) {
-//         console.log(error.message);
-//         res.status(500).send("Internal Server Error");
-//     }
-// }
-
-
-
-// const loadShop = async (req, res) => {
-//     try {
-//         const userData = await User.findById(req.session.user_id);
-//         const productData = await Product.find({}).limit(12)
-//         const categoryData = await Category.find({});
-//         // console.log(productData,'pdtdata........................');
-//         // console.log(userData,'userdata........................');
-//         res.render('shop', { user: userData, product: productData, category: categoryData })
-
-
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).send("Internal Server Error");
-//     }
-// };
-
-
-
-
-
-
-
-
-
-
 module.exports = {
     loadLogin,
     loadRegister,
@@ -821,7 +723,7 @@ module.exports = {
     passwordReset,
     forgotPassword,
     loadPasswordReset,
-   
+    orders,
     userProfile,
     addAddress,
     renderEditAddress,

@@ -213,7 +213,7 @@
 
                                 <a class="btn btn-primary" onclick="back()">Back</a>
                              
-                            <% }else if(findOrder.status=='Return proccess'){ %>
+                            <% }else if(findOrder.status=='Return process'){ %>
 
                                 <select id="status" class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
                                     <option>Change status</option>
@@ -298,9 +298,11 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th width="40%">Product</th>
+                                            <th width="20%">Product Image</th>
+                                            <th width="20%">Product Name</th>
                                             <th width="20%">Unit Price</th>
-                                            <th width="20%">Quantity</th>
+                                            <th width="10%">Quantity</th>
+                                            <th width="20%">Payment Type</th>
                                             <th width="20%" class="text-end">Total</th>
                                         </tr>
                                     </thead>
@@ -310,20 +312,32 @@
 
                                             <tr>
                                                 <td>
-                                                    <a class="itemside" href="#">
+                                                    <a class="itemside" style="display: flex;" href="#">
                                                         <div class="left">
                                                             <img src="/productAssets/<%= pdtData[i].images[0] %>"
-                                                                width="150" height="150" class="img-xs" alt="Item">
+                                                                style="height: 50px; width: 50px;" class="img-xs" alt="Item">
                                                         </div>
-                                                        <div class="info">
-                                                            <%= pdtData[i].pname %>
-                                                        </div>
+                                                        
                                                     </a>
                                                 </td>
+                                                <td> <div class="info">
+                                                    <%= pdtData[i].pname %>
+                                                </div></td>
                                                 <td> ₹ <%= pdtData[i].offprice %>
                                                 </td>
                                                 <td>
                                                     <%= findOrder.items[i].quantity %>
+                                                </td>
+                                                <td>
+                                                    
+                                                    <% if(findOrder.orderType === "Razorpay") { %>
+                                                        <span><i class="material-icons md-payment font-xxl text-muted mr-5"></i> <%= findOrder.orderType %></span>
+                                                        <% } else { %>
+                                                            <span><img src="/adminassets/imgs/icons/cash-on-delivery.png" style="height: 16px; width: 15px;  align-items: center  ;" alt="">   <%= findOrder.orderType %></span>
+        
+                                                        <% } %>
+
+
                                                 </td>
                                                 <td class="text-end"> ₹<%= findOrder.items[i].subTotal %>
                                                 </td>
@@ -333,7 +347,7 @@
 
 
                                                 <tr>
-                                                    <td colspan="4">
+                                                    <td colspan="6">
                                                         <article class="float-end" style="margin-top:20px">
                                                             <dl class="dlist">
                                                                 <dt>Subtotal:</dt>

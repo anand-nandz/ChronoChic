@@ -16,6 +16,21 @@
     <link rel="shortcut icon" type="image/x-icon" href="/adminassets/imgs/theme/favicon.svg" />
     <!-- Template CSS -->
     <link href="adminassets\css\main.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <style>
+        .image-container {
+            display: flex; 
+            flex-wrap: wrap;
+        }
+        .image-item {
+            flex: 0 0 33.33%;
+            padding: 0 10px;
+        }
+        .image-item .mb-3 {
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 
 <body class="">
@@ -250,20 +265,33 @@
                         </div>
                         <!-- card end// -->
                         <div class="card mb-4">
+                            
+
+
                             <div class="card-body">
-                                <div>
-                                    <label class="form-label">Images (Up to 4 images)</label>
-                                    <input class="form-control" type="file" multiple name="ProductImage"
-                                        accept="image/*" onchange="limitFiles(this, 4)" />
-                                    <br>
-                                    <% for (let i=0; i < Math.min(product.images.length, 4); i++) { %>
-                                        <!-- Display existing images -->
-                                        <img src="/productAssets/<%= product.images[i] %>" alt="Product Image"
-                                            style="max-height: 250px; max-width: 195px;">
+                                <div class="row gap-3 justify-content-center mb-40">
+                                    <% for (let i=0; i < product.images.length; i++) { %>
+                                        <div class="col-2 mb-30 mt-30"
+                                            style="position: relative; width: 200px; height: 200px; background-color: rgba(220, 220, 220, 0);"  onchange="previewImages(event)">
+                                            <img src="/productAssets/<%= product.images[i] %>" alt="Product Image" 
+                                                style="width: 100%; height: 100%; object-fit: fill;" >
+                                            <button class="custom-button3 btn btn-sm font-sm btn-light rounded"
+                                                style="position: absolute; bottom: -40px; right: 50px; align-items: center;"
+                                                onclick=" replace(event , '<%= i %>' , '<%= product._id %>'); document.getElementById('fileInput<%= i %>').click();">Replace
+                                                Image</button>
+                                            <input type="file" id="fileInput<%= i %>" accept=".png, .jpeg, .jpg"
+                                                style="display: none;" name="ProductImage" id="images" >
+                                        </div>
+                                        
                                         <% } %>
+                                        
                                 </div>
                             </div>
                         </div>
+                        
+                        
+                        
+                        
 
                         <!-- card end// -->
                     </div>
@@ -352,7 +380,8 @@
     <!-- Main Script -->
     <script src="/adminassets/js/main.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
     <script>
         
@@ -645,6 +674,62 @@
         }
 
     });
+
+
+function replace(event , index , productID) {
+        event.preventDefault();
+        let fileInput = event.target.nextElementSibling;
+        fileInput.onchange = function () {
+            let file = this.files[0];
+            if (file) {
+              
+                let img = event.target.previousElementSibling;
+                img.src = URL.createObjectURL(file);
+                const imagename = file.name;
+
+                if(imagename && index && productID){
+                    $.ajax({
+					url: "/admin/products/editproductImagePOST",
+					method: "post",
+					data: {
+						imagename,
+                        index,
+                        productID
+					},
+					success: (response) => {
+						if (response.status === "okay") {
+							Swal.fire({
+                            icon: "success",
+                            title: "Image successfully saved ",
+                            showConfirmButton: false,
+                            customClass: {
+                                popup: 'swal-custom',
+                            },
+                            timer: 1500
+                        });
+						} else if (response.status === "oops") {
+                        
+							Swal.fire({
+								icon: "error",
+								title: "Oops!.. Network is busy please refresh",
+								showConfirmButton: false,
+								customClass: {
+									popup: 'swal-custom',
+								},
+								timer: 1500
+							});
+						}
+					}
+				})
+                }
+
+
+                
+            }
+        }
+    }
+
+
 
 
 </script>
