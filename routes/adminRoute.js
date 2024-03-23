@@ -16,13 +16,11 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(
       null, file.originalname 
-      // file.fieldname + "_" + Date.now() + path.extname(file.originalname)
     );
   },
 });
 
 const upload = multer({ storage: storage });
-
 
 admin_route.use(session({ secret: config.sessionSecret }))
 
@@ -35,15 +33,13 @@ admin_route.set('views', './views/admin');
 
 const adminController = require("../controllers/adminController");
 const orderController = require('../controllers/orderController');
-
+const couponController = require('../controllers/couponController');
 // const productController = require("../controllers/productController");
 
 // const auth = require('../middleware/adminAuth')
 
 admin_route.get('/', adminController.loadLogin);
-
 admin_route.get('/adminLogin', adminController.adminLogout)
-
 admin_route.post('/', adminController.verifyAdmin);
 
 admin_route.get('/home', adminController.loadDashboard);
@@ -51,11 +47,9 @@ admin_route.get('/home', adminController.loadDashboard);
 admin_route.get('/users', adminController.loadUsers)
 admin_route.get("/users/edit", adminController.editUser);
 admin_route.post("/users/edit", adminController.edit_User);
-
 admin_route.get("/users/delete", adminController.delete_User);
 
 admin_route.get('/products', adminController.loadProducts)
-
 admin_route.get("/products/add-product", adminController.addProduct);
 admin_route.post("/add-product", upload.array("ProductImage", 4), adminController.add_Product);
 
@@ -75,6 +69,21 @@ admin_route.post('/category', adminController.createCategory);
 admin_route.get('/category/edit/:id', adminController.editCategory);
 admin_route.post('/category/edit/:id', adminController.edit_Category);
 admin_route.get("/category/delete", adminController.deleteCategory);
+
+
+admin_route.get("/coupon",couponController.loadCouponPage);
+admin_route.get("/addCoupon",couponController.loadAddCoupon);
+admin_route.post("/addCoupon",couponController.addCoupon);
+admin_route.post("/coupon-block",couponController.blockCoupon);
+admin_route.get("/coupon-edit",couponController.loadEditCoupon);
+admin_route.post("/editCoupon",couponController.editCoupon);
+
+
+admin_route.get("/sales",adminController.loadSales)
+admin_route.get("/salesDate",adminController.dateFilter)
+admin_route.get("/Date",adminController.sortDate)
+
+
 
 
 

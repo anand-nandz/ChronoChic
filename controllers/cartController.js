@@ -6,6 +6,7 @@ const generateDate = require("../utils/dateGenrator");
 const generateOrder = require("../utils/otphandle")
 const Order = require("../models/orderModel")
 require("dotenv").config();
+const Coupon = require ("../models/couponModel");
 
 const Razorpay =require('razorpay');
 
@@ -20,13 +21,15 @@ var instance = new Razorpay({
   });
 
   const crypto = require("crypto");
+const couponModel = require("../models/couponModel");
 
 
 const loadCart = async (req, res) => {
-    console.log('loadcart loaded');
+    // console.log('loadcart loaded');
     try {
 
         const id = req.body.id;
+        // const newId = req.body.newId;
         const price = req.body.pdtOffPrice
 
         const splitPrice = price.split("");
@@ -35,29 +38,27 @@ const loadCart = async (req, res) => {
 
         const userData = await User.findOne(req.session.user);
         const pdtData = await Product.findOne({ _id: id })
-
-        // console.log(pdtData, "pdtData.....");
-        // console.log(userData, 'userData');
+        // const pdtSortData = await Product.findOne({ _id: newId })
+        
         const userCart = await Cart.findOne({ userId: userData._id })
-        // const userCart = await Cart.findById(userData._id)
-
-        // console.log(userCart, "userCart.........................");
+       
         if (userCart) {
-            console.log("usercart entered log....");
+            // console.log("usercart entered log....");
             const pdtCart = await Cart.findOne({ 'items.productId': id });
 
-            console.log(pdtCart, 'padtcart.........');
+            // console.log(pdtCart, 'padtcart.........');
             if (pdtCart) {
                 res.json({ status: "viewCart" });
             }
             else {
-                console.log("anand@1234");
+                // console.log("anand@1234");
                 const updateCart = await Cart.findOneAndUpdate(
                     { userId: userData._id },
                     {
                         $push: {
                             items: {
                                 productId: pdtData._id,
+                                
                                 subTotal: priceOff,
                                 quantity: 1,
                             },
@@ -70,7 +71,7 @@ const loadCart = async (req, res) => {
             }
 
         } else {
-            console.log("else worked");
+            // console.log("else worked");
             const cartData = new Cart({
                 userId: userData._id,
                 items: [
@@ -156,7 +157,7 @@ const loadCartpage = async (req, res) => {
 
 
 const increment = async (req, res) => {
-    console.log("addtocart");
+    // console.log("addtocart");
     try {
 
         const { price, pdtId, index, subTotal, qty } = req.body;
@@ -269,13 +270,17 @@ const removeCart = async (req, res) => {
 
 const addOrder = async (req, res) => {
     try {
-        const { addressId, cartid, checkedOption,paymentOption, index } = req.body;
+        const { addressId, cartid, checkedOption,paymentOption,totalDis,code, index } = req.body;
 
+        console.log(totalDis,"anand");
+
+        const findCoupon = await Coupon.findOne({couponCode:code})
 
         if(!addressId || !paymentOption){
             res.json({status:"fill the options"})
         }
         else if(paymentOption == "Cash On Delivery"){
+            console.log("entered cod in placing order");
             const userData = await User.findOne(req.session.user);
             const cartData = await Cart.findOne({ userId: userData._id });
     
@@ -292,40 +297,77 @@ const addOrder = async (req, res) => {
             let address = addressData.address[index]
     
             const date = generateDate()
-            //   console.log(date,"dateeee");
-    
-            const orderData = new Order({
-                userId: userData._id,
-                orderNumber: orderNum,
-                userEmail: userData.email,
-                items: pdtData,
-                totalAmount: cartData.total,
-                orderType: paymentOption,
-                orderDate: date,
-                status: "Processing",
-                shippingAddress: address,
-            });
-    
-            //   console.log(s,"shippingg................");
-    
-            console.log(orderData, "orderrrrrrrrrrrrrrr");
-    
-            await orderData.save();
-    
+
+
             for (const item of cartData.items) {
                 const product = await Product.findById(item.productId);
-                product.countInStock -= item.quantity; // Reduce countInStock by the ordered quantity
+                product.countInStock -= item.quantity; 
                 await product.save();
                 // console.log(product,"saved");
             }
-    
-    
-    
-            res.json({ status: true, order: orderData });
+
+              console.log(findCoupon,"findCoupon in place order");
+              if(findCoupon){
+                const orderData = new Order({
+                    userId: userData._id,
+                    orderNumber: orderNum,
+                    userEmail: userData.email,
+                    items: pdtData,
+                    totalAmount:totalDis,
+                    orderType: paymentOption,
+                    orderDate: date,
+                    status: "Processing",
+                    shippingAddress: address,
+                    coupon : findCoupon.couponCode,
+                    discount : findCoupon.discount
+                });
+        
+                //   console.log(s,"shippingg................");
+        
+                // console.log(orderData, "orderrrrrrrrrrrrrrr ");
+        
+                await orderData.save();
+
+
+                const updateCoupon = await Coupon.findByIdAndUpdate({_id:findCoupon._id},
+                    {
+                        $push:{
+                            users : userData._id
+                        }
+                    })
+        
+                    res.json({ status: true, order: orderData });
+                    await Cart.findByIdAndDelete({ _id: cartData._id });
+        
+              }else{
+                console.log("no coupon in placing order");
+                const orderData = new Order({
+                    userId: userData._id,
+                    orderNumber: orderNum,
+                    userEmail: userData.email,
+                    items: pdtData,
+                    totalAmount:totalDis,
+                    orderType: paymentOption,
+                    orderDate: date,
+                    status: "Processing",
+                    shippingAddress: address,
+                    
+                });
+        
+                await orderData.save();
+
+                res.json({ status: true, order: orderData });
             await Cart.findByIdAndDelete({ _id: cartData._id });
+              }
+    
+            
+    
+    
+            
     
         }
         else if(paymentOption == "Razorpay"){
+            console.log("entered razo place order ");
             const userData = await User.findOne(req.session.user);
             const cartData = await Cart.findOne({ userId: userData._id });
     
@@ -336,15 +378,10 @@ const addOrder = async (req, res) => {
             }
     
             const orderNum = generateOrder.generateOrder();
-            console.log(orderNum,"numorderr");
             const stringOrder_id=orderNum.toString()
-    console.log(stringOrder_id);
             const addressData = await Address.findOne({ "address._id": addressId });
-    console.log(addressData,"dataadress");
             let address = addressData.address[index]
-    console.log(address,'log address');
             const date = generateDate()
-            //   console.log(date,"dateeee");
         
             // for (const item of cartData.items) {
             //     const product = await Product.findById(item.productId);
@@ -354,27 +391,27 @@ const addOrder = async (req, res) => {
             // }
 
             var options = {
-                amount: cartData.total *100,
+                amount: totalDis *100,
                 currency: "INR",
                 receipt: stringOrder_id
               };
-              console.log(options,"optuionsss");
+
+              let amount = Number(totalDis)
+            //   console.log(amount,"amount");
+            //   console.log(options,"optuionsss");
               instance.orders.create(options, function(err, razpayOrder) {
                 if(!err){
                     console.log(razpayOrder);
-                    res.json({status:"razorpay",order:razpayOrder,orderNumber:orderNum,address:addressData})
+                    res.json({status:"razorpay",order:razpayOrder,orderNumber:orderNum,total:amount,code:code,address:addressData})
                 }
                 else{                   
-                     console.log("error else ");
+                    //  console.log("error else ");
 
                     console.error(err);
                 }
               });
         }
-        // const deleteCart = await Cart.findByIdAndDelete({ _id: cartData._id });
-
-
-        // console.log(product,"pdtIdddddddddddddddddd");
+        
 
 
 

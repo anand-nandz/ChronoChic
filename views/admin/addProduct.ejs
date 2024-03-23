@@ -19,6 +19,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"> -->
+    <style>
+        .preview-image {
+        max-width: 120px;
+        max-height: 120px;
+        margin: 5px;
+    }
+    </style>
 </head>
 
 <body class="">
@@ -36,79 +43,68 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/home">
-                        <i class="icon material-icons md-home"></i>
+                <li class="menu-item active ">
+                    <a class="menu-link" href="/admin/home"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item active">
-                    <a class="menu-link" href="/admin/products">
-                        <i class="icon material-icons md-shopping_bag"></i>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/products"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
                 </li>
-
                 <li class="menu-item ">
-                    <a class="menu-link" href="/admin/users">
-                        <i class="icon material-icons md-person"></i>
+                    <a class="menu-link" href="/admin/order"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Category</span>
+                    </a>                   
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Coupons</span>
+                    </a>                   
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/users"> <i class="icon material-icons md-store"></i>
                         <span class="text">Users</span>
                     </a>
                 </li>
-
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-stars"></i>
-                        <span class="text">category</span> </a>
-                </li>
-
-                <!-- <li class="menu-item has-submenu">
-                    <a class="menu-link" href="/orders">
-                        <i class="icon material-icons md-shopping_cart"></i>
-                        <span class="text">Orders</span>
-                    </a>
-                </li> -->
-                <!-- <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-sellers-cards.html">
-                        <i class="icon material-icons md-store"></i>
-                        <span class="text">Sellers</span>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/sales"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sales Report</span>
                     </a>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-form-product-1.html">
-                        <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add product</span>
-                    </a>
-                </li> -->
-                <!-- <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-transactions-1.html">
-                        <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Transactions</span>
-                    </a>
-                </li> -->
-
-                <!-- <li class="menu-item">
-                    <a class="menu-link" href="page-reviews.html">
-                        <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
-                    </a>
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>                    
                 </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-brands.html">
-                        <i class="icon material-icons md-stars"></i>
-                        <span class="text">Brands</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" disabled href="#">
-                        <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
-                    </a>
-                </li> -->
+                
+               
             </ul>
-            <hr />
-
-            <br />
-            <br />
+            <hr>
+            <!-- <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li>
+            </ul> -->
+            <br>
+            <br>
         </nav>
     </aside>
     <main class="main-wrap">
@@ -182,7 +178,7 @@
                                     <input type="text" placeholder="Type here" class="form-control" name="ProductName"
                                         required onblur="validateProductName()" />
 
-                                    <span id="productTitle-error" class="error-message"></span>
+                                    <span id="productTitle-error" class="error-message text-danger"></span>
 
                                 </div>
                                 <div class="row gx-3"></div>
@@ -192,7 +188,7 @@
                                     <input type="text" placeholder="Type here" class="form-control" name="ProductBrand"
                                         required onblur="validateProductBrand()" />
 
-                                    <span id="ProductBrand-error" class="error-message"></span>
+                                    <span id="ProductBrand-error" class="error-message text-danger"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_category" class="form-label">Category</label>
@@ -214,14 +210,14 @@
                                     <input type="text" placeholder="Type here" class="form-control" name="ProductColor"
                                         required onblur="validateProductColor()" />
 
-                                    <span id="ProductColor-error" class="error-message"></span>
+                                    <span id="ProductColor-error" class="error-message text-danger"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_material" class="form-label">Material</label>
                                     <input type="text" placeholder="Type here" class="form-control"
                                         name="ProductMaterial" required onblur="validateProductMaterial()" />
 
-                                    <span id="ProductMaterial-error" class="error-message"></span>
+                                    <span id="ProductMaterial-error" class="error-message text-danger"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_caseSize" class="form-label">Case Size</label>
@@ -232,7 +228,7 @@
                                         <option value="Medium">Medium</option>
                                         <option value="Small">Small</option>
                                     </select>
-                                    <span id="ProductCaseSize-error" class="error-message"></span>
+                                    <span id="ProductCaseSize-error" class="error-message text-danger"></span>
                                 </div>
 
 
@@ -254,7 +250,7 @@
                                     <label class="form-label">Description</label>
                                     <textarea placeholder="Type here" class="form-control" name="ProductDetails"
                                         rows="4" required onblur="validateProductDetails()"></textarea>
-                                    <span id="productDetails-error" class="error-message"></span>
+                                    <span id="productDetails-error" class="error-message text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -262,12 +258,19 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <div>
-                                    <label class="form-label">Images (Up to 4 images)</label>
+                                    <!-- <label class="form-label">Images (Up to 4 images)</label>
                                     <input class="form-control" type="file" multiple name="ProductImage"
                                     accept=".png, .jpeg, .jpg" id="image" onchange="limitFiles(this, 4),previewImages(event)"
-                                        required />
+                                        required /> -->
+                                        <input type="hidden" name="imageScriptArray" id="imageScriptArray">
+                                        <input class="form-control" type="file" multiple accept=".png, .jpeg, .jpg" onchange="limitFiles(this, 4),previewImages(event)" name="ProductImage" id="image">
+                                        <p class="text-danger text-center mb-15 mt-15" id="imageError"></p>
+    
+
                                 </div>
-                                <div id="imagePreview" class="mt-3"></div>
+                                <!-- <div id="imagePreview" class="mt-3"></div> -->
+                                <div id="imagePreviewContainer" class="mt-3"></div>
+
 
                             </div>
                         </div>
@@ -280,22 +283,22 @@
                                     <label class="form-label">Price</label>
                                     <input type="text" placeholder="Type here" name="ProductPrice" id="productPrice"
                                         class="form-control" required onblur="validateProductPrice()" />
-                                    <span id="productPrice-error" class="error-message"></span>
+                                    <span id="productPrice-error" class="error-message text-danger"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Discount Percentage</label>
                                     <input type="number" placeholder="Type here" name="DiscountPercentage"
                                         class="form-control" min="0" max="80" value="0"
                                         onblur="validateDiscountPercentage()" />
-                                    <span id="discountPercentage-error" class="error-message"></span>
+                                    <span id="discountPercentage-error" class="error-message text-danger"></span>
 
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Offer Price</label>
                                     <input type="text" placeholder="Type here" name="ProductOffPrice"
                                         id="ProductOffprice" class="form-control" required
-                                        onblur="validateProductOffPrice()" />
-                                    <span id="ProductOffprice-error" class="error-message"></span>
+                                        onblur="validateProductOffPrice()" readonly/>
+                                    <span id="ProductOffprice-error" class="error-message text-danger"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Count In Stock</label>
@@ -303,7 +306,7 @@
                                         class="form-control" min="0" max="300" required
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                         onblur="validateProductStock()" />
-                                    <span id="countInStock-error" class="error-message"></span>
+                                    <span id="countInStock-error" class="error-message text-danger"></span>
                                 </div>
                                 <div class="mb-4">
                                     <h5 class="mb-3">Status</h5>
@@ -481,11 +484,11 @@
                 const isProductOffPriceValid = validateProductOffPrice();
                 const isProductStockValid = validateProductStock();
                 const isDiscountPercentageValid = validateDiscountPercentage();
-
+                const isImageValid = imageValidation();
                 return isProductNameValid && isProductBrandValid && isProductCategoryValid &&
                     isProductColorValid && isProductMaterialValid && isProductCaseSizeValid &&
                     isProductDetailsValid && isProductPriceValid && isProductOffPriceValid &&
-                    isProductStockValid && isDiscountPercentageValid;
+                    isProductStockValid && isDiscountPercentageValid && isImageValid;
             }
 
             // Your existing validation functions here...
@@ -689,56 +692,220 @@
 
 
 
-        document.getElementById('image').addEventListener('change', function (e) {
-            alert("hiiiiii")
-            var files = e.target.files;
-            var reader = new FileReader();
+        // document.getElementById('image').addEventListener('change', function (e) {
+        //     alert("hiiiiii")
+        //     var files = e.target.files;
+        //     var reader = new FileReader();
 
-            reader.onload = function () {
-                var img = new Image();
-                img.src = reader.result;
+        //     reader.onload = function () {
+        //         var img = new Image();
+        //         img.src = reader.result;
 
-                img.onload = function () {
-                    if (cropper) {
-                        cropper.destroy();
-                    }
-
-
-                    cropper = new Cropper(img, {
-                        aspectRatio: 5 / 7,
-                        viewMode: 1,
-                    });
-                };
-            };
-            reader.readAsDataURL(files[0]);
-        });
+        //         img.onload = function () {
+        //             if (cropper) {
+        //                 cropper.destroy();
+        //             }
 
 
-        function previewImages(event) {
-            var preview = document.getElementById('imagePreview');
-            preview.innerHTML = '';
+        //             cropper = new Cropper(img, {
+        //                 aspectRatio: 5 / 7,
+        //                 viewMode: 1,
+        //             });
+        //         };
+        //     };
+        //     reader.readAsDataURL(files[0]);
+        // });
 
-            var files = event.target.files;
 
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var reader = new FileReader();
+        // function previewImages(event) {
+        //     var preview = document.getElementById('imagePreview');
+        //     preview.innerHTML = '';
 
-                reader.onload = function (e) {
-                    var imgLink = document.createElement('a')
-                    imgLink.href = e.target.result;
-                    imgLink.setAttribute('data-lightbox', 'image-gallery');
-                    var img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.className = 'img-thumbnail';
-                    img.style.maxWidth = '195px';
-                    img.style.maxHeight = '250px';
-                    imgLink.appendChild(img);
-                    preview.appendChild(imgLink);
-                }
-                reader.readAsDataURL(file);
+        //     var files = event.target.files;
+
+        //     for (var i = 0; i < files.length; i++) {
+        //         var file = files[i];
+        //         var reader = new FileReader();
+
+        //         reader.onload = function (e) {
+        //             var imgLink = document.createElement('a')
+        //             imgLink.href = e.target.result;
+        //             imgLink.setAttribute('data-lightbox', 'image-gallery');
+        //             var img = document.createElement('img');
+        //             img.src = e.target.result;
+        //             img.className = 'img-thumbnail';
+        //             img.style.maxWidth = '195px';
+        //             img.style.maxHeight = '250px';
+        //             imgLink.appendChild(img);
+        //             preview.appendChild(imgLink);
+        //         }
+        //         reader.readAsDataURL(file);
+        //     }
+        // }
+
+
+
+        const images = [];
+        function imageValidation() {
+            if (images.length !== 4) {
+                imageError.textContent = "Images must need exactly 4 images";
+                return false;
             }
+            imageError.textContent = "";
+            return true;
         }
+
+
+    //     function previewImages(event) {
+    //     let previewContainer = document.getElementById('imagePreviewContainer');
+    //     const files = event.target.files;
+    //     for (let i = 0; i < files.length; i++) {
+    //         let file = files[i];
+
+    //         // Check the file extension
+    //         let fileType = file.name.split('.').pop().toLowerCase();
+    //         if (fileType !== 'jpg' && fileType !== 'jpeg' && fileType !== 'png') {
+    //             document.getElementById("imageError").textContent = "Only jpg, jpeg, and png files are supported."
+    //             document.getElementById("image").onclick = ()=>{
+    //                 document.getElementById("imageError").textContent = ""
+    //             } 
+                    
+    //             break;
+    //         }
+
+    //         let reader = new FileReader();
+    //         reader.onload = function (e) {
+    //             images.push(file.name);
+    //             let div = document.createElement('div');
+    //             div.style.position = 'relative';
+    //             div.style.display = 'inline-block';
+
+    //             // Create the image
+    //             let img = document.createElement('img');
+    //             img.src = e.target.result;
+    //             img.className = 'preview-image';
+    //             div.appendChild(img);
+
+    //             // Create the button
+    //             let btn = document.createElement('button');
+    //             btn.innerHTML = '-';
+    //             btn.style.position = 'absolute';
+    //             btn.style.top = '0';
+    //             btn.style.right = '0';
+    //             btn.style.backgroundColor = 'black';
+    //             btn.style.color = 'white';
+    //             btn.style.borderRadius = '50px';
+    //             btn.style.border = 'none'; 
+    //             btn.style.cursor = 'pointer';
+    //             btn.style.width = '15px';
+    //             btn.style.height = '15px';
+    //             btn.style.display = 'flex';
+    //             btn.style.justifyContent = 'center';
+    //             btn.style.alignItems = 'center';
+
+    //             // Add an event listener to the button
+    //             btn.addEventListener('click', function(event) {
+    //                 event.preventDefault(); // Prevent form submission
+    //                 previewContainer.removeChild(div); // Remove the corresponding image
+
+    //                 // Remove the image name from the images array
+    //                 let index = images.indexOf(file.name);
+    //                 if (index !== -1) {
+    //                     images.splice(index, 1);
+    //                 }
+    //             });
+
+    //             div.appendChild(btn);
+    //             previewContainer.appendChild(div);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // }
+
+
+
+    function previewImages(event) {
+    let previewContainer = document.getElementById('imagePreviewContainer');
+    const files = event.target.files;
+    
+    // Check if the maximum number of images has been reached
+    if (images.length >= 4) {
+        Swal.fire({
+            icon: "warning",
+            title: "Oops...",
+            text: "You have already added the maximum number of images.",
+        });
+        return; // Prevent adding more images
+    }
+
+    // Calculate the remaining slots available for images
+    const remainingSlots = 4 - images.length;
+
+    // Iterate over the files, considering only the remaining slots
+    for (let i = 0; i < Math.min(remainingSlots, files.length); i++) {
+        let file = files[i];
+
+        // Check the file extension
+        let fileType = file.name.split('.').pop().toLowerCase();
+        if (fileType !== 'jpg' && fileType !== 'jpeg' && fileType !== 'png') {
+            document.getElementById("imageError").textContent = "Only jpg, jpeg, and png files are supported."
+            document.getElementById("image").onclick = () => {
+                document.getElementById("imageError").textContent = ""
+            }
+
+            break;
+        }
+
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            // Add the image to the array
+            images.push(file.name);
+
+            let div = document.createElement('div');
+            div.style.position = 'relative';
+            div.style.display = 'inline-block';
+
+            // Create the image
+            let img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'preview-image';
+            div.appendChild(img);
+
+            // Create the button
+            let btn = document.createElement('button');
+            btn.innerHTML = '-';
+            btn.style.position = 'absolute';
+            btn.style.top = '0';
+            btn.style.right = '0';
+            btn.style.backgroundColor = 'black';
+            btn.style.color = 'white';
+            btn.style.borderRadius = '50px';
+            btn.style.border = 'none';
+            btn.style.cursor = 'pointer';
+            btn.style.width = '15px';
+            btn.style.height = '15px';
+            btn.style.display = 'flex';
+            btn.style.justifyContent = 'center';
+            btn.style.alignItems = 'center';
+
+            // Add an event listener to the button
+            btn.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent form submission
+                previewContainer.removeChild(div); // Remove the corresponding image
+
+                // Remove the image name from the images array
+                let index = images.indexOf(file.name);
+                if (index !== -1) {
+                    images.splice(index, 1);
+                }
+            });
+
+            div.appendChild(btn);
+            previewContainer.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
 
 

@@ -13,24 +13,23 @@ const loadProduct = async (req, res) => {
         const userData = await User.findById(req.session.user_id);
         const productData = await Product.find({ is_listed: true }).limit(12)
         const productSortData = await Product.find({ is_listed: true })
-            .sort({ _id: -1 }) // Sort by creation date in descending order
+            .sort({ _id: -1 }) 
             .limit(4);
-        console.log(productSortData);
+        // console.log(productSortData);
         const categoryData = await Category.find({});
-        // console.log(productData,'pdtdata........................');
-        // console.log(userData,'userdata........................');
+        
         let findWish = {};
         if (req.session.user._id) {
           console.log(req.session.user._id);
             const wishlistData = await Wishlist.findOne({ user_id: req.session.user._id});
-            console.log(wishlistData,"wishlistdata of anana");
+            // console.log(wishlistData,"wishlistdata of anana");
             if (wishlistData) {
                 for (let i = 0; i < productData.length; i++) {
                     findWish[productData[i]._id] = wishlistData.products.some(p => p.productId.equals(productData[i]._id));
                 }
             }
         }
-        console.log(findWish,"wishfindddddddddd");
+        // console.log(findWish,"wishfindddddddddd");
 
         res.render('home', { user: userData, product: productData, category: categoryData, productSort: productSortData ,findWish })
 
@@ -54,7 +53,7 @@ const loadIndividualProduct = async (req, res) => {
 
         const category = categoryData.find(cat => cat._id.toString() === productData.category.toString());
 
-        console.log(categoryData, 'id.........................');
+        // console.log(categoryData, 'id.........................');
         let findWish = {};
         if (req.session.user._id) {
           console.log(req.session.user._id);
@@ -174,7 +173,7 @@ const loadIndividualProduct = async (req, res) => {
 const loadShop = async (req, res) => {
     try {
         const sortby  = req.query.sortby || null;
-        console.log(sortby, "sortby");
+        // console.log(sortby, "sortby");
         let productData;
 
 
@@ -212,8 +211,8 @@ const loadShop = async (req, res) => {
                 sortQuery = { rating: 1 };
                 break;
             default:
-                // Default sorting or when sortby parameter is not provided
-                sortQuery = { relevance: -1 }; // Setting a default sorting option
+                
+                sortQuery = { all: -1 }; // Setting a default sorting option
                 break;
         }
         console.log(sortQuery,'sortquery');
@@ -392,6 +391,25 @@ const removeFromWishlist=async(req,res)=>{
 
 
 
+const searchProducts = async(req,res)=>{
+    try{
+      console.log("hello");
+        const {searchDataValue} = req.body
+        const searchProducts = await Product.find({pname:{
+            $regex: searchDataValue , $options: 'i'
+        }})
+        // console.log(searchProducts);
+        console.log(searchProducts,"searchpdts")
+        res.json({status:"searched",searchProducts})
+  
+    }catch(err){
+        console.log(err);
+      }
+   }
+  
+
+
+
 
 
 
@@ -403,6 +421,7 @@ module.exports = {
     loadWishList,
     addToWishlist,
     removeFromWishlist,
-    removeWish
+    removeWish,
+    searchProducts
 
 }
