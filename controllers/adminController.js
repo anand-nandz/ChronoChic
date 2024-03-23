@@ -1,6 +1,9 @@
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Category = require("../models/categoryModel");
+const Order = require("../models/orderModel");
+const Chart=require("chart.js")
+
 const { body, validationResult } = require('express-validator');
 // const flash = require('connect-flash');
 const flash = require('express-flash');
@@ -25,70 +28,6 @@ const securePassword = async (password) => {
   }
 
 }
-
-
-
-// const loadLogin = async (req, res) => {
-//   try {
-//     res.render("adminlogin")
-//   }
-//   catch (error) {
-//     console.log(error.message);
-//   }
-// }
-
-// const verifyAdmin = async (req, res) => {
-//   try {
-
-//     // const email = req.body.email;
-//     // const password = req.body.password;
-//     const { email, password } = req.body;
-//     console.log(email);
-//     console.log(password);
-//     if (!email || !password) {
-//       req.flash('error', 'Email and password are required')
-//     }
-
-//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//     if (!emailRegex.test(email)) {
-//       req.flash('error', 'Please enter a valid email address');
-//       return res.redirect('/adminlogin');
-//     }
-
-//     const userData = await User.findOne({ email: email });
-//     if(!userData){
-//       req.flash('error', "You are not an admin");
-//       return res.redirect('/adminlogin')
-//     }
-//     if (userData) {
-//       const passwordMatch = await bcrypt.compare(password, userData.password);
-//       if (passwordMatch) {    
-//         if (userData.is_admin === 0) {         
-//           res.render('adminlogin', { message: 'Email and password is Incorrect.' });
-//           console.log(userData);
-//         }
-//         else {
-//           console.log("no");
-//           // console.log(userData);
-//           req.session.user_id = userData._id;
-//           res.redirect('/admin/home')
-//         }
-//       }
-//       else {
-//         res.render('adminlogin', { message: 'Email and password is Incorrect.' });
-//       }
-
-//     }
-//     else {
-//       res.render('adminlogin', { message: 'Email and password is Incorrect.' });
-//     }
-
-//   }
-//   catch (error) {
-//     console.log(error.message);
-//   }
-// }
-
 
 
 const loadLogin = async (req, res) => {
@@ -142,37 +81,220 @@ const verifyAdmin = async (req, res) => {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const loadDashboard = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
-    res.render('adminhome', { admin: userData });
+
+
+
+
+
+    const yValues=[0,0,0,0,0,0,0]
+    const order = await Order.find({
+      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+    });
+
+   
+  
+
+    // for(let i=0;i<order.length;i++){
+    //   const date=order[i].createdAt
+    //   const value=date.getDay()
+    //   yValues[value]+=order[i].totalAmount
+    // }
+
+    // const allData=await Category.find({})
+
+    // const sales=[]
+
+    // for(let i=0;i<allData.length;i++){
+    //   sales.push(0)
+    // }
+
+    // console.log(sales)
+
+    // const allName=allData.map((x)=>x.name)
+    // const allId=allData.map((x)=>x._id)
+    
+
+
+    // console.log(allName);
+    // let productId=[]
+    // let quantity=[]
+
+    // for(let i=0;i<order.length;i++){
+    //   for(let j=0;j<order[i].items.length;j++){
+    //     productId.push(order[i].items[j].productsId)
+    //     quantity.push(order[i].items[j].quantity)
+    //   }
+    // }
+    // console.log(quantity)
+    // console.log(productId)
+    // const productData=[]
+    // for(let i=0;i<productId.length;i++){
+    //   productData.push(await Product.findById({_id:productId[i]}))
+    // }
+  
+    // //  console.log(productData);
+
+    //   for(let i=0;i<productData.length;i++){
+        
+    //     for(let j=0;j<allId.length;j++){
+    //       console.log(allId[j]+"     all id");
+    //       console.log(productData[i].category+"productid");
+    //       if(allId[j]==productData[i].category.toString()){
+    //         console.log(quantity[i]); 
+            
+    //         sales[j]+=quantity[i]
+    //       }
+    //     }
+        
+    //   }
+
+    //   // console.log(sales)
+
+    //   console.log("PRODUCT ID"+productId)
+    //   let productSales=[]
+    //   for(let i=0;i<productId.length;i++){
+    //     productSales.push({salesCount:1})
+    //   }
+      
+
+    //   for(let i=0;i<productId.length;i++){
+    //     for(let j=i+1;j<productId.length;j++){
+    //       if(productId[i].toString()==productId[j].toString()){
+    //         productSales[i].salesCount+=1
+    //         const proData=await Product 
+    //         productSales
+ 
+    //       }
+    //     }
+    //   }
+
+    //   console.log(productSales);
+
+      
+ 
+  
+
+
+
+
+    
+    const orderData = await Order.find({ status: "Delivered" });
+    let sum = 0;
+    for (let i = 0; i < orderData.length; i++) {
+      sum = sum + orderData[i].totalAmount;
+    }
+    const product = await Product.find({});
+    const category = await Category.find({});
+    // const order = await Order.find({
+    //   status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+    // });
+    // Aggregate pipeline to calculate monthly earnings from delivered orders
+    if (order.length > 0) {
+      const month = await Order.aggregate([
+        // Match orders with status "Delivered"
+        { $match: { status: "Delivered" } },
+        // Convert orderDate string to ISODate
+        {
+          $addFields: {
+            orderDate: {
+              $dateFromString: { dateString: "$orderDate", format: "%d-%m-%Y" },
+            },
+          },
+        },
+        // Extract year and month from orderDate
+        {
+          $addFields: {
+            year: { $year: "$orderDate" },
+            month: { $month: "$orderDate" },
+          },
+        },
+        // Group by year and month, calculate total earnings for each month
+        {
+          $group: {
+            _id: { year: "$year", month: "$month" },
+            totalEarnings: { $sum: "$totalAmount" },
+          },
+        },
+        // Sort by year and month
+        { $sort: { "_id.year": 1, "_id.month": 1 } },
+      ]);
+
+      const dailyEarnings = await Order.aggregate([
+        // Match orders with status "Delivered"
+        { $match: { status: "Delivered" } },
+        // Convert orderDate string to ISODate
+        {
+          $addFields: {
+            orderDate: {
+              $dateFromString: { dateString: "$orderDate", format: "%d-%m-%Y" },
+            },
+          },
+        },
+        // Extract year, month, and day from orderDate
+        {
+          $addFields: {
+            year: { $year: "$orderDate" },
+            month: { $month: "$orderDate" },
+            day: { $dayOfMonth: "$orderDate" },
+          },
+        },
+        // Group by year, month, and day, calculate total earnings for each day
+        {
+          $group: {
+            _id: { year: "$year", month: "$month", day: "$day" },
+            totalEarnings: { $sum: "$totalAmount" },
+          },
+        },
+        // Sort by year, month, and day
+        { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+      ]);
+      console.log(dailyEarnings,'dailyyyyyyyyyy');
+      const proLength = product.length;
+      const catLength = category.length;
+      const orderLength = order.length;
+      res.render("adminhome", {
+        sum,
+        proLength,
+        catLength,
+        orderLength,
+        month,
+        yValues,
+        dailyEarnings
+        
+      
+        
+        
+      });
+      //  console.log("hhhhhhhhhheeeeeeelo"+month)
+    } else {
+      const proLength = product.length;
+      const catLength = category.length;
+      const orderLength = order.length;
+      const month = null;
+      const dailyEarnings = null;
+      res.render("adminhome", {
+        sum,
+        proLength,
+        catLength,
+        orderLength,
+        month,
+        yValues,
+        dailyEarnings
+        
+      });
+    }
+
+
+
+
+
+
+
+
+    // res.render('adminhome', { admin: userData });
 
   }
   catch (error) {
@@ -181,21 +303,34 @@ const loadDashboard = async (req, res) => {
 }
 
 
-
-
-
-
 const loadUsers = async (req, res) => {
   try {
+    // const userData = await User.find({})
+    const perPage = 6;
+    let page = parseInt(req.query.page) || 1;
+
+    const totalUsers = await User.countDocuments({});
+    const totalPage = Math.ceil(totalUsers / perPage);
+
+    if (page < 1) {
+      page = 1;
+    } else if (page > totalPage) {
+      page = totalPage;
+    }
+
+    const startSerialNumber = (page - 1) * perPage + 1;
+
     const userData = await User.find({})
+      .sort({ _id: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+      
     //    console.log(userData)
-    res.render('users', { userData })
+    res.render('users', { userData,page, totalPage, startSerialNumber,perPage })
   } catch (error) {
     console.log(error.message)
   }
 }
-
-
 
 
 const editUser = async (req, res) => {
@@ -292,22 +427,6 @@ const delete_User = async (req, res) => {
 
 
 
-//   const addUser=async(req,res)=>{
-//     try {
-//       res.render("addUser", {
-//         errorMessage: null,
-//       });
-//     } catch (error) {
-//      console.log(error.message);
-//     }
-//   }
-
-
-
-
-
-
-
 const loadProducts = async (req, res) => {
   try {
     const perPage = 5;
@@ -329,8 +448,8 @@ const loadProducts = async (req, res) => {
       .skip(perPage * (page - 1))
       .limit(perPage);
 
-   
-    
+
+
     const categories = await Category.find({ is_blocked: false });
 
     res.render('products', { allProducts, categories, totalPage, page, startSerialNumber });
@@ -395,7 +514,7 @@ const editProduct = async (req, res) => {
     const product = await Product.findById(id);
     console.log(product.images);
     const categories = await Category.find({ is_blocked: false });
-    if (!product) { 
+    if (!product) {
       return res.status(404).send("Product not found");
     }
 
@@ -412,36 +531,16 @@ const editProduct = async (req, res) => {
 
 const edit_product = async (req, res) => {
   try {
-    console.log(req.body);
-    console.log("loggged edit");
+
     const productId = req.query.id;
-    console.log(productId, "idd");
+    // console.log(productId, "idd");
     const existingProduct = await Product.findById(productId);
-console.log(existingProduct,"existing");
+    // console.log(existingProduct,"existing");
     if (!existingProduct) {
       return res.status(404).send("Product not found.");
     } else {
-      console.log("else inside");
+      // console.log("else inside");
       const updatedCategory = req.body.ProductCategory;
-
-
-
-      console.log(req.body.ProductName);  
-      console.log(req.body.ProductPrice);
-      console.log(req.body.ProductOffPrice);
-      console.log(req.body.DiscountPercentage);
-      console.log(req.body.ProductDetails);
-      console.log(req.body.ProductBrand);
-      console.log(req.body.ProductColor);
-      console.log(req.body.ProductMaterial);
-      console.log(req.body.ProductStock);
-      console.log(updatedCategory);
-      console.log(req.body.ProductCaseSize);
-
-
-
-
-
 
       const updatedProduct = {
         pname: req.body.ProductName,
@@ -459,24 +558,9 @@ console.log(existingProduct,"existing");
       };
 
       const data = await Product.findByIdAndUpdate(productId, updatedProduct);
-      console.log(data,'saved');
+      // console.log(data,'saved');
       res.redirect("/admin/products");
     }
-
-    // let existingImages = existingProduct.images || [];
-    // const newImages = req.files ? req.files.map(file => file.filename) : [];
-
-
-    // for (let i = 0; i < Math.min(newImages.length, existingImages.length); i++) {
-    //   existingImages[i] = newImages[i];
-    // }
-
-    // if (newImages.length > existingImages.length) {
-    //   existingImages.push(...newImages.slice(existingImages.length));
-    // }
-
-    // existingImages = existingImages.slice(0, 4);
-
 
   } catch (error) {
     console.error(error);
@@ -487,19 +571,19 @@ console.log(existingProduct,"existing");
 
 const editproductImagePOST = async (req, res) => {
   try {
-    console.log(req.file);
+   
     const image = req.body.imagename;
     const index = parseInt(req.body.index);
     const productID = req.body.productID;
-    console.log(image , index , productID);
+    // console.log(image , index , productID);
 
     if (image) {
       const productDetails = await Product.findOne({ _id: productID });
-      console.log(productDetails.images);
+
       productDetails.images.splice(index, 1, image);
-      console.log(productDetails.images);
+
       await productDetails.save();
-      console.log(productDetails.images);
+
       res.json({ status: "okay" })
     } else {
       res.json({ status: "oops" })
@@ -508,141 +592,6 @@ const editproductImagePOST = async (req, res) => {
     console.log(error);
   }
 }
-
-// const editProduct = async (req, res) => {
-//   try {
-//       const id = req.query.id;
-//       const image = req.query.delete;
-
-//       if (image) {
-//           const product = await Product.findById(id);
-//           const index = product.images.indexOf(image);
-
-//           if (index > -1) {
-//               await Product.findByIdAndUpdate(id, { $unset: { [`images.${index}`]: 1 } });
-//               await Product.findByIdAndUpdate(id, { $pull: { images: null } });
-//               return res.status(200).send("Image deleted successfully");
-//           } else {
-//               return res.status(404).send("Image not found in the array");
-//           }
-//       }
-
-//       const product = await Product.findById(id);
-//       const categories = await Category.find({ is_blocked: false });
-
-//       if (!product) {
-//           return res.status(404).send("Product not found");
-//       }
-
-//       res.render("editProduct", { product, categories });
-//   } catch (error) {
-//       console.error(error);
-//       res.status(500).send("Internal Server Error");
-//   }
-// };
-
-// const edit_product = async (req, res) => {
-//   try {
-//     const productId = req.query.id;
-//     const existingProduct = await Product.findById(productId);
-
-//     if (!existingProduct) {
-//       return res.status(404).send("Product not found.");
-//     }
-
-//     let existingImages = existingProduct.images || [];
-//     const newImages = req.files ? req.files.map(file => file.filename) : [];
-
-//     // Remove images based on index
-//     const removeIndices = req.body.remove_image || [];
-//     removeIndices.forEach(index => {
-//       existingImages.splice(index, 1);
-//     });
-
-//     // Handle image deletion based on image name
-//     const deletedImageName = req.query.delete;
-//     if (deletedImageName) {
-//       const index = existingImages.indexOf(deletedImageName);
-//       if (index !== -1) {
-//         // Delete the existing image file
-//         fs.unlinkSync(path.join(__dirname, 'public', 'productAssets', deletedImageName));
-//         existingImages.splice(index, 1);
-//       }
-//     }
-
-//     // Replace image if provided
-//     const imageToReplaceIndex = req.body.imageToReplace;
-//     if (imageToReplaceIndex !== undefined && req.file) {
-//       // Delete the existing image
-//       const imageToReplace = existingImages[imageToReplaceIndex];
-//       if (imageToReplace) {
-//         // Delete the replaced image file
-//         fs.unlinkSync(path.join(__dirname, 'public', 'productAssets', imageToReplace));
-//       }
-//       // Add the new image
-//       existingImages[imageToReplaceIndex] = req.file.filename;
-//     }
-
-//     // Limit to 4 images
-//     existingImages = existingImages.slice(0, 4);
-
-//     // Update other product details
-//     const updatedCategory = req.body.ProductCategory;
-//     const updatedProduct = {
-//       pname: req.body.ProductName,
-//       price: parseFloat(req.body.ProductPrice),
-//       offprice: parseFloat(req.body.ProductOffPrice),
-//       discountPercentage: parseInt(req.body.DiscountPercentage),
-//       description: req.body.ProductDetails,
-//       category: updatedCategory,
-//       brand: req.body.ProductBrand,
-//       color: req.body.ProductColor,
-//       images: existingImages,
-//       material: req.body.ProductMaterial,
-//       countInStock: parseInt(req.body.ProductStock),
-//       caseSize: req.body.ProductCaseSize,
-//       is_listed: req.body.listed === 'true'
-//     };
-
-//     // Update the product in the database
-//     await Product.findByIdAndUpdate(productId, updatedProduct);
-
-//     // Redirect to the products page after successful update
-//     res.redirect("/admin/products");
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Internal Server Error.");
-//   }
-// };
-
-
-
-
-
-// // Define the route handler function for image replacement
-// const replaceImage = (req, res) => {
-//     const imageToReplace = req.body.imageToReplace;
-//     const newImage = req.file;
-
-//     if (!newImage) {
-//         return res.status(400).send('No new image provided');
-//     }
-
-//     // Logic to delete the existing image (if it exists)
-//     if (imageToReplace && fs.existsSync(path.join(__dirname, 'public', 'productAssets', imageToReplace))) {
-//         fs.unlinkSync(path.join(__dirname, 'public', 'productAssets', imageToReplace));
-//     }
-
-//     // Logic to save the new image
-//     const imagePath = path.join(__dirname, 'public', 'productAssets', newImage.filename);
-//     fs.renameSync(newImage.path, imagePath);
-
-//     // Optionally, you can update the database or send a response to the client
-//     res.sendStatus(200); // Send a success status code
-// };
-
-
-
 
 
 const deleteProduct = async (req, res) => {
@@ -742,25 +691,6 @@ const editCategory = async (req, res) => {
 };
 
 
-// const edit_Category = async (req, res) => {
-//   try {
-//     const categoryId = req.params.id;
-//     const { name, description, status } = req.body;
-//     const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name, description, is_blocked: status === 'Unlist' });
-
-
-//     if (!updatedCategory) {
-//       return res.status(404).send('Category not found');
-//     }
-//     req.flash('success', 'Category updated successfully.');
-//     res.redirect('/admin/category');
-//   } catch (err) {
-//     console.error(err);
-//     req.flash('error', 'Failed to update category.');
-//     res.status(500).send('Internal Server Error');
-//   }
-// }
-
 const edit_Category = async (req, res) => {
   try {
     const categoryId = req.params.id;
@@ -770,8 +700,6 @@ const edit_Category = async (req, res) => {
     if (!nameRegex.test(name)) {
       req.flash("error", "Category Name must contain only characters with spaces between names.");
       return res.redirect('/admin/category/edit/' + categoryId);
-
-
     }
     // Validate name and description
     if (!name || !name.trim()) {
@@ -809,8 +737,6 @@ const edit_Category = async (req, res) => {
 }
 
 
-
-
 const deleteCategory = async (req, res) => {
   try {
     const id = req.query.id;
@@ -841,9 +767,105 @@ const deleteCategory = async (req, res) => {
 
 
 
+const loadSales = async (req, res) => {
+  try {
+    const order = await Order.find({
+      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+    }).sort({_id:-1});
+    //  let couponid=[]
+    //  for(let i=0;i<order.length;i++){
+    //    if(order[i].coupon){
+    //       couponid.push(order[i].coupon)
+    //    }
+    //  }
+    //  const couponData=[]
+
+    //  for(let i=0;i<couponid.length;i++){
+    //    couponData.push(await Coupon.find({couponCode:couponid[i]}))
+    //  }
+
+    //  console.log(couponData)
+     console.log(order,"orders")
+
+    res.render("adminSales", { order });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 
 
+const dateFilter = async (req, res) => {
+  try {
+    const date = req.query.value;
+    const parts = date.split("-");
+    const day = parseInt(parts[2], 10);
+    const month = parseInt(parts[1], 10);
+
+    const rotatedDate = day + "-" + month + "-" + parts[0];
+    // console.log(rotatedDate)
+
+    const order = await Order.find({
+      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+      orderDate: rotatedDate,
+    }).sort({_id:-1});
+
+    // console.log(order)
+
+    res.render("adminSales", { order });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const sortDate = async (req, res) => {
+  try {
+    const sort = req.query.value;
+    let orderDateQuery = {};
+
+    const currentDate = new Date();
+
+    const currentDateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
+    if (sort === "Day") {
+      
+      orderDateQuery = currentDateString;
+    } else if (sort === "Week") {
+      const firstDayOfWeek = new Date(currentDate);
+      firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Start of the current week
+      const lastDayOfWeek = new Date(currentDate);
+      lastDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 6); // End of the current week
+      const firstDayOfWeekString = `${firstDayOfWeek.getDate()}-${firstDayOfWeek.getMonth() + 1}-${firstDayOfWeek.getFullYear()}`;
+      const lastDayOfWeekString = `${lastDayOfWeek.getDate()}-${lastDayOfWeek.getMonth() + 1}-${lastDayOfWeek.getFullYear()}`;
+      orderDateQuery = {
+        $gte: firstDayOfWeekString,
+        $lte: lastDayOfWeekString
+      };
+    } else if (sort === "Month") {
+      // For Month sorting, query orders for the current month
+      orderDateQuery = {
+        $regex: `-${currentDate.getMonth() + 1}-`
+      };
+    } else if (sort === "Year") {
+      // For Year sorting, query orders for the current year
+      orderDateQuery = {
+        $regex: `-${currentDate.getFullYear()}$`
+      };
+    }
+
+    console.log(orderDateQuery)
+
+    // Query orders based on status and order date
+    const order = await Order.find({
+      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+      orderDate: orderDateQuery
+    }).sort({_id:-1});
+
+
+    res.render("adminSales", { order });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 
 
@@ -875,6 +897,9 @@ module.exports = {
   editCategory,
   edit_Category,
   deleteCategory,
-  editproductImagePOST
-  // replaceImage
+  editproductImagePOST,
+  loadSales,
+  dateFilter,
+  sortDate
+
 }
