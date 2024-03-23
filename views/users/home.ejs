@@ -11,6 +11,10 @@
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
 
@@ -70,6 +74,91 @@
         }
     </style>
 
+<style>
+    .search-result {
+        display: none;
+        position: absolute;
+        height: auto;
+
+    }
+
+    .no-product-found {
+        background-color: rgb(273, 273, 273);
+        position: absolute;
+        display: none;
+        width: 414px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        /* margin-top: 10px; */
+        padding: 5px 0;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        margin-left: 62.5px;
+
+        z-index: 1;
+    }
+
+    #searchResultsContainer {
+        background-color: rgb(273, 273, 273);
+        position: absolute;
+        z-index: 1;
+        width: 414px;
+        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        margin-left: 62.5px;
+
+    }
+
+    .product-container {
+        width: 200px;
+        margin: 10px;
+        text-align: left;
+
+    }
+
+    .product-container img {
+        margin-left: 30px;
+        margin-right: 370px;
+        max-width: 55px;
+        height: auto;
+        transform: rotate(0deg);
+        transition: transform 0.5s ease;
+
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: -50px;
+    }
+
+    .product-info p {
+        margin: -2px 37px;
+        margin-left: 40px;
+        font-size: 10px;
+        /* margin-top: 5px; */
+        color: black;
+        font-weight: bold;
+    }
+
+
+    .rotate-90 {
+        transform: rotate(90deg);
+    }
+
+    .rotate-180 {
+        transform: rotate(180deg);
+    }
+
+    .rotate-270 {
+        transform: rotate(270deg);
+    }
+</style>
+
 
 </head>
 
@@ -88,26 +177,16 @@
                         <div class="col-lg-6">
                             <div class="header-top-settings">
                                 <ul class="nav align-items-center">
-                                    <li class="language">English <i class="fa fa-angle-down"></i>
-                                        <ul class="dropdown-list">
-                                            <li><a href="#">English</a></li>
-                                            <!-- <li><a href="#">French</a></li> -->
-                                        </ul>
+                                    <li class="language">English
+                                        
                                     </li>
-                                    <!-- <li class="curreny-wrap">Currency <i class="fa fa-angle-down"></i>
-                                        <ul class="dropdown-list curreny-list">
-                                            <li><a href="#">$ USD</a></li>
-                                            <li><a href="#"> € EURO</a></li>
-                                        </ul>
-                                    </li> -->
+                                    
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="top-info-wrap text-end">
                                 <ul class="my-account-container">
-                                    <!-- <li><a href="login">login </a></li>
-                                    <li><a href="register">register</a></li> -->
                                     <li><a href="userProfile">My account</a></li>
                                     <li><a href="cart">Cart</a></li>
                                     <li><a href="wishlist">Wishlist</a></li>
@@ -135,28 +214,32 @@
                         <div class="col-lg-6">
                             <div class="search-box-wrapper">
                                 <div class="search-box-inner-wrap">
-                                    <form class="search-box-inner">
-                                        <div class="search-select-box">
-                                            <select class="nice-select">
+                                    <div class="search-box-inner">
+                                        
+                                        <!-- <div class="search-select-box">
+                                            <div class="nice-select">
                                                 <optgroup label=" Watch">
-                                                    <option value="volvo">All</option>
-                                                    <!-- <option value="saab">Watch</option> -->
-                                                    <!-- <option value="saab">Air cooler</option> -->
+                                                    <option value="CC">Cc</option>
+                                                   
                                                 </optgroup>
-                                                <!-- <optgroup label="Fashion"> -->
-                                                <!-- <option value="mercedes">Womens tops</option> -->
-                                                </optgroup>
-                                            </select>
-                                        </div>
+                                                
+                                                </div>
+                                        </div> -->
                                         <div class="search-field-wrap">
-                                            <input type="text" class="search-field" placeholder="Search product...">
+                                            <input type="text" id="input" class="search-field"
+                                                placeholder="Search product..." onkeyup="SearchProduct()">
 
-                                            <div class="search-btn">
-                                                <button><i class="icon-magnifier"></i></button>
+
+                                            <div class="search-result">
+                                                <div id="searchResultsContainer"></div>
+
                                             </div>
+
+
+                                            <h5 class="no-product-found">No products found</h5>
                                         </div>
 
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -164,66 +247,13 @@
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
-                                    <a href="wishlist"><span class="cart-total">0</span> <i class="icon-heart"></i></a>
+                                    <a href="wishlist
+                                    "><span class="cart-total"></span> <i class="icon-heart"></i></a>
                                 </div>
 
                                 <div class="shopping-cart-wrap">
                                     <a href="cart"><i class="icon-basket-loaded"></i><span
-                                            class="cart-total">0</span></a>
-
-
-                                    <!-- <ul class="mini-cart">
-                                        <li class="cart-item">
-                                            <div class="cart-image">
-                                                <a href="product-details.html"><img alt=""
-                                                        src="assets/images/product/product-02.png"></a>
-                                            </div>
-                                            <div class="cart-title">
-                                                <a href="product-details.html">
-                                                    <h4>Product Name 01</h4>
-                                                </a>
-                                                <div class="quanti-price-wrap">
-                                                    <span class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price">$130.00</span></div>
-                                                </div>
-                                                <a class="remove_from_cart" href="#"><i class="icon_close"></i></a>
-                                            </div>
-                                        </li>
-                                        <li class="cart-item">
-                                            <div class="cart-image">
-                                                <a href="product-details.html"><img alt=""
-                                                        src="assets/images/product/product-03.png"></a>
-                                            </div>
-                                            <div class="cart-title">
-                                                <a href="product-details.html">
-                                                    <h4>Product Name 03</h4>
-                                                </a>
-                                                <div class="quanti-price-wrap">
-                                                    <span class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price">$130.00</span></div>
-                                                </div>
-                                                <a class="remove_from_cart" href="#"><i
-                                                        class="icon-trash icons"></i></a>
-                                            </div>
-                                        </li>
-                                        <li class="subtotal-box">
-                                            <div class="subtotal-title">
-                                                <h3>Sub-Total :</h3><span>$ 260.99</span>
-                                            </div>
-                                        </li>
-                                        <li class="mini-cart-btns">
-                                            <div class="cart-btns">
-                                                <a href="">View cart</a>
-                                                <a href="">Checkout</a>
-                                            </div>
-                                        </li>
-                                    </ul> -->
-
-
-
-
-
-
+                                            class="cart-total"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -248,25 +278,6 @@
 
                                         <li><a href="shop">Shop </a>
                                            
-                                        </li>
-                                        <!-- <li><a href="blog.html">Blog <i class="fa fa-angle-down"></i></a>
-
-                                            <ul class="sub-menu">
-                                                <li><a href="blog.html">Blog Left Sidebar</a></li>
-                                                <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                                                <li><a href="blog-grid.html">Blog Grid Page</a></li>
-                                                <li><a href="blog-largeimage.html">Blog Large Image</a></li>
-                                                <li><a href="blog-details.html">Blog Details Page</a></li>
-                                            </ul>
-                                        </li> -->
-
-                                        <li><a href="#">Pages <i class="fa fa-angle-down"></i></a>
-                                            <ul class="sub-menu">
-                                                <!-- <li><a href="frequently-questions.html">FAQ</a></li> -->
-                                                <li><a href="my-account.html">My Account</a></li>
-                                                <!-- <li><a href="login">login </a></li>
-                                                <li><a href="register">register</a></li> -->
-                                            </ul>
                                         </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
@@ -639,24 +650,23 @@
                                     </div>
 
                                     <div class="product-caption">
-
-                                        <h4 class="product-name"><a href="product-details.html">
-                                                <%= productList.pname %>
-                                            </a></h4>
-                                        <div class="price-box">
-                                            <span class="new-price">
-                                                <%= productList.brand %>
-                                            </span>
-                                        </div>
-                                        <div class="price-box">
-                                            <span id="offerPrice<%= i %>" class="new-price">₹<%= productList.offprice %>
-                                            </span>
-                                            <span class="old-price">₹<%= productList.price %></span>
-                                            <span class="text-danger">
-                                                <%= productList.discountPercentage %>% OFF
-                                            </span>
-                                        </div>
-                                    </div>
+                                                <h4 class="product-name"><a href="product-details.html">
+                                                        <%= productList.pname %>
+                                                    </a></h4>
+                                                <div class="price-box">
+                                                    <span class="new-price">
+                                                        <%= productList.brand %>
+                                                    </span>
+                                                </div>
+                                                <div class="price-box">
+                                                    <span id="offerPrice<%= i %>" class="new-price">₹<%=
+                                                            productList.offprice %></span>
+                                                    <span class="old-price">₹<%= productList.price %></span>
+                                                    <span class="text-danger">
+                                                        <%= productList.discountPercentage %>% OFF
+                                                    </span>
+                                                </div>
+                                            </div>
                                 </div>
                             </div>
                             <% } %>
@@ -729,8 +739,8 @@
 
 
                             <div class="row product-active-lg-4">
-                                <% for (let i=0; i < Math.min(productSort.length, 8); i++) { let
-                                    productList=productSort[i]; %>
+                                <% for (let i=0; i < Math.min(productSort.length, 4); i++) { %>
+                                    <% let productList=productSort[i]; %>
                                     <div class="col-lg-3 col-md-6 col-sm-6">
                                         <div class="single-product-area mt-30">
                                             <div class="product-thumb">
@@ -744,14 +754,7 @@
                                                     <span class="out-of-stock">Out of Stock</span>
                                                     <% } %>
                                                         <div class="action-links">
-                                                            <% if (productList.countInStock !==0) { %>
-                                                                <input type="hidden" id="productId<%= i %>"
-                                                                    value="<%= productList._id %>">
-                                                                <a class="cart-btn" title="Add to Cart"
-                                                                    onclick="addCart('<%= i %>')">
-                                                                    <i class="icon-basket-loaded"></i>
-                                                                </a>
-                                                                <% } %>
+                                                            
                                                                     <% if (findWish[productList._id]) { %>
                                                                         <a class="action-btn hover-up"
                                                                             title="Remove from Wishlist"
@@ -1363,16 +1366,20 @@
             function addCart(index) {
                 const id = document.getElementById("productId" + index).value;
                 // alert(id)
+                // const newId = document.getElementById("productNewId" + index).value;
+
 
                 const pdtOffPrice = document.getElementById('offerPrice' + index).innerHTML
 
                 // alert(id + index)
+               
 
                 $.ajax({
                     url: "/addCartLoad",
                     method: "post",
                     data: {
                         id,
+                        newId,
                         pdtOffPrice,
                     },
                     success: (response) => {
@@ -1488,6 +1495,90 @@
                 })
             }
 
+
+
+            const inputElement = document.getElementById('input');
+
+        let timeoutId;
+
+        function debounce(func, delay) {
+            return function () {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func();
+                }, delay);
+            };
+        }
+
+        function showSearchResult() {
+            const searchResult = document.querySelector('.search-result');
+            searchResult.style.display = 'block';
+        }
+
+        function hideSearchResult() {
+            const searchResult = document.querySelector('.search-result');
+            searchResult.style.display = 'none';
+        }
+
+        function showNoProductFound() {
+            const noProductFound = document.querySelector('.no-product-found');
+            noProductFound.style.display = 'block';
+        }
+
+        function hideNoProductFound() {
+            const noProductFound = document.querySelector('.no-product-found');
+            noProductFound.style.display = 'none';
+        }
+
+        function SearchProduct() {
+            const searchDataValue = inputElement.value.trim();
+
+
+            if (searchDataValue !== "") {
+                showSearchResult();
+                debounce(() => {
+                    console.log(searchDataValue)
+                    $.ajax({
+                        url: "/search",
+                        method: "post",
+                        data: {
+                            searchDataValue
+                        },
+                        success: (response) => {
+                            const searchResultsContainer = document.getElementById('searchResultsContainer')
+                            searchResultsContainer.innerHTML = ""
+
+                            if (response.searchProducts.length > 0) {
+                                response.searchProducts.forEach(element => {
+                                    const productContainer = document.createElement('div');
+                                    productContainer.classList.add('product-container');
+
+                                    const productElement = document.createElement('div');
+                                    productElement.innerHTML = `
+                                <a href="/productDetails?id=${element._id}" class="product-link">
+                                    <img src="/productAssets/${element.images[0]}" alt="product">
+                                    <div class="product-info">
+                                        <p>${element.pname}</p>
+                                        <p>₹${element.offprice}</p>
+                                    </div>
+                                `;
+
+                                    productContainer.appendChild(productElement);
+                                    searchResultsContainer.appendChild(productContainer);
+                                });
+                                hideNoProductFound();
+                            } else {
+                                hideSearchResult();
+                                showNoProductFound();
+                            }
+                        }
+                    })
+                }, 500)();
+            } else {
+                hideSearchResult();
+                hideNoProductFound();
+            }
+        }
         </script>
 
 </body>
