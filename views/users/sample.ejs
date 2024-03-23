@@ -913,3 +913,551 @@ timer: 1500
 }).then(function () {
 window.location.href = `/orderPlaced?id=${response.order.orderNumber}` // Redirect to order placed page
 });
+
+
+
+
+
+
+
+
+//register
+
+
+<div class="user-box">
+                                                            <input type="password" name="userpassword" id="userpassword" placeholder="Password" required="" onkeyup="validatePassword()"/>
+                                                            <label>Password</label>
+                                                            <span class="password-toggle-icon"  onclick="togglePasswordVisibility('userpassword')"><i
+                                                                    class="fas fa-eye-slash"></i></span>
+                                                            </div>
+
+<style>
+    
+    .user-box {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.user-box input {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 2px solid #333;
+  outline: none;
+  background: transparent;
+}
+
+.user-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #333;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.user-box input:focus ~ label,
+.user-box input:valid ~ label {
+  transform: translateY(-20px);
+  font-size: 14px;
+  color: #333;
+}</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="coupon-accordion" id="coupon">
+                                <h3>Have a coupon? <span class="coupon" id="showcoupon">Click here to enter your
+                                        code</span></h3>
+                                <div class="coupon-content" id="checkout-coupon">
+                                    <div class="coupon-info">
+                                        <!-- <form action="#"> -->
+                                            <p class="checkout-coupon">
+                                                <input type="text" placeholder="Enter Coupon Code..." id="Code">
+                                                <!-- <button type="submit" class="btn button-apply-coupon"
+                                                    name="apply_coupon" value="Apply coupon">Apply coupon</button> -->
+                                                    <div class="form-group">
+                                                        <button class="btn button-apply-coupon" onclick="apply('<%= cartData._id %>')"
+                                                            id="apply" name="login">Apply Coupon</button>
+                                                        <button class="btn button-apply-coupon" id="remove" style="display: none;"
+                                                            onclick="remove()">Remove</button>
+                                                    </div>
+                                                    <br>
+                                                    <a href="/coupon" id="show">Available Coupons</a>
+                                            </p>
+                                        <!-- </form> -->
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <section class="mt-60 mb-60">
+            <div class="container">
+                <% if (pdtData&&findOrder) { %>
+
+                    <% for( let i=0; i < pdtData.length; i++ ) { %>
+                <h2>#OrderId : <%= findOrder.orderNumber %></h2><br>
+
+                <% } %>
+
+
+                <% }%>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table shopping-summery text-center clean">
+                                <thead>
+                                    <tr class="main-heading">
+                                        
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Payment Type</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Quantity</th>
+                                        <!-- <th scope="col">Remove</th> -->
+                                        <!-- <th scope="col">Remove</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (pdtData&&findOrder) { %>
+
+                                        <% for( let i=0; i < pdtData.length; i++ ) { %>
+
+
+                                            <tr>
+                                                
+                                                <td class="image product-thumbnail"><img style="height: 100px; width: 100px;"
+                                                        src="/productAssets/<%= pdtData[i].images[1] %>" alt="#"></td>
+                                                <td class="product-des product-name">
+                                                    <p class="product-name"><a href="shop-product-right.html">
+                                                            <%= pdtData[i].pname %>
+                                                        </a></p>
+                                                    
+                                                </td>
+                                                <td class="price" data-title="Price"><span>
+                                                        <%= findOrder.orderDate %>
+                                                    </span></td>
+                                                    <td class="price" data-title="Price"><span>
+                                                        <%= findOrder.orderType %>
+                                                    </span></td>
+
+                                                <td class="text-right" data-title="Cart">
+                                                    <span>
+                                                        <%= findOrder.shippingAddress[0].name %> <br>
+                                                    </span>
+                                                    <span>
+                                                        <%= findOrder.shippingAddress[0].homeAddress %> <br>
+                                                    </span>
+                                                    <span>
+                                                        <%= findOrder.shippingAddress[0].city %>
+                                                    </span>
+                                                    <span>
+                                                        <%= findOrder.shippingAddress[0].phone %> <br>
+                                                    </span>
+                                                </td>
+                                                <td class="text-right" data-title="Cart">
+                                                    <span>
+                                                        <%= findOrder.items[i].subTotal %>
+                                                    </span>
+                                                </td>
+                                                <td class="text-center" data-title="Stock">
+                                                    <!-- <div class="detail-qty border radius  m-auto"> -->
+
+                                                        <span class="qty-val">
+                                                            <%= findOrder.items[i].quantity%>
+                                                        </span>
+
+                                                    <!-- </div> -->
+                                                </td>
+                                                <!-- <td class="action" data-title="Remove"><a href="#" class="text-muted"><i class="fa fa-trash-alt"></i></a></td> -->
+                                            </tr>
+
+                                            <% } %>
+
+
+                                                <% }%>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        
+
+                        <div class="divider center_icon mt-50 mb-50"><i class="fa fa-gem"></i></div>
+                        <div class="row mb-50">
+                            
+                            <div class="col-lg-6 col-md-12" style="margin-left:600px ;">
+                                <div class="border p-md-4 p-30 border-radius-10 cart-totals">
+                                    <div class="heading_s1 mb-3">
+                                        <h4>Totals</h4>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="cart_total_label">Subtotal</td>
+                                                    <td class="cart_total_amount"><span
+                                                            class="font-lg fw-900 text-brand">₹<%= findOrder.totalAmount
+                                                                %></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="cart_total_label">Shipping</td>
+                                                    <td class="cart_total_amount"> <i class="ti-gift mr-5"></i> Free
+                                                        Shipping</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="cart_total_label">Total</td>
+                                                    <td class="cart_total_amount"><strong><span
+                                                                class="font-xl fw-900 text-brand">₹<%=
+                                                                    findOrder.totalAmount %></span></strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <% if (findOrder.status=="Canceled" ) { %>
+
+                                        <p style="color: rgb(226, 78, 20); font-size: 20px; font-weight: bold;">Canceled
+                                        </p>
+
+                                        <% }else if(findOrder.status=="Delivered" ){ %>
+
+                                            <p
+                                                style="color: rgb(20, 226, 30); font-size: 20px; font-weight: bold; margin-bottom: 30px;">
+                                                Delivered</p>
+
+                                            <button onclick="Return()" class="single-add-to-cart"
+                                                style="padding: 8px 16px; font-size: 14px; background-color: #c89979; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 30px;">
+                                                Request Return
+                                            </button>
+
+                                            <div id="reason" style="display: none;">
+                                                <input type="radio" id="dont_want" name="reason"
+                                                    value="Don't want the product anymore"
+                                                    style="width: 15px; height: 15px; margin-right: 5px;">
+                                                <label for="dont_want">Don't want the product anymore</label><br>
+
+                                                <input type="radio" id="quality" name="reason"
+                                                    value="Quality of the product not as expected"
+                                                    style="width: 15px; height: 15px; margin-right: 5px;">
+                                                <label for="quality">Quality of the product not as expected</label><br>
+
+                                                <input type="radio" id="received_wrong" name="reason"
+                                                    value="Received wrong item"
+                                                    style="width: 15px; height: 15px; margin-right: 5px;">
+                                                <label for="received_wrong">Received wrong item</label><br>
+
+                                                <input type="radio" id="received_broken" name="reason"
+                                                    value="Received a broken/damaged item"
+                                                    style="width: 15px; height: 15px; margin-right: 5px;">
+                                                <label for="received_broken">Received a broken/damaged item</label><br>
+
+                                                <input type="radio" id="received_broken" name="reason"
+                                                    value="Received a broken/damaged item"
+                                                    style="width: 15px; height: 15px; margin-right: 5px;">
+                                                <label for="received_broken">Other reason</label><br>
+
+                                                <p class="text-danger" id="error" style="display: none;">Select one</p>
+
+                                                <button onclick="submit('<%=findOrder._id%>')"
+                                                    style="padding: 6px 8px; font-size: 14px; background-color: #c89979; color: white; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 30px; margin-top: 20px;">Submit</button>
+                                            </div>
+
+
+
+                                            <% }else if(findOrder.status=="Return process" ){ %>
+
+
+                                                <a onclick="cancelReturn('<%= findOrder._id %>')" class="btn btn-rounded"> <i
+                                                        class="fa fa-share-square mr-10"></i> Cancel Return</a>
+
+                                                <%}else if(findOrder.status=="Returned"){%>
+                                                    <p
+                                                    style="color: rgb(20, 226, 30); font-size: 20px; font-weight: bold; margin-bottom: 30px;">
+                                                    The Order Returned </p>
+                                                    <% }else{ %>
+                                                        <a onclick="cancel('<%= findOrder._id %>')" class="btn btn-rounded">
+                                                            <i class="fa fa-share-square mr-10"></i> Cancel Order</a>
+    
+
+                                                        <% } %>
+                                                    
+                                  
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+
+
+
+
+        
+
+        // Function to update order status tracking
+        function updateOrderStatusTracking(status, expectedDeliveryDate) {
+    // Update status text
+    document.querySelector('.bg-secondary .text-center:nth-child(2)').innerHTML = '<span class="text-medium">Status:</span> ' + status;
+
+    // Update expected delivery date
+    document.querySelector('.bg-secondary .text-center:nth-child(3)').innerHTML = '<span class="text-medium">Expected Date:</span> ' + expectedDeliveryDate;
+
+    // Update steps based on status
+    const steps = document.querySelector('.steps');
+    steps.innerHTML = ''; // Clear existing steps
+
+    const statusSteps = {
+        'Processing': 'Processing',
+        'Order Confirmed': 'Confirmed Order',
+        'Product Dispatched': 'Product Dispatched',
+        'Shipped': 'Product shipped', // Assuming 'Shipped' leads to 'Product Delivered'
+        'Delivered': 'Product Delivered',
+        'Canceled': 'Order Canceled'
+    };
+
+    const currentStep = statusSteps[status];
+    const stepTitles = Object.values(statusSteps);
+
+    stepTitles.forEach(stepTitle => {
+        const step = document.createElement('div');
+        step.className = 'step' + (stepTitle === currentStep || stepTitles.indexOf(stepTitle) <= stepTitles.indexOf(currentStep) ? ' completed' : '');
+        step.innerHTML = `
+            <div class="step-icon-wrap">
+                <div class="step-icon"><i class="pe-7s-cart"></i></div>
+            </div>
+            <h4 class="step-title">${stepTitle}</h4>
+        `;
+        steps.appendChild(step);
+    });
+}
+
+// Example usage:
+updateOrderStatusTracking(document.getElementById('orderstatus').value, 'SEP 09, 2017');
+
+
+
+
+<script>
+
+        
+    function updateOrderStatusTracking(status, expectedDeliveryDate) {
+    // Update status text
+    document.querySelector('.bg-secondary .text-center:nth-child(2)').innerHTML = '<span class="text-medium">Status:</span> ' + status;
+
+    // Update expected delivery date
+    document.querySelector('.bg-secondary .text-center:nth-child(3)').innerHTML = '<span class="text-medium">Expected Date:</span> ' + expectedDeliveryDate;
+
+    // Update steps based on status
+    const steps = document.querySelector('.steps');
+    steps.innerHTML = ''; // Clear existing steps
+
+    const statusIcons = {
+        'Processing': 'pe-7s-refresh-2',
+        'Order Confirmed': 'pe-7s-cart',
+        'Product Dispatched': 'pe-7s-plane',
+        'Shipped': 'pe-7s-credit',
+        'Delivered': 'pe-7s-check',
+        'Canceled': 'pe-7s-close',
+        'Returned': 'pe-7s-refresh'
+    };
+
+    const statusSteps = {
+        'Processing': 'Processing',
+        'Order Confirmed': 'Confirmed Order',
+        'Product Dispatched': 'Product Dispatched',
+        'Shipped': 'Product Shipped',
+        'Delivered': 'Product Delivered',
+        'Canceled': 'Order Canceled',
+        'Returned': 'Order Returned'
+    };
+
+    // Determine if order is canceled, returned, or other status
+    const isCanceled = status === 'Canceled';
+    const isReturned = status === 'Returned';
+    const isOtherStatus = !isCanceled && !isReturned;
+
+    // Filter steps based on status
+    const filteredSteps = Object.entries(statusSteps).filter(([stepStatus]) =>
+        isCanceled ? stepStatus === 'Canceled' :
+        isReturned ? stepStatus === 'Returned' :
+        stepStatus !== 'Canceled' && stepStatus !== 'Returned'
+    );
+
+    // Add steps to DOM
+    filteredSteps.forEach(([stepStatus, stepTitle]) => {
+        const step = document.createElement('div');
+        const iconClass = statusIcons[stepStatus] || 'pe-7s-angle-right'; // Default icon
+        const completed = status === stepStatus || (isOtherStatus && statusSteps[status] === stepTitle);
+        step.className = 'step' + (completed ? ' completed' : '');
+        step.innerHTML = `
+            <div class="step-icon-wrap">
+                <div class="step-icon"><i class="${iconClass}"></i></div>
+            </div>
+            <h4 class="step-title">${stepTitle}</h4>
+        `;
+        steps.appendChild(step);
+    });
+
+    // Add canceled or returned step if necessary
+    if (isCanceled || isReturned) {
+        const step = document.createElement('div');
+        const iconClass = statusIcons[status] || 'pe-7s-angle-right'; // Default icon
+        const stepTitle = statusSteps[status];
+        step.className = 'step completed';
+        step.innerHTML = `
+            <div class="step-icon-wrap">
+                <div class="step-icon"><i class="${iconClass}"></i></div>
+            </div>
+            <h4 class="step-title">${stepTitle}</h4>
+        `;
+        steps.appendChild(step);
+    }
+}
+
+// Example usage:
+updateOrderStatusTracking(document.getElementById('orderstatus').value, 'SEP 09, 2017');
+    
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-lg-6">
+                                            <h3 class="h6">Shipping address</h3>
+                                            <h6>To,</h6>
+                                            <address style="margin-left: 18px;">
+                                                <strong><%= findOrder.shippingAddress[0].name.charAt(0).toUpperCase() + findOrder.shippingAddress[0].name.slice(1) %></strong><br>
+                                                <%= findOrder.shippingAddress[0].homeAddress.charAt(0).toUpperCase() + findOrder.shippingAddress[0].homeAddress.slice(1) %><br>
+                                                <%= findOrder.shippingAddress[0].city.charAt(0).toUpperCase() + findOrder.shippingAddress[0].city.slice(1) %>, <%= findOrder.shippingAddress[0].state.toUpperCase()  %> - <%= findOrder.shippingAddress[0].pincode %><br>
+                                                <abbr title="Phone">Phone Number :</abbr> <%= findOrder.shippingAddress[0].phone %>
+                                            </address>
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+
+                                        <div class="main-content-wrap shop-page section-ptb">
+            <div class="container">
+                <div class="wallet-page" style="margin-top: 20px;">
+                    <div class="wallet-header">
+                        <h1 style="text-align: center;">Welcome to Your Wallet</h1>
+                    </div>
+                    <div class="wallet-content" style="margin-top: 20px;">
+                        <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                            <% if (userWallet) { %>
+
+                                <% for( let i = 0; i < userWallet.transactions.length; i++ ) { %>
+
+                                    <tr>    
+                                        <td><%= userWallet.transactions[i].id%></td>
+                                        <td>₹<%= userWallet.transactions[i].amount%></td>
+                                        <td><%= userWallet.transactions[i].date %></td>
+                                    </tr>
+
+                                <% } %>
+
+                                
+                            <% }else{ %>
+
+                                <tr>
+                                    <td>No Transactions</td>
+                                </tr>
+
+                                <% } %>
+                            
+                          
+                        </table>
+                        <div class="wallet-section" style="margin-top: 20px; border: 2px solid #c89979; background-color: #f1f1f1; border-radius: 10px; padding: 20px;">
+                            <h2 style="color: #c89979; text-align: center; font-size: 24px; margin-bottom: 10px;">My Wallet Balance</h2>
+                            <% if (userWallet) { %>
+
+                                <p style="text-align: center; font-size: 18px; color: #333;">Your current balance is <span style="font-weight: bold; font-size: 22px;">₹<%= userWallet.balance %></span>.</p>
+                            <% } else{ %>
+
+                                
+                                <p style="text-align: center; font-size: 18px; color: #333;">Your current balance is <span style="font-weight: bold; font-size: 22px;">₹0</span>.</p>
+                                <% } %>
+
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <label for="add-money" style="font-size: 18px;">Add Money to Wallet:</label>
+                        <p style="display: none;"class="text-danger" id="input">Enter Your Amount</p>
+                        <input type="number" min="0" id="add-money"  name="add-money" style="padding: 8px; margin-left: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                        <button class="single-add-to-cart" type="button" onclick="addMoney()" style="padding: 8px 15px; background-color: #c89979; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Add Cash</button>
+                    </div>
+                    <br>
+                    <div class="wallet-footer" style="text-align: center; margin-top: 20px;">
+                        <p>© 2024 My Wallet. All rights reserved.</p>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>

@@ -16,18 +16,18 @@ const User = require("../models/userModel");
 
 
 
-// const isLogout = async (req, res, next) => {
-//     try {
+const isLogout = async (req, res, next) => {
+    try {
 
-//         if (req.session.user_id) {
-//             res.redirect('/home')
-//         }
-//         next();
-//     }
-//     catch (error) {
-//         console.log(error.message);
-//     }
-// }
+        if (req.session.user) {
+            res.redirect('/landingpage')
+        }
+        next();
+    }
+    catch (error) {
+        console.log(error.message);
+    }
+}
 
 
 const checkAuth = (req, res, next) => {
@@ -110,6 +110,7 @@ const isBlocked = async (req, res, next) => {
 
 module.exports = {
     // isLogin,
-    // isLogout,
-    isBlocked,checkAuth
+    isLogout,
+    isBlocked,
+    checkAuth
 }
