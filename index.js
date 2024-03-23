@@ -57,9 +57,9 @@ app.use('/', userRoute);
 const adminRoute = require('./routes/adminRoute');
 app.use('/admin', adminRoute);
 
-// app.use('*',(req,res,next)=>{
-//     res.render('error404')
-// })
+app.use('*',(req,res,next)=>{
+    res.render('error404')
+})
 
 
 
