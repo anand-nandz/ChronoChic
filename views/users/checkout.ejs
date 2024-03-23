@@ -39,8 +39,93 @@
 
     <!-- Main Style CSS (Please use minify version for better website load performance) -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
 
+    <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
+    <style>
+        .search-result {
+            display: none;
+            position: absolute;
+            height: auto;
+
+        }
+
+        .no-product-found {
+            background-color: rgb(273, 273, 273);
+            position: absolute;
+            display: none;
+            width: 414px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* margin-top: 10px; */
+            padding: 5px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            margin-left: 62.5px;
+
+            z-index: 1;
+        }
+
+        #searchResultsContainer {
+            background-color: rgb(273, 273, 273);
+            position: absolute;
+            z-index: 1;
+            width: 414px;
+            flex-wrap: wrap;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            margin-left: 62.5px;
+
+        }
+
+        .product-container {
+            width: 200px;
+            margin: 10px;
+            text-align: left;
+
+        }
+
+        .product-container img {
+            margin-left: 30px;
+            margin-right: 370px;
+            max-width: 55px;
+            height: auto;
+            transform: rotate(0deg);
+            transition: transform 0.5s ease;
+
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -50px;
+        }
+
+        .product-info p {
+            margin: -2px 37px;
+            margin-left: 40px;
+            font-size: 10px;
+            /* margin-top: 5px; */
+            color: black;
+            font-weight: bold;
+        }
+
+
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        .rotate-270 {
+            transform: rotate(270deg);
+        }
+    </style>
 </head>
 
 <body>
@@ -58,34 +143,28 @@
                         <div class="col-lg-6">
                             <div class="header-top-settings">
                                 <ul class="nav align-items-center">
-                                    <li class="language">English <i class="fa fa-angle-down"></i>
-                                        <ul class="dropdown-list">
-                                            <li><a href="#">English</a></li>
-                                            <li><a href="#">French</a></li>
-                                        </ul>
+                                    <li class="language">English
+                                        
                                     </li>
-                                    <li class="curreny-wrap">Currency <i class="fa fa-angle-down"></i>
-                                        <ul class="dropdown-list curreny-list">
-                                            <li><a href="#">$ USD</a></li>
-                                            <li><a href="#"> € EURO</a></li>
-                                        </ul>
-                                    </li>
+                                    
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="top-info-wrap text-end">
                                 <ul class="my-account-container">
-                                    <li><a href="my-account.html">My account</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
+                                    <li><a href="userProfile">My account</a></li>
+                                    <li><a href="cart">Cart</a></li>
+                                    <li><a href="wishlist">Wishlist</a></li>
+                                    <li><a href="orders">Order</a></li>
                                     <li><a href="landingpage">Logout</a></li>
+
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
             </div>
             <!-- Header Top End -->
@@ -102,28 +181,32 @@
                         <div class="col-lg-6">
                             <div class="search-box-wrapper">
                                 <div class="search-box-inner-wrap">
-                                    <form class="search-box-inner">
-                                        <div class="search-select-box">
-                                            <select class="nice-select">
+                                    <div class="search-box-inner">
+                                        
+                                        <!-- <div class="search-select-box">
+                                            <div class="nice-select">
                                                 <optgroup label=" Watch">
-                                                    <option value="volvo">All</option>
-                                                    <option value="saab">Watch</option>
-                                                    <option value="saab">Air cooler</option>
+                                                    <option value="CC">Cc</option>
+                                                   
                                                 </optgroup>
-                                                <optgroup label="Fashion">
-                                                    <option value="mercedes">Womens tops</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
+                                                
+                                                </div>
+                                        </div> -->
                                         <div class="search-field-wrap">
-                                            <input type="text" class="search-field" placeholder="Search product...">
+                                            <input type="text" id="input" class="search-field"
+                                                placeholder="Search product..." onkeyup="SearchProduct()">
 
-                                            <div class="search-btn">
-                                                <button><i class="icon-magnifier"></i></button>
+
+                                            <div class="search-result">
+                                                <div id="searchResultsContainer"></div>
+
                                             </div>
+
+
+                                            <h5 class="no-product-found">No products found</h5>
                                         </div>
 
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -131,58 +214,13 @@
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
-                                    <a href="wishlist.html"><span class="cart-total">2</span> <i
-                                            class="icon-heart"></i></a>
+                                    <a href="wishlist
+                                    "><span class="cart-total"></span> <i class="icon-heart"></i></a>
                                 </div>
 
                                 <div class="shopping-cart-wrap">
-                                    <a href="#"><i class="icon-basket-loaded"></i><span class="cart-total">2</span></a>
-                                    <ul class="mini-cart">
-                                        <li class="cart-item">
-                                            <div class="cart-image">
-                                                <a href="product-details.html"><img alt=""
-                                                        src="assets/images/product/product-02.png"></a>
-                                            </div>
-                                            <div class="cart-title">
-                                                <a href="product-details.html">
-                                                    <h4>Product Name 01</h4>
-                                                </a>
-                                                <div class="quanti-price-wrap">
-                                                    <span class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price">$130.00</span></div>
-                                                </div>
-                                                <a class="remove_from_cart" href="#"><i class="icon_close"></i></a>
-                                            </div>
-                                        </li>
-                                        <li class="cart-item">
-                                            <div class="cart-image">
-                                                <a href="product-details.html"><img alt=""
-                                                        src="assets/images/product/product-03.png"></a>
-                                            </div>
-                                            <div class="cart-title">
-                                                <a href="product-details.html">
-                                                    <h4>Product Name 03</h4>
-                                                </a>
-                                                <div class="quanti-price-wrap">
-                                                    <span class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price">$130.00</span></div>
-                                                </div>
-                                                <a class="remove_from_cart" href="#"><i
-                                                        class="icon-trash icons"></i></a>
-                                            </div>
-                                        </li>
-                                        <li class="subtotal-box">
-                                            <div class="subtotal-title">
-                                                <h3>Sub-Total :</h3><span>$ 260.99</span>
-                                            </div>
-                                        </li>
-                                        <li class="mini-cart-btns">
-                                            <div class="cart-btns">
-                                                <a href="cart.html">View cart</a>
-                                                <a href="checkout.html">Checkout</a>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <a href="cart"><i class="icon-basket-loaded"></i><span
+                                            class="cart-total"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -201,71 +239,15 @@
                                 <!--  Start Mainmenu Nav-->
                                 <nav class="main-navigation text-center">
                                     <ul>
-                                        <li class="active"><a href="home">Home <i class="fa fa-angle-down"></i></a>
-                                            <ul class="sub-menu">
-                                                <li><a href="home">Home Page 1</a></li>
-                                                <li><a href="index-2.html">Home Page 2</a></li>
-                                            </ul>
+                                        <li class="active"><a href="home">Home </a>
+                                            
                                         </li>
 
-                                        <li><a href="#">Shop <i class="fa fa-angle-down"></i></a>
-                                            <ul class="mega-menu">
-                                                <li><a href="#">Shop Layouts</a>
-                                                    <ul>
-                                                        <li><a href="shop.html">Shop Left Sidebar</a></li>
-                                                        <li><a href="shop-right-sidebar.html">Shop Right Sidebar</a>
-                                                        </li>
-                                                        <li><a href="shop-list-left.html">Shop List Left Sidebar</a>
-                                                        </li>
-                                                        <li><a href="shop-list-right.html">Shop List Right Sidebar</a>
-                                                        </li>
-                                                        <li><a href="shop-fullwidth.html">Shop Full Width</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="blog.html">Product Details</a>
-                                                    <ul>
-                                                        <li><a href="product-details.html">Single Product Details</a>
-                                                        </li>
-                                                        <li><a href="variable-product-details.html">Variable Product
-                                                                Details</a></li>
-                                                        <li><a href="affiliate-product-details.html">affiliatel Product
-                                                                Details</a></li>
-                                                        <li><a href="gallery-product-details.html">Gallery Product
-                                                                Details</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="#">Shop Pages</a>
-                                                    <ul>
-                                                        <li><a href="error404.html">Error 404</a></li>
-                                                        <li><a href="compare.html">Compare Page</a></li>
-                                                        <li><a href="cart.html">Cart Page</a></li>
-                                                        <li><a href="checkout.html">Checkout Page</a></li>
-                                                        <li><a href="wishlist.html">Wish List Page</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-
+                                        <li><a href="shop">Shop </a>
+                                           
                                         </li>
-                                        <li><a href="blog.html">Blog <i class="fa fa-angle-down"></i></a>
-
-                                            <ul class="sub-menu">
-                                                <li><a href="blog.html">Blog Left Sidebar</a></li>
-                                                <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                                                <li><a href="blog-grid.html">Blog Grid Page</a></li>
-                                                <li><a href="blog-largeimage.html">Blog Large Image</a></li>
-                                                <li><a href="blog-details.html">Blog Details Page</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li><a href="#">Pages <i class="fa fa-angle-down"></i></a>
-                                            <ul class="sub-menu">
-                                                <li><a href="frequently-questions.html">FAQ</a></li>
-                                                <li><a href="my-account.html">My Account</a></li>
-                                                <li><a href="login-register.html">login &amp; register</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="contact-us.html">Contact</a></li>
+                                        <li><a href="">About Us</a></li>
+                                        <li><a href="">Contact</a></li>
                                     </ul>
                                 </nav>
 
@@ -503,7 +485,7 @@
                     <div class="col">
                         <div class="coupon-area">
                             <!-- coupon-accordion start -->
-                            <div class="coupon-accordion">
+                            <!-- <div class="coupon-accordion">
                                 <h3>Returning customer? <span class="coupon" id="showlogin">Click here to login</span>
                                 </h3>
                                 <div class="coupon-content" id="checkout-login">
@@ -533,24 +515,10 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- coupon-accordion end -->
                             <!-- coupon-accordion start -->
-                            <div class="coupon-accordion">
-                                <h3>Have a coupon? <span class="coupon" id="showcoupon">Click here to enter your
-                                        code</span></h3>
-                                <div class="coupon-content" id="checkout-coupon">
-                                    <div class="coupon-info">
-                                        <form action="#">
-                                            <p class="checkout-coupon">
-                                                <input type="text" placeholder="Coupon code">
-                                                <button type="submit" class="btn button-apply-coupon"
-                                                    name="apply_coupon" value="Apply coupon">Apply coupon</button>
-                                            </p>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                           
                             <!-- coupon-accordion end -->
                         </div>
                     </div>
@@ -563,6 +531,8 @@
                             <div class="billing-details-wrap">
                                 <form action="#" method="post">
                                     <h3 class="shoping-checkboxt-title">Billing Details</h3>
+                                    <div class="mt-3"><a href="userProfile#address" class="nav-link btn register-btn me-2">Click Here to add address</a></div>
+                                    <br>
                                     <div class="row">
                                         <% if (address && address.length> 0) { %>
                                             <% for (let i=0; i < address.length; i++) { %>
@@ -622,10 +592,13 @@
                                                                 <% } %>
                                                                     <% } else { %>
                                                                         <p>No addresses found.</p>
+                                                                        <div class="mt-3"><a href="userProfile#address" class="nav-link btn register-btn me-2">Click Here to add address</a></div>
+
                                                                         <% } %>
                                                                             <% } %>
                                                                                 <% } else { %>
                                                                                     <p>No addresses found.</p>
+                                                                                    <div class="mt-3"><a href="userProfile#address" class="nav-link btn register-btn me-2">Click Here to add address</a></div>
                                                                                     <% } %>
                                     </div>
                                 </form>
@@ -685,23 +658,21 @@
                                                 <tr class="cart-subtotal">
                                                     <th>Cart Subtotal</th>
                                                     <td></td>
-                                                    <td>₹<span class="amount" id="cartSubtotal">
+                                                    <td>₹<span class="amount" id="cartTotal">
                                                             <%= cartData.total %>
                                                         </span></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Discount</th>
+                                                    <td></td>
+                                                    <td>₹<span class="amount" id="discount">0</span></td>
+                                                   
                                                 </tr>
                                                 <tr class="shipping">
                                                     <th>Shipping</th>
                                                     <td></td>
                                                     <td>
                                                         <ul>
-                                                            <!-- <li>
-                                                                    <input type="radio">
-                                                                    <label>
-                                                                        Flat Rate: <span class="amount">£7.00</span>
-                                                                    </label>
-                                                                </li> -->
-                                                            <li>
-                                                                <!-- <input type="radio"> -->
                                                                 <label>Free Shipping</label>
                                                             </li>
                                                             <li></li>
@@ -711,7 +682,7 @@
                                                 <tr class="order-total">
                                                     <th>Order Total</th>
                                                     <td></td>
-                                                    <td><strong>₹<span class="amount" id="cartSubtotal">
+                                                    <td><strong>₹<span class="amount" id="cartSubtotal" >
                                                                 <%= cartData.total %>
                                                             </span></strong>
                                                     </td>
@@ -721,47 +692,68 @@
 
 
                                     </div>
+
                                     <!-- your-order-table end -->
+
+
+                                    <div class="col-md-12 cart-table">
+                                        <div class="coupon-all" style="width: 100%; height: 100%;">
+                                            <div class="coupon" style="margin-left: 40px; justify-content: center;" id="coupon">
+                                                <h3>Coupon</h3>
+                                                <p>Enter your coupon code if you have one.</p>
+                                                <input id="Code" class="input-text" name="coupon_code" value=""
+                                                    placeholder="Coupon code" type="text">
+                                                <input class="button" name="apply_coupon" value="Apply coupon" id="apply" onclick="apply('<%= cartData._id %>')"
+                                                    type="submit">
+                                                <input class="button" name="apply_coupon" value="Remove coupon" id="remove" style="display: none;" onclick="remove()"
+                                                    type="submit">
+                                                <br><br>   
+                                                <div style=" justify-content: center;">
+                                                    <a href="/coupon" class="btn button"  id="show">Available Coupons</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+
 
                                     <!-- your-order-wrap end -->
                                     <div class="payment-option">
-                                        <div class="custome-radio">
+                                        <h3 style="color: #000000; font-size: 18px; font-weight: 600; text-transform: uppercase; margin-left: 40px;" >
+                                            Payment Options
+                                        </h3>
+                                        <div class="custome-radio mt-2" >
+                                            <%if((cartData.total) <= 1000){%>
                                             <input class="form-check-input" required="" type="radio"
-                                                name="payment_option" id="cashOnDelivery" value="Cash On Delivery" checked>
+                                                name="payment_option" id="cashOnDelivery" value="Cash On Delivery" checked >
                                             <label class="form-check-label" for="cashOnDelivery"
                                                 data-bs-toggle="collapse" data-target="#bankTranfer"
-                                                aria-controls="bankTranfer">Cash on Delivery
+                                                aria-controls="bankTranfer" style="font-size: 15px; font-weight: 500;"><span class="me-3"><img src="/assets/images/payment pic/cash-on-delivery.png" style="height: 16px; width: 15px;  align-items: center; opacity: 0.5;" alt=""></span>
+                                                Cash on Delivery
                                             </label>
-
                                             <input class="form-check-input" required type="radio" name="payment_option"
                                                 id="razorpay" value="Razorpay">
                                             <label class="form-check-label" for="razorpay" data-bs-toggle="collapse"
-                                                data-target="#bankTranfer" aria-controls="bankTranfer">Razorpay</label>
+                                                data-target="#bankTranfer" aria-controls="bankTranfer" style="font-size: 15px; font-weight: 500;">
+                                                <span class="me-3"><i class="bi bi-credit-card" style="opacity: 0.5;"></i></span>
+                                                Razorpay</label>
+                                            <%}else{%>
+                                                <p style="margin-left: 40px; font-size: 15px; font-weight: 500;">Order above Rs 1000 is not applicable for COD</p>
+                                                <input class="form-check-input" required type="radio" name="payment_option"
+                                                id="razorpay" value="Razorpay" style="margin-left: 40px;" checked>
+                                            <label class="form-check-label" for="razorpay" data-bs-toggle="collapse"
+                                                data-target="#bankTranfer" aria-controls="bankTranfer" style="font-size: 15px; font-weight: 500;">
+                                                <span class="me-3"><i class="bi bi-credit-card" style="opacity: 0.5;"></i>
+                                                Razorpay</label>
+                                                <%}%>
+
+                                            
                                             <div class="form-group collapse in" id="bankTranfer">
                                                 <p class="text-muted mt-5">There are many variations of passages of Lorem
                                                     Ipsum available, but the majority have suffered alteration. </p>
                                             </div> 
                                         </div>
-                                        <div class="payment-accordion">
-                                            <h5>Direct Bank Transfer</h5>
-                                            <div class="payment-content">
-                                                <p>Make your payment directly into our bank account. Please use your
-                                                    Order ID as the payment reference. Your order won’t be shipped until
-                                                    the funds have cleared in our account.</p>
-                                            </div>
-                                            <h5>Cheque Payment</h5>
-                                            <div class="payment-content">
-                                                <p>Please send your cheque to Store Name, Store Street, Store Town,
-                                                    Store State / County, Store Postcode.</p>
-                                            </div>
-                                            
-                                            <h5>PayPal</h5>
-                                            <div class="payment-content">
-                                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a
-                                                    PayPal account.</p>
-                                            </div>
-                                            
-                                        </div> 
+                                       
                                         <div class="order-button-payment">
                                             <input onclick="placeOrder('<%= cartData._id%>')" type="submit"
                                                 value="Place order" />
@@ -966,8 +958,11 @@
             //    alert(cartid)
             //    alert(index)
             //    alert(checkedOption)
+            const code = document.getElementById("Code").value
+
             let paymentOption = document.querySelector('input[name="payment_option"]:checked').value
             // alert(paymentOption)
+            const totalDis = document.getElementById("cartSubtotal").innerHTML
 
             $.ajax({
                 url: "/checkOutData",
@@ -976,12 +971,14 @@
                     addressId,
                     cartid,
                     index,
-                    paymentOption
+                    paymentOption,
+                    code,
+                    totalDis
 
                 },
                 success: (response) => {
                     if (response.status === true) {
-
+                        alert("hi")
                         window.location.href = `/orderPlaced?id=${response.order.orderNumber}` // Redirect to order placed page
 
                     }
@@ -999,21 +996,18 @@
                     else if (response.status === "razorpay") {
 
                         let orderId = response.order.id;
-                        // alert(orderId)
-                        //     let address=response.address
-
-                        // alert(response.address)
+                       
+                        let amount = response.total
+                        let couponCode = response.code
                         let order_num = response.orderNumber
-                        // alert(order_num)
-
-                        // let order_id=response.orderNumber
+                       
                         var options = {
                             "key": "rzp_test_lUdFfNwNjMAIHG", // Enter the Key ID generated from the Dashboard
                             "amount": response.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                             "currency": "INR",
-                            "name": "Acme Corp",
+                            "name": "ChronoChic",
                             "description": "Test Transaction",
-                            "image": "https://example.com/your_logo",
+                            "image": "assets/images/logo/cc.png",
                             "order_id": response.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                             "handler": function (response) {
                                 // alert(response.razorpay_payment_id);
@@ -1023,7 +1017,7 @@
                                 // alert(addressId)
                                 // alert(order_num)
                                 // alert(index)
-                                verifyPayment(response, orderId, addressId, order_num,index)
+                                verifyPayment(response, orderId, addressId,amount,couponCode, order_num,index)
                             },
                             "prefill": {
                                 "name": "Gaurav Kumar",
@@ -1045,7 +1039,7 @@
         }
 
 
-        function verifyPayment(payment, order, addressId, order_num,index) {
+        function verifyPayment(payment, order, addressId, amount,couponCode,order_num,index) {
             $.ajax(
                 {
                     url: "/verify-payment",
@@ -1055,6 +1049,8 @@
                         order,
                         index,
                         addressId,
+                        amount,
+                        couponCode,
                         order_num
                     },
                     success: (response) => {
@@ -1065,6 +1061,199 @@
                 }
             )
         }
+
+
+
+
+        function apply(id) {
+        const code = document.getElementById("Code").value
+        // alert(code)
+        // alert(id)
+
+        $.ajax({
+            url: "/applyCoupon",
+            method: "post",
+            data: {
+                code,
+                id
+
+            },
+            success: (response) => {
+                if (response.status == true) {
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "bottom",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        // timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Coupon added"
+                    }).then((result) => {
+
+                        document.getElementById("discount").innerHTML = parseInt(response.total)
+                        document.getElementById("cartSubtotal").innerHTML = response.cartTotal - parseInt(response.total)
+                        document.getElementById("remove").style.display = "inline-block"
+                        document.getElementById("apply").style.display = "none"
+                        document.getElementById("Code").style.display = "none"
+                        document.getElementById("text").innerHTML = "<h6>You already added this coupon code </h6> <h4 style='color:#007bff'>" + response.code + "</h4>"
+                        document.getElementById("show").style.display = "none"
+
+                        // window.location.href="/checkOut"
+                        // alert(response.discount)
+
+                        // localStorage.setItem({"amount":response.discount})
+                    })
+                } else if (response.status == "invaild") {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "bottom",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Invalid Coupon"
+                    })
+
+                }
+                else{
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "bottom",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Coupon expired"
+                    })
+                }
+            }
+        })
+    }
+
+    function remove() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "bottom",
+            showConfirmButton: false,
+            timer: 1500,
+            // timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "success",
+            title: "Coupon Removed"
+        }).then((result) => {
+            window.location.href = "/checkOutPage"
+        })
+
+    }
+
+
+    const inputElement = document.getElementById('input');
+
+        let timeoutId;
+
+        function debounce(func, delay) {
+            return function () {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func();
+                }, delay);
+            };
+        }
+
+        function showSearchResult() {
+            const searchResult = document.querySelector('.search-result');
+            searchResult.style.display = 'block';
+        }
+
+        function hideSearchResult() {
+            const searchResult = document.querySelector('.search-result');
+            searchResult.style.display = 'none';
+        }
+
+        function showNoProductFound() {
+            const noProductFound = document.querySelector('.no-product-found');
+            noProductFound.style.display = 'block';
+        }
+
+        function hideNoProductFound() {
+            const noProductFound = document.querySelector('.no-product-found');
+            noProductFound.style.display = 'none';
+        }
+
+        function SearchProduct() {
+            const searchDataValue = inputElement.value.trim();
+
+
+            if (searchDataValue !== "") {
+                showSearchResult();
+                debounce(() => {
+                    console.log(searchDataValue)
+                    $.ajax({
+                        url: "/search",
+                        method: "post",
+                        data: {
+                            searchDataValue
+                        },
+                        success: (response) => {
+                            const searchResultsContainer = document.getElementById('searchResultsContainer')
+                            searchResultsContainer.innerHTML = ""
+
+                            if (response.searchProducts.length > 0) {
+                                response.searchProducts.forEach(element => {
+                                    const productContainer = document.createElement('div');
+                                    productContainer.classList.add('product-container');
+
+                                    const productElement = document.createElement('div');
+                                    productElement.innerHTML = `
+                                <a href="/productDetails?id=${element._id}" class="product-link">
+                                    <img src="/productAssets/${element.images[0]}" alt="product">
+                                    <div class="product-info">
+                                        <p>${element.pname}</p>
+                                        <p>₹${element.offprice}</p>
+                                    </div>
+                                `;
+
+                                    productContainer.appendChild(productElement);
+                                    searchResultsContainer.appendChild(productContainer);
+                                });
+                                hideNoProductFound();
+                            } else {
+                                hideSearchResult();
+                                showNoProductFound();
+                            }
+                        }
+                    })
+                }, 500)();
+            } else {
+                hideSearchResult();
+                hideNoProductFound();
+            }
+        }
+
 
 
     </script>
