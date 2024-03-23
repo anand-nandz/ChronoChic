@@ -31,6 +31,13 @@
     <link rel="stylesheet" href="assets/css/plugins/fancy-box.css">
     <link rel="stylesheet" href="assets/css/plugins/jqueryui.min.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
     <!-- Vendor & Plugins CSS (Please remove the comment from below vendor.min.css & plugins.min.css for better website load performance and remove css files from avobe) -->
     <!--
     <script src="assets/js/vendor/vendor.min.js"></script>
@@ -40,114 +47,144 @@
     <!-- Main Style CSS (Please use minify version for better website load performance) -->
     <link rel="stylesheet" href="assets/css/style.css">
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
-
     <style>
-        .addAddress-form-container {
-            background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-            -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-            box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+        .search-result {
+            display: none;
+            position: absolute;
+            height: auto;
+
+        }
+
+        .no-product-found {
+            background-color: rgb(273, 273, 273);
+            position: absolute;
+            display: none;
+            width: 414px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* margin-top: 10px; */
+            padding: 5px 0;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            margin-left: 62.5px;
+
+            z-index: 1;
+        }
+
+        #searchResultsContainer {
+            background-color: rgb(273, 273, 273);
+            position: absolute;
+            z-index: 1;
+            width: 414px;
+            flex-wrap: wrap;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            margin-left: 62.5px;
+
+        }
+
+        .product-container {
+            width: 200px;
+            margin: 10px;
             text-align: left;
-            width: 100%;
-            margin: 0 auto;
+
         }
 
-        .addre {
-            flex: 0 0 auto;
-            width: 100%;
+        .product-container img {
+            margin-left: 30px;
+            margin-right: 370px;
+            max-width: 55px;
+            height: auto;
+            transform: rotate(0deg);
+            transition: transform 0.5s ease;
+
         }
 
-        /* Ensure columns are equal width */
-        .form-row [class^="col"] {
-            flex: 1;
-            margin-bottom: 1rem;
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -50px;
+        }
+
+        .product-info p {
+            margin: -2px 37px;
+            margin-left: 40px;
+            font-size: 10px;
+            /* margin-top: 5px; */
+            color: black;
+            font-weight: bold;
+        }
+
+
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        .rotate-270 {
+            transform: rotate(270deg);
         }
     </style>
 
-<style>
-    .search-result {
-        display: none;
-        position: absolute;
-        height: auto;
-
-    }
-
-    .no-product-found {
-        background-color: rgb(273, 273, 273);
-        position: absolute;
-        display: none;
-        width: 414px;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        /* margin-top: 10px; */
-        padding: 5px 0;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-        margin-left: 62.5px;
-
-        z-index: 1;
-    }
-
-    #searchResultsContainer {
-        background-color: rgb(273, 273, 273);
-        position: absolute;
-        z-index: 1;
-        width: 414px;
-        flex-wrap: wrap;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-        margin-left: 62.5px;
-
-    }
-
-    .product-container {
-        width: 200px;
-        margin: 10px;
-        text-align: left;
-
-    }
-
-    .product-container img {
-        margin-left: 30px;
-        margin-right: 370px;
-        max-width: 55px;
-        height: auto;
-        transform: rotate(0deg);
-        transition: transform 0.5s ease;
-
-    }
-
-    .product-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: -50px;
-    }
-
-    .product-info p {
-        margin: -2px 37px;
-        margin-left: 40px;
-        font-size: 10px;
-        /* margin-top: 5px; */
-        color: black;
-        font-weight: bold;
-    }
 
 
-    .rotate-90 {
-        transform: rotate(90deg);
-    }
+    <style>
+        /* Adjusted CSS for card layout */
+        .coupon-card {
+            border: none;
+            position: relative;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            height: 210px;
+            color: #333;
+            margin: 40px;
+        }
 
-    .rotate-180 {
-        transform: rotate(180deg);
-    }
+        .coupon-card h2 {
+            margin-bottom: 10px;
+        }
 
-    .rotate-270 {
-        transform: rotate(270deg);
-    }
-</style>
+        .coupon-card .discount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #c89979;
+        }
+
+        .coupon-card .coupon-code {
+            font-size: 16px;
+            background-color: #c89979;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .coupon-card .validity span {
+            color: #666;
+        }
+
+        /* Centering heading */
+        .text-center-coupon {
+            text-align: center;
+            margin: 20px;
+
+        }
+
+        /* Adjusted column size for maximum of 4 in a row */
+        @media (min-width: 992px) {
+            .col-lg-3 {
+                flex: 0 0 25%;
+                max-width: 25%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -165,30 +202,20 @@
                         <div class="col-lg-6">
                             <div class="header-top-settings">
                                 <ul class="nav align-items-center">
-                                    <li class="language">English <i class="fa fa-angle-down"></i>
-                                        <ul class="dropdown-list">
-                                            <li><a href="#">English</a></li>
-                                            <!-- <li><a href="#">French</a></li> -->
-                                        </ul>
+                                    <li class="language">English
+
                                     </li>
-                                    <!-- <li class="curreny-wrap">Currency <i class="fa fa-angle-down"></i>
-                                        <ul class="dropdown-list curreny-list">
-                                            <li><a href="#">$ USD</a></li>
-                                            <li><a href="#"> € EURO</a></li>
-                                        </ul>
-                                    </li> -->
+
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="top-info-wrap text-end">
                                 <ul class="my-account-container">
-                                    <!-- <li><a href="login">login </a></li>
-                                    <li><a href="register">register</a></li> -->
-                                    <li><a href="my-account.html">My account</a></li>
-                                    <!-- <li><a href="cart.html">Cart</a></li> -->
-                                    <!-- <li><a href="wishlist.html">Wishlist</a></li> -->
-                                    <!-- <li><a href="checkout.html">Checkout</a></li> -->
+                                    <li><a href="userProfile">My account</a></li>
+                                    <li><a href="cart">Cart</a></li>
+                                    <li><a href="wishlist">Wishlist</a></li>
+                                    <li><a href="orders">Order</a></li>
                                     <li><a href="landingpage">Logout</a></li>
 
                                 </ul>
@@ -196,6 +223,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </div>
             <!-- Header Top End -->
@@ -213,7 +241,7 @@
                             <div class="search-box-wrapper">
                                 <div class="search-box-inner-wrap">
                                     <div class="search-box-inner">
-                                        
+
                                         <!-- <div class="search-select-box">
                                             <div class="nice-select">
                                                 <optgroup label=" Watch">
@@ -245,57 +273,13 @@
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
-                                    <a href=""><span class="cart-total">0</span> <i class="icon-heart"></i></a>
+                                    <a href="wishlist
+                                    "><span class="cart-total"></span> <i class="icon-heart"></i></a>
                                 </div>
 
                                 <div class="shopping-cart-wrap">
-                                    <a href="#"><i class="icon-basket-loaded"></i><span class="cart-total">0</span></a>
-                                    <!-- <ul class="mini-cart">
-                                        <li class="cart-item">
-                                            <div class="cart-image">
-                                                <a href="product-details.html"><img alt=""
-                                                        src="assets/images/product/product-02.png"></a>
-                                            </div>
-                                            <div class="cart-title">
-                                                <a href="product-details.html">
-                                                    <h4>Product Name 01</h4>
-                                                </a>
-                                                <div class="quanti-price-wrap">
-                                                    <span class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price">$130.00</span></div>
-                                                </div>
-                                                <a class="remove_from_cart" href="#"><i class="icon_close"></i></a>
-                                            </div>
-                                        </li>
-                                        <li class="cart-item">
-                                            <div class="cart-image">
-                                                <a href="product-details.html"><img alt=""
-                                                        src="assets/images/product/product-03.png"></a>
-                                            </div>
-                                            <div class="cart-title">
-                                                <a href="product-details.html">
-                                                    <h4>Product Name 03</h4>
-                                                </a>
-                                                <div class="quanti-price-wrap">
-                                                    <span class="quantity">1 ×</span>
-                                                    <div class="price-box"><span class="new-price">$130.00</span></div>
-                                                </div>
-                                                <a class="remove_from_cart" href="#"><i
-                                                        class="icon-trash icons"></i></a>
-                                            </div>
-                                        </li>
-                                        <li class="subtotal-box">
-                                            <div class="subtotal-title">
-                                                <h3>Sub-Total :</h3><span>$ 260.99</span>
-                                            </div>
-                                        </li>
-                                        <li class="mini-cart-btns">
-                                            <div class="cart-btns">
-                                                <a href="">View cart</a>
-                                                <a href="">Checkout</a>
-                                            </div>
-                                        </li>
-                                    </ul> -->
+                                    <a href="cart"><i class="icon-basket-loaded"></i><span
+                                            class="cart-total"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -315,11 +299,11 @@
                                 <nav class="main-navigation text-center">
                                     <ul>
                                         <li class="active"><a href="home">Home </a>
-                                            
+
                                         </li>
 
                                         <li><a href="shop">Shop </a>
-                                           
+
                                         </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
@@ -438,7 +422,7 @@
                                             <!-- <li><a href="index-2.html">Home Page 2</a></li> -->
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children"><a href="#">Shop</a>
+                                    <li class="menu-item-has-children"><a href="">Shop</a>
                                         <ul class="megamenu dropdown">
                                             <li class="mega-title has-children"><a href="#">Shop Layouts</a>
                                                 <ul class="dropdown">
@@ -449,45 +433,10 @@
                                                     <li><a href="shop-fullwidth.html">Shop Full Width</a></li> -->
                                                 </ul>
                                             </li>
-                                            <li class="mega-title has-children"><a href="#">Product Details</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="product-details.html">Single Product Details</a></li>
-                                                    <!-- <li><a href="variable-product-details.html">Variable Product
-                                                            Details</a></li>
-                                                    <li><a href="affiliate-product-details.html">affiliatel Product
-                                                            Details</a></li>
-                                                    <li><a href="gallery-product-details.html">Gallery Product
-                                                            Details</a></li> -->
-                                                </ul>
-                                            </li>
-                                            <!-- <li class="mega-title has-children"><a href="#">Shop Pages</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="error404.html">Error 404</a></li>
-                                                    <li><a href="compare.html">Compare Page</a></li>
-                                                    <li><a href="cart.html">Cart Page</a></li>
-                                                    <li><a href="checkout.html">Checkout Page</a></li>
-                                                    <li><a href="wishlist.html">Wish List Page</a></li>
-                                                </ul>
-                                            </li> -->
+
                                         </ul>
                                     </li>
-                                    <!-- <li class="menu-item-has-children "><a href="#">Blog</a>
-                                        <ul class="dropdown">
-                                            <li><a href="blog.html">Blog Left Sidebar</a></li>
-                                            <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                                            <li><a href="blog-grid.html">Blog Grid Page</a></li>
-                                            <li><a href="blog-largeimage.html">Blog Large Image</a></li>
-                                            <li><a href="blog-details.html">Blog Details Page</a></li>
-                                        </ul>
-                                    </li> -->
-                                    <li class="menu-item-has-children "><a href="#">Pages</a>
-                                        <ul class="dropdown">
-                                            <!-- <li><a href="frequently-questions.html">FAQ</a></li> -->
-                                            <li><a href="my-account.html">My Account</a></li>
-                                            <!-- <li><a href="login">login </a></li>
-                                            <li><a href="register">register</a></li> -->
-                                        </ul>
-                                    </li>
+
                                     <li><a href="about-us.html">About Us</a></li>
                                     <li><a href="contact-us.html">Contact</a></li>
                                 </ul>
@@ -536,7 +485,7 @@
 
         </header>
         <!--  Header Start -->
-        
+
         <!-- breadcrumb-area start -->
         <div class="breadcrumb-area">
             <div class="container">
@@ -545,8 +494,12 @@
                         <!-- breadcrumb-list start -->
                         <ul class="breadcrumb-list">
                             <li class="breadcrumb-item"><a href="home">Home</a></li>
-                            <li class="breadcrumb-item active">Edit Address</li>
+                            <li class="breadcrumb-item active">Coupons</li>
+                            
+                            <a href="/checkOutPage" class=" button" style="margin-left: 850px;" >Back to checkout page</a>
+                            
                         </ul>
+                       
                         <!-- breadcrumb-list end -->
                     </div>
                 </div>
@@ -554,93 +507,58 @@
         </div>
         <!-- breadcrumb-area end -->
 
-        <!-- main-content-wrap start -->
-        <div class="tab-pane" id="editaddress">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-12 addre">
-                        <div class="addAddress-form-container">
-                            <div class="login-register-form">
-                                <form id="editAddressForm" action="/edit-address/<%= addressId %>" method="post">
-                                    <!-- First Row (Name and Phone) -->
-                                    <div class="form-row d-flex">
-                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
-                                            <label for="name" class="form-label">Full Name</label>
-                                            <input type="text" id="name" name="name" class="form-control" placeholder="Full Name" value="<%= address.name %>" required oninput="validateName()">
-                                            <div id="nameError" class="error"></div>
-                                        </div>
-                                        <div class="form-group col-md-6 mb-3">
-                                            <label for="phone" class="form-label">Phone</label>
-                                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone" value="<%= address.phone %>" required oninput="validatePhone()">
-                                            <div id="phoneError" class="error"></div>
-                                        </div>
-                                    </div>
-                                    <!-- Second Row (Alternate Phone and Pincode) -->
-                                    <div class="form-row d-flex">
-                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
-                                            <label for="altPhone" class="form-label">Alternate Phone</label>
-                                            <input type="text" id="altPhone" name="altPhone" class="form-control" placeholder="Alternate Phone" value="<%= address.altPhone %>" required oninput="validateAltPhone()">
-                                            <div id="altPhoneError" class="error"></div>
-                                        </div>
-                                        <div class="form-group col-md-6 mb-3">
-                                            <label for="pincode" class="form-label">Pincode</label>
-                                            <input type="text" id="pincode" name="pincode" class="form-control" placeholder="Pincode" value="<%= address.pincode %>" required oninput="validatePincode()">
-                                            <div id="pincodeError" class="error"></div>
-                                        </div>
-                                    </div>
-                                    <!-- Third Row (Landmark and City) -->
-                                    <div class="form-row d-flex">
-                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
-                                            <label for="landMark" class="form-label">Landmark</label>
-                                            <input type="text" id="landMark" name="landMark" class="form-control" placeholder="Landmark" value="<%= address.landMark %>" required oninput="validateLandMark()">
-                                            <div id="landMarkError" class="error"></div>
-                                        </div>
-                                        <div class="form-group col-md-6 mb-3">
-                                            <label for="city" class="form-label">City</label>
-                                            <input type="text" id="city" name="city" class="form-control" placeholder="City" value="<%= address.city %>" required oninput="validateCity()">
-                                            <div id="cityError" class="error"></div>
-                                        </div>
-                                    </div>
-                                    <!-- Fourth Row (State and Address Type) -->
-                                    <div class="form-row d-flex">
-                                        <div class="form-group col-md-6 mb-3" style="margin-right: 10px;">
-                                            <label for="state" class="form-label">State</label>
-                                            <input type="text" id="state" name="state" class="form-control" placeholder="State" value="<%= address.state %>" required oninput="validateState()">
-                                            <div id="stateError" class="error"></div>
-                                        </div>
-                                        <div class="form-group col-md-6 mb-3">
-                                            <label for="addressType" class="form-label">Address Type</label>
-                                            <select id="addressType" name="addressType" class="form-select" required onchange="validateAddressType()">
-                                                <option value="">Select Address Type</option>
-                                                <option value="Home" <%= address.addressType === 'Home' ? 'selected' : '' %>>Home</option>
-                                                <option value="Work" <%= address.addressType === 'Work' ? 'selected' : '' %>>Work</option>
-                                                <option value="Other" <%= address.addressType === 'Other' ? 'selected' : '' %>>Other</option>
-                                            </select>
-                                            <div id="addressTypeError" class="error"></div>
-                                        </div>
-                                    </div>
-                                    <!-- Fifth Row (Address) -->
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <label for="homeAddress" class="form-label">Home Address</label>
-                                            <input type="text" id="homeAddress" name="homeAddress" class="form-control" placeholder="Home Address" value="<%= address.homeAddress %>" required oninput="validateHomeAddress()">
-                                            <div id="homeAddressError" class="error"></div>
-                                        </div>
-                                    </div>
-                                    <!-- Button Box -->
-                                    <div class="button-box mt-3">
-                                        <input id="submitButton" class="register-btn btn" type="submit" value="Save Edited Address">
-                                        <!-- <button class="register-btn btn" type="submit"><span>Save Edited Address</span></button> -->
-                                    </div>
-                                </form>
+        <div class="col-md-12">
+            <h3 class="text-center-coupon">My Coupons</h3>
+            <div class="row justify-content-center">
+                <% if (CouponDataArray.length> 0) { %>
+                    <% CouponDataArray.forEach(function(coupon) { %>
+                        <div class="col-lg-4 mb-4"> <!-- Adjusted column size to fit maximum of 4 in a row -->
+                            <div class="coupon-card" style="max-height: 250px;">
+                                <h2>
+                                    <%= coupon.name %>!
+                                </h2>
+                                <p>Get <span class="discount">
+                                        <%= coupon.discount %>% OFF
+                                    </span> on your next purchase</p>
+                                <p>Use coupon code:
+                                    <span class="coupon-code" id="couponCode_<%= coupon.id %>">
+                                        <%= coupon.couponCode %>
+                                            <a onclick="copyToClipboard('<%= coupon.couponCode %>')"
+                                                class="copy-button"><i class="bi bi-copy"></i></a>
+                                    </span>
+                                </p>
+                                <p class="validity">Valid until: <span>
+                                        <%= coupon.endDate %>
+                                    </span></p>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <% }); %>
+                            <% } else if (redeemCoupon.length> 0) { %>
+                                <% redeemCoupon.forEach(function(redeemCoupon) { %>
+                                    <div class="col-lg-3 mb-4">
+                                        <!-- Adjusted column size to fit maximum of 4 in a row -->
+                                        <div class="redeemed-coupon-card">
+                                            <h2>Redeemed Coupon</h2>
+                                            <p>Offer: <span class="discount">
+                                                    <%= redeemCoupon.discount %>% OFF
+                                                </span></p>
+                                            <p>Coupon Code: <span class="coupon-code">
+                                                    <%= redeemCoupon.couponCode %>
+                                                </span></p>
+                                            <p class="validity">Valid until: <span>
+                                                    <%= redeemCoupon.endDate %>
+                                                </span></p>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <div class="col">
+                                                <p class="text-center">No coupons found.</p>
+                                            </div>
+                                            <% } %>
             </div>
         </div>
-        
-        <!-- main-content-wrap end -->
+
 
         <!-- footer Start -->
         <footer>
@@ -663,19 +581,24 @@
 
                                 <ul class="social-icons">
                                     <li>
-                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                                        <a class="facebook social-icon" href="#" title="Facebook" target="_blank"><i
+                                                class="fa fa-facebook"></i></a>
                                     </li>
                                     <li>
-                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                                        <a class="twitter social-icon" href="#" title="Twitter" target="_blank"><i
+                                                class="fa fa-twitter"></i></a>
                                     </li>
                                     <li>
-                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i class="fa fa-instagram"></i></a>
+                                        <a class="instagram social-icon" href="#" title="Instagram" target="_blank"><i
+                                                class="fa fa-instagram"></i></a>
                                     </li>
                                     <li>
-                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i class="fa fa-linkedin"></i></a>
+                                        <a class="linkedin social-icon" href="#" title="Linkedin" target="_blank"><i
+                                                class="fa fa-linkedin"></i></a>
                                     </li>
                                     <li>
-                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i class="fa fa-rss"></i></a>
+                                        <a class="rss social-icon" href="#" title="Rss" target="_blank"><i
+                                                class="fa fa-rss"></i></a>
                                     </li>
                                 </ul>
 
@@ -699,7 +622,7 @@
                             <div class="widget-footer mt-40">
                                 <h6 class="title-widget">Extras</h6>
                                 <ul class="footer-list">
-                                   
+
                                     <li><a href="#">Concord History</a></li>
                                     <li><a href="#">Client Feed</a></li>
                                     <li><a href="about-us.html">About Us</a></li>
@@ -721,7 +644,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <div class="container">
                     <div class="row align-items-center">
@@ -750,23 +673,23 @@
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
 
-    <!-- jquery -->		
+    <!-- jquery -->
     <script src="assets/js/vendor/jquery-3.6.1.min.js"></script>
-    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>		
+    <script src="assets/js/vendor/jquery-migrate-3.4.0.min.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="assets/js/vendor/bootstrap.min.js"></script>
 
     <!-- Plugins JS -->
     <script src="assets/js/plugins/slick.min.js"></script>
-    
+
     <script src="assets/js/plugins/jquery.nice-select.min.js"></script>
     <script src="assets/js/plugins/countdown.min.js"></script>
     <script src="assets/js/plugins/image-zoom.min.js"></script>
     <script src="assets/js/plugins/fancybox.js"></script>
     <script src="assets/js/plugins/scrollup.min.js"></script>
     <script src="assets/js/plugins/jqueryui.min.js"></script>
-     <script src="assets/js/plugins/ajax-contact.js"></script>
+    <script src="assets/js/plugins/ajax-contact.js"></script>
 
     <!-- Vendor & Plugins JS (Please remove the comment from below vendor.min.js & plugins.min.js for better website load performance and remove js files from avobe) -->
     <!--
@@ -776,91 +699,14 @@
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('editAddressForm');
-            const submitButton = document.getElementById('submitButton');
-    
-            // Function to get element value by ID
-            function getElementValue(id) {
-                const element = document.getElementById(id);
-                return element ? element.value.trim() : '';
-            }
-    
-            // Function to validate input
-            function validateInput(inputId, pattern, errorId, errorMessage) {
-                const inputValue = getElementValue(inputId);
-                const errorElement = document.getElementById(errorId);
-    
-                if (!inputValue) {
-                    errorElement.innerText = errorMessage + ' is required.';
-                    return false;
-                } else if (pattern && !pattern.test(inputValue)) {
-                    errorElement.innerText = 'Please enter a valid ' + errorMessage.toLowerCase() + '.';
-                    return false;
-                } else {
-                    errorElement.innerText = '';
-                    return true;
-                }
-            }
-    
-            // Function to enable/disable submit button based on validation
-            function enableSubmitButton() {
-                submitButton.disabled = !(
-                    validateInput('name', /^[A-Za-z\s]+$/, 'nameError', 'Full Name') &&
-                    validateInput('phone', /^(91)?0?[6-9]\d{9}$/, 'phoneError', 'Phone') &&
-                    validateInput('altPhone', /^(91)?0?[6-9]\d{9}$/, 'altPhoneError', 'Alternate Phone') &&
-                    validateInput('pincode', /^[1-9][0-9]{5}(?:\s[0-9]{3})?$/, 'pincodeError', 'Pincode (6 digits)') &&
-                    validateInput('landMark', null, 'landMarkError', 'Landmark') &&
-                    validateInput('city', /^[a-zA-Z\s]+$/, 'cityError', 'City') &&
-                    validateInput('state', /^[a-zA-Z\s]+$/, 'stateError', 'State') &&
-                    validateInput('addressType', null, 'addressTypeError', 'Address Type') &&
-                    validateInput('homeAddress', null, 'homeAddressError', 'Address')
-                );
-            }
-    
-            // Event listeners for input fields
-            form.querySelectorAll('input, select').forEach(input => {
-                input.addEventListener('input', function () {
-                    const errorId = this.id + 'Error';
-                    const errorElement = document.getElementById(errorId);
-                    if (errorElement) {
-                        validateInput(this.id, null, errorId, ''); // Reset error message
-                    }
-                    enableSubmitButton();
-                });
-            });
-    
-            // Event listener for form submission
-            form.addEventListener('submit', function (event) {
-                if (!validateForm()) {
-                    event.preventDefault(); // Prevent form submission if validation fails
-                    alert('Please fix validation errors before submitting the form.');
-                }
-            });
-    
-            // Function to validate form
-            function validateForm() {
-                return (
-                    validateInput('name', /^[A-Za-z\s]+$/, 'nameError', 'Full Name') &&
-                    validateInput('phone', /^(91)?0?[6-9]\d{9}$/, 'phoneError', 'Phone') &&
-                    validateInput('altPhone', /^(91)?0?[6-9]\d{9}$/, 'altPhoneError', 'Alternate Phone') &&
-                    validateInput('pincode', /^[1-9][0-9]{5}(?:\s[0-9]{3})?$/, 'pincodeError', 'Pincode (6 digits)') &&
-                    validateInput('landMark', null, 'landMarkError', 'Landmark') &&
-                    validateInput('city', /^[a-zA-Z\s]+$/, 'cityError', 'City') &&
-                    validateInput('state', /^[a-zA-Z\s]+$/, 'stateError', 'State') &&
-                    validateInput('addressType', null, 'addressTypeError', 'Address Type') &&
-                    validateInput('homeAddress', null, 'homeAddressError', 'Address')
-                );
-            }
-        });
-
-
-
 
 
         const inputElement = document.getElementById('input');
@@ -945,11 +791,33 @@
                 hideNoProductFound();
             }
         }
+        function copyToClipboard(couponCode) {
+            var tempInput = document.createElement('input');
+            tempInput.value = couponCode.trim(); // Trim leading and trailing spaces
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Code copied to clipboard'
+            });
+        }
+
     </script>
-    
+
 
 </body>
 
 
 <!-- Mirrored from template.hasthemes.com/ruiz/ruiz/product-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 29 Jan 2024 11:50:53 GMT -->
+
 </html>
