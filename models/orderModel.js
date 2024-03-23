@@ -91,7 +91,13 @@ const orderSchema=new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    coupon:{
+        type:String,
+    },
+    discount:{
+        type:Number,
+    }
 
 },{versionKey:false},{strictPopulate:false});
 
