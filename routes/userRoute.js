@@ -17,17 +17,9 @@ const cartController = require('../controllers/cartController');
 const productController = require('../controllers/productController');
 const orderController = require('../controllers/orderController');
 const checkoutController = require("../controllers/checkoutController")
-
-// user_route.get('/',(req,res)=>{
-//     req.session.hi="hello"
-//     req.session.save()
-//     // console.log(req.session);
-//     res.render('landingpage')
-// });
+const couponController = require('../controllers/couponController');
 
 user_route.get('/', auth.isBlocked, (req, res) => {
-    // req.session.hi = "hello";
-    // req.session.save();
     res.render('landingpage');
 });
 
@@ -70,6 +62,7 @@ user_route.get('/home', auth.checkAuth, auth.isBlocked, productController.loadPr
 user_route.get('/productDetails', auth.checkAuth, auth.isBlocked, productController.loadIndividualProduct);
 user_route.get('/showproduct', productController.loadProduct);
 user_route.get('/shop', auth.checkAuth, auth.isBlocked,productController.loadShop);
+user_route.post('/search',productController.searchProducts)
 
 
 user_route.get("/cart", auth.checkAuth, auth.isBlocked,cartController.loadCartpage);
@@ -101,6 +94,12 @@ user_route.get("/wallet",auth.checkAuth,auth.isBlocked,checkoutController.loadWa
 user_route.post("/addCash",auth.checkAuth,auth.isBlocked,checkoutController.addWalletCash)
 
 user_route.post("/addAmount",auth.checkAuth,auth.isBlocked,checkoutController.addCash)
+
+user_route.get("/coupon", auth.checkAuth,auth.isBlocked, couponController.loadCoupon);
+user_route.post("/applyCoupon",  auth.checkAuth,auth.isBlocked, couponController.applyCoupon);
+
+
+user_route.get('/pdf',checkoutController.invoice)
 
 
 module.exports = user_route;
