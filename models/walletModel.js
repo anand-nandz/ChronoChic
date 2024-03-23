@@ -11,7 +11,8 @@ const walletSchma=new mongoose.Schema({
         
     },
     transactions:[
-        {   id:{
+        {   
+            id:{
             type:Number
             
             },
@@ -26,7 +27,11 @@ const walletSchma=new mongoose.Schema({
              orderType:{
                 type:String,
                 
-             }
+             },
+             type: { // New field to track transaction type (credit/debit)
+                type: String,
+                enum: ['Credit', 'Debit'] // Enumerate possible transaction types
+            }
         },
     ],
     
