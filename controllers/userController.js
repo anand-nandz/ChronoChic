@@ -12,7 +12,8 @@ const Product = require("../models/productModel");
 const Cart = require("../models/cartModel")
 const Category = require("../models/categoryModel");
 const Order =require("../models/orderModel")
-
+const referalCode = require("../utils/referalCode");
+const Coupon = require('../models/couponModel');
 
 
 
@@ -95,39 +96,32 @@ const loadRegister = async (req, res) => {
 
 const insertUser = async (req, res) => {
     try {
-        const { name, email, mobileno, userpassword, confirmpassword, gender } = req.body;
+        const { name, email, mobileno, userpassword, confirmpassword, gender  } = req.body;
 
-        // Check if the email already exists in the database
+    
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
-            // If the email already exists, render the register page with an error message
-            // return res.render('register', { error: 'Email already exists. Please use a different email.' });
             return res.redirect('/register?error=Email already exists. Please use a different email.');
         }
 
-        // If passwords match, proceed with user registration
+        
         if (userpassword === confirmpassword) {
-            // Generate OTP and timestamp
+            
             const otp = generateOtp();
             const otpTimestamp = Date.now();
 
-            // Store user data and OTP in session
             req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp };
             req.session.save();
 
-            // Send OTP to user's email
             const sentEmailUser = await sendInsertOtp(email, otp);
             if (sentEmailUser) {
-                // Redirect to OTP verification page
                 return res.redirect('/verifyOTP');
             }
         } else {
-            // If passwords don't match, render the register page with an error message
             return res.render('register', { error: 'Passwords do not match.' });
         }
     } catch (error) {
         console.log(error.message);
-        // Handle any errors that occur during registration
         return res.render('register', { error: 'An error occurred. Please try again later.' });
     }
 }
@@ -140,18 +134,14 @@ const checkEmailExists= async (req, res) => {
     try {
         const { email } = req.body;
 
-        // Check if the email already exists in the database
         const existingUser = await User.findOne({ email: email  });
         if (existingUser) {
-            // If the email already exists, respond with exists:true
             return res.json({ exists: true });
         } else {
-            // If the email doesn't exist, respond with exists:false
             return res.json({ exists: false });
         }
     } catch (error) {
         console.error("Error checking email existence:", error);
-        // If there was an error, respond with an error status
         return res.status(500).json({ error: "An error occurred while checking email existence." });
     }
 };
@@ -236,19 +226,14 @@ const getOtp = async (req, res) => {
 
 
 
-const resendOTP = async (req, res) => {
+const  resendOTP = async (req, res) => {
     try {
-        // Generate a new OTP
-        const newOTP = generateOtp(); // Implement your OTP generation logic here
+        const newOTP = generateOtp(); 
         const otpTimestamp = Date.now();
       req.session.Data.otpTimestamp=otpTimestamp;
 
-        // Update the session with the new OTP
         req.session.Data.otp = newOTP;
         
-        // const saved = req.session.save();
-
-        // Send the new OTP to the user (e.g., via email or SMS)
         console.log(newOTP,"newotp ......");
         console.log(req.session.Data.otp,"otp saved in sessionnnnnnnnnnn");
         // console.log(saved , "saved session ....");
@@ -331,21 +316,6 @@ const verifyLogin = async (req, res) => {
 //---------------------*****Load Home*****---------------------//
 
 
-
-// const loadHome = async(req,res)=>{
-//     try{
-
-//         // const userData = await User.findById({_id:req.session.user_id});
-//         // res.render('home',{user:userData});
-//         res.render('home');
-
-//     }
-//     catch(error){
-//         console.log(error.message);
-//     }
-// }
-
-
 const loadHome = async (req, res) => {
     try {
         if (req.session.user) {
@@ -376,6 +346,7 @@ const loadHome = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
+        
         req.session.destroy();
         res.redirect('/');
     }
@@ -495,7 +466,20 @@ const userProfile = async (req, res) => {
         const userData = await User.findById(req.session.user._id);
         const address = await Address.findOne({ userId: req.session.user._id });
         const orders = await Order.find({ userId: req.session.user._id }).sort({_id:-1});
-        res.render('userProfile', { userData, address ,orders});
+        const findUser = await User.findOne(req.session.user);
+  
+      
+  
+      const CouponDataArray = await Coupon.find({
+        users: { $nin: [findUser._id] },
+        isActive: true
+      });
+  
+      const redeemCoupon = await Coupon.find({
+        users: { $in: [findUser._id] },
+      });
+  
+        res.render('userProfile', { userData, address ,orders,redeemCoupon,CouponDataArray});
     } catch (error) {
         console.log(error.message);
         res.status(500).send("Internal Server Error");
@@ -536,40 +520,28 @@ const orders = async (req, res) => {
     }
 }
 
-
 const addAddress = async (req, res) => {
     try {
-        console.log("hello");
-       
-        console.log(req.body, '...................');
-        console.log(req.body.name, 'name...................');
         const { addressType, name, city, homeAddress, landMark, state, pincode, phone, altPhone } = req.body;
 
-        
         const existingAddresses = await Address.findOne({ userId: req.session.user._id });
 
-        
-        if (existingAddresses && existingAddresses.address.length >= 3) {
-            // return res.status(400).send('You can only have up to 3 addresses.');
-            req.flash('error', 'You can only have up to 3 addresses.');
-            return res.redirect('/userProfile');
-        }
-
+        // if (existingAddresses && existingAddresses.address.length >= 3) {
+        //     req.flash('error', 'You can only have up to 3 addresses.');
+        //     return res.redirect('/userProfile');
+        // }
 
         if (phone === altPhone) {
             req.flash('error', 'Phone and Alternate Phone must be different.');
             return res.redirect('/userProfile');
         }
 
-        
-        const pincodeRegex = /^\d{6}$/;
+        const pincodeRegex = /^[1-9][0-9]{5}(?:\s[0-9]{3})?$/;
         if (!pincodeRegex.test(pincode)) {
             req.flash('error', 'Pincode must be a 6-digit number.');
             return res.redirect('/userProfile');
         }
 
-
-       
         const newAddress = {
             addressType,
             name,
@@ -581,8 +553,7 @@ const addAddress = async (req, res) => {
             phone,
             altPhone
         };
-        console.log(newAddress, '....nw');
-       
+
         if (existingAddresses) {
             existingAddresses.address.push(newAddress);
             await existingAddresses.save();
@@ -594,24 +565,19 @@ const addAddress = async (req, res) => {
             await address.save();
         }
 
-        res.redirect('/userProfile');
+        res.redirect('/userProfile#manageaddress');
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Internal Server Error');
     }
-}
-
-
-
+};
 
 const renderEditAddress = async (req, res) => {
     try {
         const addressId = req.query.addressId;
         const user = req.session.user;
 
-       
         const address = await Address.findOne({ userId: user._id, 'address._id': addressId });
-        console.log(address, '...address');
       
         if (!address) {
             console.log('Address not found');
@@ -619,7 +585,6 @@ const renderEditAddress = async (req, res) => {
         }
 
         const addressData = address.address.find(addr => addr._id.toString() === addressId);
-        console.log(addressData, '.........data');
         
         res.render('editAddress', { address: addressData, addressId: addressId });
 
@@ -628,12 +593,6 @@ const renderEditAddress = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-
-
-
-
-
-
 
 const editAddress = async (req, res) => {
     try {
@@ -651,8 +610,13 @@ const editAddress = async (req, res) => {
             phone,
             altPhone
         };
-        console.log(updatedAddress, 'upadd.....');
         
+        const pincodeRegex = /^[1-9][0-9]{5}(?:\s[0-9]{3})?$/;
+        if (!pincodeRegex.test(pincode)) {
+            req.flash('error', 'Pincode must be a 6-digit number.');
+            return res.redirect('/edit-address?addressId=' + addressId);
+        }
+
         const result = await Address.findOneAndUpdate(
             { 'address._id': addressId }, 
             { $set: { 'address.$': updatedAddress } }, 
@@ -660,19 +624,16 @@ const editAddress = async (req, res) => {
         );
 
         if (!result) {
-            
             console.log('Address not found');
             return res.status(404).send('Address not found');
         }
 
-       
-        res.redirect('/userProfile');
+        res.redirect('/userProfile#manageaddress');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
-
 
 
 const deleteAddress = async (req, res) => {
