@@ -29,7 +29,21 @@ const loadViewOrder = async (req, res) => {
       pdtData.push(await Product.findById({ _id: pdtId[i] }))
     }
     console.log(pdtData, "dataaaaaa");
-    res.render("orderView", { pdtData, findOrder })
+
+    const orderDateParts = findOrder.orderDate.split('-');
+    const orderDay = parseInt(orderDateParts[0], 10);
+    const orderMonth = parseInt(orderDateParts[1], 10) - 1; // Months are zero-based in JavaScript
+    const orderYear = parseInt(orderDateParts[2], 10);
+    const orderDate = new Date(orderYear, orderMonth, orderDay);
+
+    // Calculate expected delivery date
+    const expectedDeliveryDate = new Date(orderDate);
+    expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 7);
+    
+    // Format expected delivery date to "dd-mm-yyyy" format
+    const formattedDeliveryDate = `${expectedDeliveryDate.getDate()}-${expectedDeliveryDate.getMonth() + 1}-${expectedDeliveryDate.getFullYear()}`;
+
+    res.render("orderView", { pdtData, findOrder ,expectedDeliveryDate: formattedDeliveryDate})
   }
   catch (error) {
     console.log(error.message);
@@ -112,7 +126,11 @@ const cancelOrder = async (req, res) => {
               transactions: {
                 id: Tid,
                 date: date,
-                amount: findOrder.totalAmount
+                amount: findOrder.totalAmount,
+                orderType: 'Razorpay',
+                type: 'Credit'
+               
+
               }
             }
           })
@@ -125,6 +143,10 @@ const cancelOrder = async (req, res) => {
             id: Tid,
             date: date,
             amount: findOrder.totalAmount,
+            orderType: 'Razorpay',
+            type: 'Credit'
+            
+
           }]
         })
 
@@ -178,7 +200,7 @@ const loadOrderDetail = async (req, res) => {
   try {
     const id = req.query.id
     const findOrder = await Order.findById({ _id: id })
-    console.log(findOrder, 'findorder..........');
+    console.log(findOrder, 'findorder.......');
     let pdtId = [];
     for (let i = 0; i < findOrder.items.length; i++) {
       pdtId.push(findOrder.items[i].productId)
@@ -206,41 +228,157 @@ const saveOrder = async (req, res) => {
     console.log(id, status)
 
     const checking = await Order.findById({ _id: id })
-
+    console.log(checking, "checking sts in orderr");
     if (checking.status == status) {
       res.json({ status: "notChanged" })
     } else {
-
       const updateStatus = await Order.findByIdAndUpdate({ _id: id }, {
         $set: {
           status: status
         }
       })
+      console.log(updateStatus, "sts updated in cod return");
 
     }
-
+    console.log("sts changed to return");
     if (status == "Returned") {
-      const pdtId = [];
+      console.log("entered sts== returned");
 
-      for (let i = 0; i < checking.items.length; i++) {
-        pdtId.push(checking.items[i].productId);
+      const findOrder = await Order.findById({ _id: id })
+      console.log(findOrder, "orderfinded in return ullilll");
+      const demo=findOrder.orderType
+      console.log(demo)
+      if (findOrder.orderType == "Cash On Delivery") {
+        console.log("entered cod for return");
+        const date = generateDate();
+        const Tid = generateOrder.generateOrder();
+
+        const pdtId = [];
+
+        for (let i = 0; i < checking.items.length; i++) {
+          pdtId.push(checking.items[i].productId);
+        }
+
+        for (let i = 0; i < pdtId.length; i++) {
+          await Product.findByIdAndUpdate(
+            { _id: pdtId[i] },
+            {
+              $inc: {
+                countInStock: checking.items[i].quantity,
+              },
+            }
+          );
+        }
+        const userInWallet = await Wallet.findOne({ userId: findOrder.userId })
+        console.log(userInWallet, 'wallet of user in cod return');
+
+        if (userInWallet) {
+          // console.log("inside userWallet")
+          const updateWallet = await Wallet.findOneAndUpdate({ userId: findOrder.userId },
+            {
+              $inc: {
+                balance: findOrder.totalAmount
+              },
+              $push: {
+                transactions: {
+                  id: Tid,
+                  date: date,
+                  amount: findOrder.totalAmount,
+                  orderType: 'Cash On Delivery',
+                  type: 'Credit'
+                  
+                }
+              }
+            })
+          console.log(updateWallet, "wallet updated in cod return");
+        } else {
+          // console.log("else worked");
+          const createWallet = new Wallet({
+            userId: findUser._id,
+            balance: findOrder.totalAmount,
+            transactions: [{
+              id: Tid,
+              date: date,
+              amount: findOrder.totalAmount,
+              orderType: 'Cash On Delivery',
+              type: 'Credit'
+             
+            }]
+          })
+          console.log("walllet created in cod for new user wallet");
+          const newWall = await createWallet.save();
+          console.log(newWall, "newwWallet created cod in return");
+        }
       }
+      else if (findOrder.orderType == "Razorpay") {
+        console.log('entered inside razopay');
+        const findOrder = await Order.findById({ _id: id })
+        console.log(findOrder, "order inside razordpay in elsif");
+        const date = generateDate();
+        const Tid = generateOrder.generateOrder();
 
-      for (let i = 0; i < pdtId.length; i++) {
-        await Product.findByIdAndUpdate(
-          { _id: pdtId[i] },
-          {
-            $inc: {
-              countInStock: checking.items[i].quantity,
+        const pdtId = [];
+
+        for (let i = 0; i < findOrder.items.length; i++) {
+          pdtId.push(findOrder.items[i].productId);
+        }
+
+        for (let i = 0; i < pdtId.length; i++) {
+          await Product.findByIdAndUpdate(
+            { _id: pdtId[i] },
+            {
+              $inc: {
+                countInStock: findOrder.items[i].quantity
+              },
             },
-          }
-        );
+          );
+        }
+        const userInWallet = await Wallet.findOne({ userId: findOrder.userId })
+        console.log(userInWallet, 'user wallet in return for razorpay');
+
+        if (userInWallet) {
+          const updateWallet = await Wallet.findOneAndUpdate({ userId: findOrder.userId },
+            {
+              $inc: {
+                balance: findOrder.totalAmount
+              },
+              $push: {
+                transactions: {
+                  id: Tid,
+                  date: date,
+                  amount: findOrder.totalAmount,
+                  orderType: 'Razorpay',
+                  type: 'Credit'
+                 
+                }
+              }
+            })
+          console.log(updateWallet, "wallet updated in return for razorpay .......");
+        } else {
+          const createWallet = new Wallet({
+            userId: findUser._id,
+            balance: findOrder.totalAmount,
+            transactions: [{
+              id: Tid,
+              date: date,
+              amount: findOrder.totalAmount,
+              orderType: 'Razorpay',
+              type: 'Credit'
+              
+            }]
+          })
+
+          await createWallet.save()
+        }
+
+
       }
+
     } else if (status == "Canceled") {
 
       const findOrder = await Order.findById({ _id: id })
 
-      if (findOrder.orderType == "Cash on Delivery") {
+      if (findOrder.orderType == "Cash On Delivery") {
         const updateOrder = await Order.findByIdAndUpdate(
           { _id: id },
           {
@@ -267,32 +405,32 @@ const saveOrder = async (req, res) => {
           );
         }
       }
-      else if(findOrder.orderType == "Razorpay"){
+      else if (findOrder.orderType == "Razorpay") {
         const findOrder = await Order.findById({ _id: id })
         const date = generateDate();
         const Tid = generateOrder.generateOrder();
 
         const updateOrder = await Order.findByIdAndUpdate(
-          {_id:id},
+          { _id: id },
           {
-            $set:{
-              status:"Canceled",
+            $set: {
+              status: "Canceled",
             },
           },
         );
 
         const pdtId = [];
 
-        for(let i=0;i<findOrder.items.length;i++){
+        for (let i = 0; i < findOrder.items.length; i++) {
           pdtId.push(findOrder.items[i].productId);
         }
-        
-        for(let i=0;i<pdtId.length;i++){
+
+        for (let i = 0; i < pdtId.length; i++) {
           await Product.findByIdAndUpdate(
-            {_id:pdtId[i]},
+            { _id: pdtId[i] },
             {
-              $inc:{
-                countInStock:findOrder.items[i].quantity
+              $inc: {
+                countInStock: findOrder.items[i].quantity
               },
             },
           );
@@ -300,10 +438,10 @@ const saveOrder = async (req, res) => {
 
         // const userInWallet = await Wallet.findOne({userId:findOrder.userId})
         const userInWallet = await Wallet.findOne({ userId: findUser._id })
-        console.log(userInWallet,'in wallet user');
+        // console.log(userInWallet,'in wallet user');
 
         if (userInWallet) {
-          console.log("inside userWallet")
+          // console.log("inside userWallet")
           const updateWallet = await Wallet.findOneAndUpdate({ userId: findUser._id },
             {
               $inc: {
@@ -313,12 +451,14 @@ const saveOrder = async (req, res) => {
                 transactions: {
                   id: Tid,
                   date: date,
-                  amount: findOrder.totalAmount
+                  amount: findOrder.totalAmount,
+                  type: 'Credit'
+                
                 }
               }
             })
         } else {
-          console.log("else worked");
+          // console.log("else worked");
           const createWallet = new Wallet({
             userId: findUser._id,
             balance: findOrder.totalAmount,
@@ -326,15 +466,20 @@ const saveOrder = async (req, res) => {
               id: Tid,
               date: date,
               amount: findOrder.totalAmount,
+              type: 'Credit'
+             
             }]
           })
-  
+
           await createWallet.save()
         }
 
 
       }
-      
+
+    }
+    else{
+
     }
 
 
@@ -381,6 +526,7 @@ const cancelReturn = async (req, res) => {
         }
       }
     )
+    res.json({ status: true });
   }
   catch (error) {
     console.log(error.message);
