@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/adminassets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/adminassets/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/adminassets/imgs/theme/logo.png" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item active ">
+                    <a class="menu-link" href="/admin/home"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/products"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/order"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Category</span>
+                    </a>                   
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Coupons</span>
+                    </a>                   
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/users"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Users</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/sales"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sales Report</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>                    
+                </li>
+                
+               
+            </ul>
+            <hr>
+            <!-- <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li>
+            </ul> -->
+            <br>
+            <br>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                    </div>
+                    <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist>
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="/adminassets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/adminassets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <!-- <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a> -->
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="adminLogin"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Edit Coupon</h2>
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <p id="filedErr" class="text-danger"></p>
+                            <div class="mb-4">
+                                <input type="hidden" id="id" name="user_id" value="<%= findCoupon._id%>">
+                                <label for="product_title" class="form-label">Coupon Name</label>
+                                <input type="text" placeholder="Type here" id="name" class="form-control"
+                                    onkeydown="return /[a-zA-Z\s]/.test(event.key) || event.key === 'Backspace' || event.key === 'Delete' || event.key === 'ArrowLeft' || event.key === 'ArrowRight'"
+                                    onblur="name()" value="<%= findCoupon.name %>">
+                                <p id="nameErr" class="text-danger"></p>
+                                <p id="nameExistsError" class="text-danger"></p>
+                            </div>
+                            <div class="row gx-3">
+
+                                <div class="col-md-4  mb-3">
+                                    <label for="product_color" class="form-label">Start Date</label>
+                                    <input type="date" placeholder="Type here" id="startDate" onblur="startDate()"
+                                        class="form-control" value="<%= findCoupon.startDate %>" >
+                                    <p id="startDateErr" class="text-danger"></p>
+                                </div>
+                                <div class="col-md-4  mb-3">
+                                    <label for="product_size" class="form-label">End Date</label>
+                                    <input type="date" placeholder="Type here" id="endDate" class="form-control"
+                                        onblur="endDate()" value="<%= findCoupon.endDate %>">
+                                    <p id="endDateErr" class="text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-md-4  mb-3">
+                                    <label for="product_sku" class="form-label">Min Amount</label>
+                                    <input type="text" placeholder="Type here" class="form-control" onblur="minCash()"
+                                        onKeyDown="return /[0-9]/.test(event.key) || event.key === 'Backspace' || event.key === 'Delete' || event.key === 'ArrowLeft' || event.key === 'ArrowRight'"
+                                        id="Minimum"  value="<%= findCoupon.minimumAmount %>">
+                                    <p id="minAmountErr" class="text-danger"></p>
+                                </div>
+                                <div class="col-md-4  mb-3">
+                                    <label for="product_color" class="form-label">Max Amount</label>
+                                    <input type="text" placeholder="Type here" class="form-control"
+                                        onKeyDown="return /[0-9]/.test(event.key) || event.key === 'Backspace' || event.key === 'Delete' || event.key === 'ArrowLeft' || event.key === 'ArrowRight'"
+                                        onblur="maxCash()" id="maximum"  value="<%= findCoupon.maximumAmount %>">
+                                    <p id="maxAmountErr" class="text-danger"></p>
+                                </div>
+                                <div class="col-md-4  mb-3">
+                                    <label for="product_size" class="form-label">Discount</label>
+                                    <input type="text" placeholder="Type here"
+                                        onKeyDown="return /[0-9]/.test(event.key) || event.key === 'Backspace' || event.key === 'Delete' || event.key === 'ArrowLeft' || event.key === 'ArrowRight'"
+                                        class="form-control" onblur="dis()" id="discount"   value="<%= findCoupon.discount %>">
+                                    <p id="disErr" class="text-danger"></p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div>
+                        <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
+                        <button class="btn btn-md rounded font-sm hover-up" onclick="publish()">Publish</button>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-3">
+
+                </div>
+            </div>
+        </section>
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/adminassets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/adminassets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/adminassets/js/vendors/select2.min.js"></script>
+    <script src="/adminassets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/adminassets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/adminassets/js/main.js" type="text/javascript"></script>
+    
+    <script>
+        function name() {
+            const nameValue = document.getElementById("name").value
+            const nameErr = document.getElementById("nameErr")
+
+            if (nameValue.trim() == "") {
+                nameErr.innerHTML = "Name is required"
+            } else {
+                nameErr.innerHTML = ""
+            }
+
+        }
+        function endDate() {
+            const endDate = document.getElementById("endDate").value;
+            const startDate = document.getElementById("startDate").value;
+            const endDateErr = document.getElementById("endDateErr");
+
+            if (endDate.trim() === "") {
+                endDateErr.innerHTML = "End date is required";
+            } else if (endDate === startDate) {
+                endDateErr.innerHTML = "End date cannot be the same as the start date";
+            } else if (new Date(endDate) < new Date(startDate)) {
+                endDateErr.innerHTML = "End date should be after the start date";
+            } else {
+                endDateErr.innerHTML = "";
+            }
+        }
+
+        function startDate() {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            const yyyy = today.getFullYear();
+
+            const minDate = `${yyyy}-${mm}-${dd}`;
+            document.getElementById("startDate").setAttribute("min", minDate);
+
+            const startDate = document.getElementById("startDate").value;
+            const startDateErr = document.getElementById("startDateErr");
+
+            if (startDate.trim() === "") {
+                startDateErr.innerHTML = "Start date is required";
+            } else if (new Date(startDate) < new Date(minDate)) {
+                startDateErr.innerHTML = "Start date should be the current date or a future date";
+            } else {
+                startDateErr.innerHTML = "";
+            }
+        }
+
+
+        function maxCash() {
+            const maximum = document.getElementById("maximum").value
+            const maxAmountErr = document.getElementById("maxAmountErr")
+
+            if (maximum.trim() == "") {
+                maxAmountErr.innerHTML = "Maximum Amount is required"
+            } else {
+                maxAmountErr.innerHTML = ""
+            }
+
+        }
+        function minCash() {
+            const minimum = document.getElementById("Minimum").value;
+            const maximum = document.getElementById("maximum").value;
+            const minAmountErr = document.getElementById("minAmountErr");
+
+            if (minimum.trim() === "") {
+                minAmountErr.innerHTML = "Minimum amount is required";
+            } else if (parseInt(minimum) < 0) {
+                minAmountErr.innerHTML = "Minimum amount should not be negative";
+            } else if (parseInt(minimum) >= parseInt(maximum)) {
+                minAmountErr.innerHTML = "Minimum amount should be less than the maximum amount";
+            } else {
+                minAmountErr.innerHTML = "";
+            }
+        }
+        function dis() {
+            const discount = document.getElementById("discount").value;
+            const disErr = document.getElementById("disErr");
+
+            if (discount.trim() === "") {
+                disErr.innerHTML = "Discount is required";
+            } else if (parseInt(discount) < 5 || parseInt(discount) > 75) {
+                disErr.innerHTML = "Discount percentage should be between 5% and 75%";
+            } else {
+                disErr.innerHTML = "";
+            }
+        }
+    
+        function publish() {
+            name()
+            endDate()
+            maxCash()
+            dis()
+            startDate()
+            minCash()
+    
+            const nameErr = document.getElementById("nameErr")
+            const endDateErr = document.getElementById("endDateErr")
+            const maxAmountErr = document.getElementById("maxAmountErr")
+            const disErr = document.getElementById("disErr")
+            const minAmountErr = document.getElementById("minAmountErr")
+            const startDateErr = document.getElementById("startDateErr")
+    
+            if (nameErr.innerHTML || endDateErr.innerHTML || maxAmountErr.innerHTML || disErr.innerHTML || minAmountErr.innerHTML || startDateErr.innerHTML) {
+                document.getElementById("filedErr").innerHTML = "Fill the Filed"
+            } else {
+                document.getElementById("filedErr").innerHTML = ""
+                const id=document.getElementById("id").value
+                const nameValue = document.getElementById("name").value
+                const startDate = document.getElementById("startDate").value
+                const Minimum = document.getElementById("Minimum").value
+                const endDate = document.getElementById("endDate").value
+                const maximum = document.getElementById("maximum").value
+                const discount = document.getElementById("discount").value
+    
+                $.ajax({
+                    url: "/admin/editCoupon",
+                    method: "post",
+                    data: {
+                        nameValue,
+                        endDate,
+                        maximum,
+                        discount,
+                        startDate,
+                        Minimum,
+                        id
+                    },
+                    success: (response) => {
+                        if (response.status == true) {
+                            window.location.href = "/admin/coupon"
+                        }
+                    },
+                    error: (xhr) => {
+                        const nameExistsError = document.getElementById("nameExistsError");
+
+                        if (xhr.status === 400) {
+                            
+                            nameExistsError.textContent = xhr.responseJSON.error;
+                        } else {
+                            
+                            nameExistsError.textContent = "An error occurred";
+                        }
+                    }
+                })
+            }
+    
+        }
+    
+    
+    
+    </script>
+
+
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+</html>
