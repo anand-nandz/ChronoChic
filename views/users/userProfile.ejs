@@ -313,6 +313,9 @@
                                         <li><a href="shop">Shop </a>
 
                                         </li>
+                                        <li><a href="rolex">Rolex </a>
+                                          
+                                        </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
                                     </ul>
@@ -577,9 +580,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-md-12">
-                                                        <div class="d-single-info">
-                                                            <p>Need Assistance? Customer service at.</p>
-                                                            <p>admin@devitems.com.</p>
+                                                        <div class="d-single-info" style="font-weight: 500;">
+                                                            <p>Invite your friends and get rewards</p>
+                                                            <% if (userData.referralCode) { %>
+                                                                <p>Referral Code: <span style="font-weight: 600;"><%= userData.referralCode %></span></p>
+                                                            <% } else { %>
+                                                                <p>No Referral Code Found</p>
+                                                            <% } %>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 col-md-12">

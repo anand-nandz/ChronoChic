@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Evara Dashboard</title>
+    <title>ChronoChic Dashboard</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -172,13 +172,18 @@
         <section class="content-main">
             <div class="content-header">
                 <h2 class="content-title">Sales Report</h2>
-               
+                <button style="width: 18%; height: 45px; margin-left: 10px;  " onclick="excel()"
+                                    class="btn btn-primary">Download as Excel</button>
+
+                                    <button style="width: 18%; height: 45px; margin-left: 10px " onclick="pdf()"
+                                    class="btn btn-primary">Download as pdf</button>
 
             </div>
 
             <!-- <button></button> -->
             <div class="card">
                 <div class="card-body">
+                    
                     <!-- <div class="row"> -->
                     <div class="col-lg-9" style="width: 100%;">
 
@@ -189,9 +194,14 @@
                                     <input type="date" id="date" class="form-control">
 
                                 </div>
+                                <div class="col-lg-2 " style="display: inline;">
+                                    <input type="date" id="date1" class="form-control">
+
+                                </div>
 
                                 <button style="width: 11%; height: 45px; margin-left: 5px;" onclick="date()"
                                     class="btn btn-primary">Search</button>
+                                    
 
                                 <div class="col-lg-2 col-6" style="margin-left: 40px;">
                                     <select class="form-select" id="sort">
@@ -205,11 +215,7 @@
                                 <button style="width: 11%; height: 45px; margin-left: 10px" onclick="sort()"
                                     class="btn btn-primary">Submit</button>
 
-                                    <button style="width: 18%; height: 45px; margin-left: 10px;  " onclick="excel()"
-                                    class="btn btn-primary">Download as Excel</button>
-
-                                    <button style="width: 18%; height: 45px; margin-left: 10px " onclick="pdf()"
-                                    class="btn btn-primary">Download as pdf</button>
+                                   
 
                                 
 
@@ -346,21 +352,25 @@
     <script>
         function date() {
             const customdateValue = document.getElementById("date").value;
+            const customdateValue1 = document.getElementById("date1").value;
+
             const today = new Date();
-            if (!customdateValue) {
+            if (!customdateValue && !customdateValue1) {
                 document.getElementById("custmerror").textContent = "Please select a date"
                 setTimeout(() => {
                     document.getElementById("custmerror").textContent = ""
                 }, 2000);
             } else {
                 const customdate = new Date(customdateValue);
-                if (customdate >= today) {
+                const customdate1 = new Date(customdateValue1);
+
+                if (customdate >= today && customdate1 >= today) {
                     document.getElementById("custmerror").textContent = "You can only view today's or previous day's orders"
                     setTimeout(() => {
                         document.getElementById("custmerror").textContent = ""
                     }, 2000);
                 } else {
-                    window.location.href = `/admin/salesDate?value=${customdateValue}`
+                    window.location.href = `/admin/salesDate?value=${customdateValue}&&value1=${customdateValue1}`
                 }
             }
         }
@@ -371,7 +381,7 @@
             if (date == "All") {
                 window.location.href = "/admin/sales"
             } else {
-                window.location.href = `/admin/Date?value=${date}`
+                window.location.href = `/admin/date?value=${date}`
             }
         }
 

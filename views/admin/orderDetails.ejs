@@ -183,7 +183,11 @@
                                     <option>Canceled</option>
                                 </select>
                                 <a class="btn btn-primary" onclick="save('<%= findOrder._id %>')">Save</a>
-
+                                <% }else if(findOrder.status=='Payment Failed'){ %>
+                                    <span class="badge rounded-pill alert-danger text-danger">
+                                         <%= findOrder.status %>
+                                    </span>
+                                    <a class="btn btn-primary" onclick="back()">Back</a>
                                 <%}else{%>
 
                                     <select id="status" class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
@@ -245,7 +249,7 @@
                                     <i class="text-primary material-icons md-place"></i>
                                 </span>
                                 <div class="text">
-                                    <h6 class="mb-1">Deliver to</h6>
+                                    <h6 class="mb-1">Deliver To</h6>
                                     <p class="mb-1">
                                          <%=findOrder.shippingAddress[0].homeAddress %>,<%= findOrder.shippingAddress[0]. landmark %>,  
                                         <%= findOrder.shippingAddress[0].city %>,<%= findOrder.shippingAddress[0].state%> -

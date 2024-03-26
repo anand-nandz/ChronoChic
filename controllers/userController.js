@@ -6,15 +6,18 @@ const { sendForgotPasswordOTP } = require('../utils/forgotOtp');
 const { sendInsertOtp } = require('../utils/insertOtp');
 const { generateOtp } = require('../utils/otphandle');
 const flash = require('connect-flash');
+const generateDate = require("../utils/dateGenrator");
+const {generateOrder} = require("../utils/otphandle")
+const referralCode = require("../utils/referalCode")
 
 const Address = require("../models/addressModel");
 const Product = require("../models/productModel");
 const Cart = require("../models/cartModel")
 const Category = require("../models/categoryModel");
+const Wallet = require("../models/walletModel");
 const Order =require("../models/orderModel")
-const referalCode = require("../utils/referalCode");
+// const referalCode = require("../utils/referalCode");
 const Coupon = require('../models/couponModel');
-
 
 
 
@@ -51,54 +54,11 @@ const loadRegister = async (req, res) => {
 
 //---------------------*****Insert User*****---------------------//
 
-// const insertUser = async (req, res) => {
-//     try {
-//         const { name, email, mobileno, userpassword, confirmpassword, gender } = req.body;
-
-//         const existingUser = await User.findOne({email:email});
-//         if(existingUser){
-//             res.redirect('/register',{error:"Email already exists. Please use a different email."})
-//         }
-
-//         if (req.body.userpassword === req.body.confirmpassword) {
-//             res.redirect('/verifyOTP')
-//         }
-//         const otp = generateOtp();
-//         const otpTimestamp = Date.now();
-//         console.log(otpTimestamp,"otptimestampppppppppp");
-//         // const { name, email, mobileno, userpassword, confirmpassword, gender } = req.body;
-
-//         req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender,otpTimestamp }
-//         req.session.save();
-//         console.log(req.session, 'this is sesion');
-
-//         console.log(otp);
-//         console.log(req.session.Data.otp, 'wWWWWWW');
-
-
-
-//         const sentEmailUser = await sendInsertOtp(req.body.email, otp);
-//         if (sentEmailUser) {
-//             // console.log('sentemail');
-//             res.redirect('/verifyOTP')
-//         }
-
-
-//     }
-//     catch (error) {
-//         console.log(error.message)
-//     }
-
-// }
-
-
-
 
 const insertUser = async (req, res) => {
     try {
-        const { name, email, mobileno, userpassword, confirmpassword, gender  } = req.body;
-
-    
+        const { name, email, mobileno, userpassword, confirmpassword, gender ,  referral} = req.body;
+        console.log(referral,"reefer in insertuser");
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
             return res.redirect('/register?error=Email already exists. Please use a different email.');
@@ -109,9 +69,35 @@ const insertUser = async (req, res) => {
             
             const otp = generateOtp();
             const otpTimestamp = Date.now();
+            console.log(otp,"genearted otp");
 
-            req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp };
-            req.session.save();
+            if(referral != ""){
+                console.log("inside referr if");
+                const searchReffer = await User.findOne({referralCode: referral})
+                console.log(searchReffer);
+                if(searchReffer){
+                    console.log("inside reffer");
+                    
+                    req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp,referral };
+                    console.log(req.session.Data);
+                    req.session.save();
+                    // return res.redirect('/verifyOTP');
+                }
+               
+    
+    
+            } else{
+                console.log("inside else in insertuser");
+                 req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp };
+                 req.session.save();
+                 console.log(req.session.Data,"after");
+
+             }
+
+
+
+            // req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp,referral };
+            // req.session.save();
 
             const sentEmailUser = await sendInsertOtp(email, otp);
             if (sentEmailUser) {
@@ -120,12 +106,50 @@ const insertUser = async (req, res) => {
         } else {
             return res.render('register', { error: 'Passwords do not match.' });
         }
+
+
+
     } catch (error) {
         console.log(error.message);
         return res.render('register', { error: 'An error occurred. Please try again later.' });
     }
 }
 
+// const insertUser = async (req, res) => {
+//     try {
+//         const { name, email, mobileno, userpassword, confirmpassword, gender, referral } = req.body;
+
+//         const existingUser = await User.findOne({ email: email });
+//         if (existingUser) {
+//             return res.redirect('/register?error=Email already exists. Please use a different email.');
+//         }
+
+//         if (referral) {
+//             const validReferral = await User.findOne({ referralCode: referral });
+//             if (!validReferral) {
+//                 return res.render('register', { error: 'Invalid referral code. Please enter a valid referral code.' });
+//             }
+//         }
+
+//         if (userpassword === confirmpassword) {
+//             const otp = generateOtp();
+//             const otpTimestamp = Date.now();
+
+//             req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp, referral };
+//             req.session.save();
+
+//             const sentEmailUser = await sendInsertOtp(email, otp);
+//             if (sentEmailUser) {
+//                 return res.redirect('/verifyOTP');
+//             }
+//         } else {
+//             return res.render('register', { error: 'Passwords do not match.' });
+//         }
+//     } catch (error) {
+//         console.error('Error in insertUser controller:', error);
+//         return res.render('register', { error: 'An error occurred. Please try again later.' });
+//     }
+// }
 
 
 
@@ -170,6 +194,11 @@ const loadOtp = async (req, res) => {
 const getOtp = async (req, res) => {
     console.log("calling");
     try {
+       console.log(req.session.Data.otp);
+       console.log( req.session.Data.otpTimestamp);
+        const date = generateDate();
+        const Tid= generateOrder()
+      
         const otpInBody = req.body.otp;
         const otp = req.session.Data.otp;
         const otpTimestamp = req.session.Data.otpTimestamp;
@@ -179,16 +208,15 @@ const getOtp = async (req, res) => {
         console.log(currentTime,"currenttimeeeeeeeeeeee");
         console.log(otpTimestamp,'timestampppppppppppp');
         if (otpInBody === otp && (currentTime - otpTimestamp) <= 60000) {
-            console.log(req.session.Data, "session data ......................................")
-            const { name, email, mobileno, userpassword, gender } = req.session.Data
+            const refferal=referralCode(8);
+           
+            console.log(refferal,"new referal code")
 
-            // console.log("username:", name);
-            // console.log("email:", email);
-            // console.log("mobileno:", mobileno)
-            // console.log("userpassword:", userpassword)
+            console.log(req.session.Data, "session data ......................................")
+            const { name, email, mobileno, userpassword, gender ,referral} = req.session.Data
+
 
             const passwordHash = await bcrypt.hash(userpassword, 10);
-            // console.log("Hashedpassword ==>", passwordHash);
             const existingUser = await User.findOne({ email: email })
             if (!existingUser) {
                 const user = new User({
@@ -199,30 +227,182 @@ const getOtp = async (req, res) => {
                     password: passwordHash,
                     is_admin: 0,
                     is_verified: 1,
-                    is_blocked: false
+                    is_blocked: false,
+                    referralCode:refferal
                 });
                 await user.save()
 
             }
+            console.log(req.session.Data.referral ,"consoled referal");
+            if(req.session.Data.referral){
+                console.log(req.session.Data.referral, "inside session reffer");
+                const findUser = await User.findOne({ referralCode: req.session.Data.referral });
+                console.log("user inside refeer to find refeeral", findUser);
+                
+                if (findUser) {
+                    console.log("inside finduser finded");
+                    const userWallet = await Wallet.findOne({ userId: findUser._id });
+                    console.log(userWallet,"userwallet");
+                    if (userWallet) {
+                        const updateWallet = await Wallet.findOneAndUpdate(
+                            { userId: findUser._id },
+                            {
+                                $inc: { balance: 100 },
+                                $push: {
+                                    transactions: {
+                                        id: Tid,
+                                        date: date,
+                                        amount: 100,
+                                        orderType: 'Referral Bonus',
+                                        type: 'Credit'
+                                    }
+                                }
+                            }
+                        );
+                    } else {
+                        console.log("else in wallet case");
+                        const createWallet = new Wallet({
+                            userId: findUser._id,
+                            balance: 100,
+                            transactions: [{
+                                id: Tid,
+                                date: date,
+                                amount: 100,
+                                orderType: 'Referral Bonus',
+                                type: 'Credit'
+                            }]
+                        });
+                        await createWallet.save();
+                    }
+    
+                    // Create wallet for the new user
+                    const newUser = await User.findOne({ email: req.session.Data.email });
+                    const newWallet = new Wallet({
+                        userId: newUser._id,
+                        balance: 100,
+                        transactions: [{
+                            id: Tid,
+                            date: date,
+                            amount: 100,
+                            orderType: 'Referral Bonus',
+                            type: 'Credit'
+                        }]
+                    });
+                    await newWallet.save();
+                }
+    
+    
+            }
+           
+
+
             console.log("registered successfully")
             // res.redirect('/login')
             res.redirect('/login?registration=complete');
-        }
-        else {
+        } else {
+            // Handle case when OTP is invalid or expired
             if ((currentTime - otpTimestamp) > 60000) {
-                 // Check if OTP has expired
-                 req.session.Data.otp=null;
+                // Check if OTP has expired
+                req.session.Data.otp = null;
                 return res.render('verifyOTP', { message: 'OTP has expired. Please request a new one.' });
             } else {
                 return res.render('verifyOTP', { message: 'Invalid OTP. Please try again.' });
             }
         }
+       
 
     } catch (error) {
         console.log('Error in OTP verification:', error);
         return res.render('verifyOTP', { message: 'An error occurred during OTP verification. Please try again later.' });
     }
-};
+}
+
+
+
+// const getOtp = async (req, res) => {
+//     try {
+//         const date = generateDate();
+//         const Tid = generateOrder();
+
+//         const otpInBody = req.body.otp;
+//         const { otp, otpTimestamp, reffer } = req.session.Data;
+//         const currentTime = Date.now();
+
+//         if (otpInBody === otp && (currentTime - otpTimestamp) <= 60000) {
+//             let refferal;
+//             if (reffer) {
+//                 const findUser = await User.findOne({ referralCode: reffer });
+//                 if (findUser) {
+//                     // Update wallet for referred user
+//                     const userWallet = await Wallet.findOneAndUpdate(
+//                         { userId: findUser._id },
+//                         {
+//                             $inc: { balance: 100 },
+//                             $push: {
+//                                 transactions: {
+//                                     id: Tid,
+//                                     date: date,
+//                                     amount: 100,
+//                                     orderType: 'Razorpay',
+//                                     type: 'credit'
+//                                 }
+//                             }
+//                         },
+//                         { upsert: true, new: true }
+//                     );
+
+//                     // Create wallet for the new user
+//                     const newUser = await User.findOne({ email: req.session.Data.email });
+//                     const newWallet = new Wallet({
+//                         userId: newUser._id,
+//                         balance: 100,
+//                         transactions: [{
+//                             id: Tid,
+//                             date: date,
+//                             amount: 100
+//                         }]
+//                     });
+//                     await newWallet.save();
+//                 }
+//             }
+
+//             // Register user if not already registered
+//             const existingUser = await User.findOne({ email: req.session.Data.email });
+//             if (!existingUser) {
+//                 const { name, email, mobileno, userpassword, gender } = req.session.Data;
+//                 const passwordHash = await bcrypt.hash(userpassword, 10);
+//                 const user = new User({
+//                     name: name,
+//                     email: email,
+//                     gender: gender,
+//                     mobile: mobileno,
+//                     password: passwordHash,
+//                     is_admin: 0,
+//                     is_verified: 1,
+//                     is_blocked: false,
+//                     referralCode: refferal
+//                 });
+//                 await user.save();
+//             }
+
+//             return res.redirect('/login?registration=complete');
+//         } else {
+//             // Handle invalid or expired OTP
+//             if ((currentTime - otpTimestamp) > 60000) {
+//                 req.session.Data.otp = null;
+//                 return res.render('verifyOTP', { message: 'OTP has expired. Please request a new one.' });
+//             } else {
+//                 return res.render('verifyOTP', { message: 'Invalid OTP. Please try again.' });
+//             }
+//         }
+//     } catch (error) {
+//         console.error('Error in getOtp controller:', error);
+//         return res.render('verifyOTP', { message: 'An error occurred during OTP verification. Please try again later.' });
+//     }
+// }
+
+
+
 
 
 
@@ -692,8 +872,5 @@ module.exports = {
     deleteAddress,
     checkEmailExists
   
-
-
-
 
 }

@@ -99,7 +99,7 @@ const orderSchema=new mongoose.Schema({
         type:Number,
     }
 
-},{versionKey:false},{strictPopulate:false});
+},{versionKey:false,timestamps:true},{strictPopulate:false});
 
 module.exports = mongoose.model("Order", orderSchema);
 

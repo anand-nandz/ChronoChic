@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Category = require("../models/categoryModel");
 const Order = require("../models/orderModel");
-const Chart=require("chart.js")
+const Chart = require("chart.js")
 
 const { body, validationResult } = require('express-validator');
 // const flash = require('connect-flash');
@@ -84,103 +84,255 @@ const verifyAdmin = async (req, res) => {
 const loadDashboard = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
-
-
-
-
-
-    const yValues=[0,0,0,0,0,0,0]
+    // console.log(userData, "admindata in admin");
+    const yValues = [0, 0, 0, 0, 0, 0, 0]
     const order = await Order.find({
-      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+      status: { $nin: ["Order Confirmed", "Processing","Product Dispatched" ,"Canceled", "Shipped", "Returned","Return Process", "Payment Failed"] },
     });
-
-   
-  
-
-    // for(let i=0;i<order.length;i++){
-    //   const date=order[i].createdAt
-    //   const value=date.getDay()
-    //   yValues[value]+=order[i].totalAmount
-    // }
-
-    // const allData=await Category.find({})
-
-    // const sales=[]
-
-    // for(let i=0;i<allData.length;i++){
-    //   sales.push(0)
-    // }
-
-    // console.log(sales)
-
-    // const allName=allData.map((x)=>x.name)
-    // const allId=allData.map((x)=>x._id)
-    
+    // console.log(order,"order in dashboard");
 
 
-    // console.log(allName);
-    // let productId=[]
-    // let quantity=[]
+    // to find the total products ordered
 
-    // for(let i=0;i<order.length;i++){
-    //   for(let j=0;j<order[i].items.length;j++){
-    //     productId.push(order[i].items[j].productsId)
-    //     quantity.push(order[i].items[j].quantity)
-    //   }
-    // }
-    // console.log(quantity)
-    // console.log(productId)
-    // const productData=[]
-    // for(let i=0;i<productId.length;i++){
-    //   productData.push(await Product.findById({_id:productId[i]}))
-    // }
-  
-    // //  console.log(productData);
+    const totalProductCount = await Order.aggregate([
+      { $unwind: "$items" },
+      {
+        $group: {
+          _id: "$items.productId",
+          totalCount: { $sum: "$items.quantity" }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalProductCount: { $sum: "$totalCount" }
+        }
+      }
+    ]);
 
-    //   for(let i=0;i<productData.length;i++){
-        
-    //     for(let j=0;j<allId.length;j++){
-    //       console.log(allId[j]+"     all id");
-    //       console.log(productData[i].category+"productid");
-    //       if(allId[j]==productData[i].category.toString()){
-    //         console.log(quantity[i]); 
-            
-    //         sales[j]+=quantity[i]
-    //       }
-    //     }
-        
-    //   }
+    const totalCount = totalProductCount.length > 0 ? totalProductCount[0].totalProductCount : 0;
+    // console.log("Total Count of Products in Orders:", totalCount);
+     
 
-    //   // console.log(sales)
-
-    //   console.log("PRODUCT ID"+productId)
-    //   let productSales=[]
-    //   for(let i=0;i<productId.length;i++){
-    //     productSales.push({salesCount:1})
-    //   }
-      
-
-    //   for(let i=0;i<productId.length;i++){
-    //     for(let j=i+1;j<productId.length;j++){
-    //       if(productId[i].toString()==productId[j].toString()){
-    //         productSales[i].salesCount+=1
-    //         const proData=await Product 
-    //         productSales
- 
-    //       }
-    //     }
-    //   }
-
-    //   console.log(productSales);
-
-      
- 
-  
-
-
-
+    //////////////////************************** Top Selling Products  ***************************//////////////////
 
     
+
+    const topSellingProducts = await Order.aggregate([
+      { $match: { status: "Delivered" } }, 
+      { $unwind: "$items" }, 
+      {
+        $group: {
+          _id: "$items.productId", 
+          totalQuantity: { $sum: "$items.quantity" }, 
+        },
+      },
+      { $sort: { totalQuantity: -1 } }, 
+      { $limit: 6 },
+      {
+        $lookup: { 
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" },
+      {
+        $project: { 
+          _id: "$productDetails._id",
+          pname: "$productDetails.pname",
+          totalQuantity: 1,
+          images: "$productDetails.images",
+          brand: "$productDetails.brand"
+        },
+      },
+    ]);
+
+
+        //////////////////************************** Top Selling Categories  ***************************//////////////////
+
+
+    const topSellingCategories = await Order.aggregate([
+      { $match: { status: "Delivered" } },
+      { $unwind: "$items" }, 
+      {
+        $lookup: { 
+          from: "products",
+          localField: "items.productId",
+          foreignField: "_id",
+          as: "product",
+        },
+      },
+      { $unwind: "$product" }, 
+      {
+        $group: { 
+          _id: "$product.category",
+          totalSales: { $sum: "$items.quantity" },
+        },
+      },
+      {
+        $lookup: { 
+          from: "categories",
+          localField: "_id",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      { $unwind: "$category" }, 
+      {
+        $project: { 
+          name: "$category.name",
+          totalSales: 1,
+        },
+      },
+      { $sort: { totalSales: -1 } }, 
+      { $limit: 5 }, 
+    ]);
+
+
+
+        //////////////////************************** Top Selling Brands  ***************************//////////////////
+
+
+    const topSellingBrands = await Order.aggregate([
+      { $match: { status: "Delivered" } }, 
+      { $unwind: "$items" },
+      {
+        $lookup: { 
+          from: "products",
+          localField: "items.productId",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      { $unwind: "$productDetails" }, 
+      {
+        $group: { 
+          _id: "$productDetails.brand",
+          totalSales: { $sum: "$items.quantity" },
+        },
+      },
+      { $sort: { totalSales: -1 } }, 
+      { $limit: 5 }, 
+    ]);
+
+    // console.log(topSellingBrands, "Top Selling Brands");
+
+
+
+
+    for (let i = 0; i < order.length; i++) {
+      const date = order[i].createdAt
+      console.log(date,"date");
+      const value = date.getDay()
+      console.log(value,"value get");
+      yValues[value] += order[i].totalAmount
+    }
+ 
+    const allData = await Category.find({})
+
+    const sales = []
+
+    for (let i = 0; i < allData.length; i++) {
+      sales.push(0)
+    }
+
+    console.log(sales,"sales in dash ")
+
+    const allName = allData.map((x) => x.name)
+    const allId = allData.map((x) => x._id)
+
+
+
+    console.log(allName,"allname");
+    let productId = []
+    let quantity = []
+
+    for (let i = 0; i < order.length; i++) {
+      for (let j = 0; j < order[i].items.length; j++) {
+        productId.push(order[i].items[j].productId)
+        quantity.push(order[i].items[j].quantity)
+      }
+    }
+    console.log(quantity ,"qty")
+    console.log(productId,"pdtid")
+
+    const productData = []
+    for (let i = 0; i < productId.length; i++) {
+      productData.push(await Product.findById({ _id: productId[i] }))
+    }
+
+    //  console.log(productData,"pdtdata in dashboard");
+
+    for (let i = 0; i < productData.length; i++) {
+
+      for (let j = 0; j < allId.length; j++) {
+        console.log(allId[j] + "     all id");
+        console.log(productData[i].category + "productid");
+        if (allId[j] == productData[i].category.toString()) {
+          console.log(quantity[i]);
+
+          sales[j] += quantity[i]
+        }
+      }
+
+    }
+    console.log(sales,"sales ");
+
+    console.log("PRODUCT ID" + productId);
+    
+    let productSales = [];
+    
+    for (let i = 0; i < productId.length; i++) {
+      productSales.push({ salesCount: 1 });
+    }
+    
+    for (let i = 0; i < productId.length; i++) {
+      for (let j = i + 1; j < productId.length; j++) {
+        if (productId[i].toString() == productId[j].toString()) {
+          productSales[i].salesCount += 1;
+        }
+      }
+    }
+    
+    console.log(productSales ,"product sales");
+    
+    const month = await Order.aggregate([
+      {
+        $project: {
+          _id: { $dateToString: { format: "%m-%Y", date: "$createdAt" } },
+          totalAmount: 1
+        }
+      },
+      {
+        $group: {
+          _id: "$_id",
+          totalEarnings: { $sum: "$totalAmount" }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+    
+    
+    console.log(month,"monthlyyy");
+    
+    let months = ["01-2024","02-2024","03-2024","04-2024","05-2024","06-2024","07-2024","08-2024","09-2024","10-2024","11-2024","12-2024"];
+    let array = new Array(months.length).fill(0); // Initialize array with zeros
+    
+    for (let i = 0; i < months.length; i++) {
+      for (let j = 0; j < month.length; j++) {
+        if (month[j]._id == months[i]) {
+          array[i] += month[j].totalEarnings;
+        }
+      }
+    }
+    
+    console.log(array,"array in month");
+    
+
     const orderData = await Order.find({ status: "Delivered" });
     let sum = 0;
     for (let i = 0; i < orderData.length; i++) {
@@ -222,51 +374,61 @@ const loadDashboard = async (req, res) => {
         { $sort: { "_id.year": 1, "_id.month": 1 } },
       ]);
 
-      const dailyEarnings = await Order.aggregate([
-        // Match orders with status "Delivered"
-        { $match: { status: "Delivered" } },
-        // Convert orderDate string to ISODate
-        {
-          $addFields: {
+
+// Aggregate pipeline to calculate daily earnings from delivered orders
+const dailyEarnings = await Order.aggregate([
+    // Match orders with status "Delivered"
+    { $match: { status: "Delivered" } },
+    // Convert orderDate string to ISODate
+    {
+        $addFields: {
             orderDate: {
-              $dateFromString: { dateString: "$orderDate", format: "%d-%m-%Y" },
+                $dateFromString: { dateString: "$orderDate", format: "%d-%m-%Y" },
             },
-          },
         },
-        // Extract year, month, and day from orderDate
-        {
-          $addFields: {
+    },
+    // Extract year, month, and day from orderDate
+    {
+        $addFields: {
             year: { $year: "$orderDate" },
             month: { $month: "$orderDate" },
             day: { $dayOfMonth: "$orderDate" },
-          },
         },
-        // Group by year, month, and day, calculate total earnings for each day
-        {
-          $group: {
+    },
+    // Group by year, month, and day, calculate total earnings for each day
+    {
+        $group: {
             _id: { year: "$year", month: "$month", day: "$day" },
             totalEarnings: { $sum: "$totalAmount" },
-          },
         },
-        // Sort by year, month, and day
-        { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
-      ]);
-      console.log(dailyEarnings,'dailyyyyyyyyyy');
+    },
+    // Sort by year, month, and day
+    { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+]);
+
+console.log(dailyEarnings, 'dailyEarnings'); // Check the result in console for debugging purposes
+
+
+
       const proLength = product.length;
       const catLength = category.length;
       const orderLength = order.length;
       res.render("adminhome", {
         sum,
         proLength,
+        topSellingProducts,
+        sales,
         catLength,
         orderLength,
         month,
         yValues,
-        dailyEarnings
-        
-      
-        
-        
+        dailyEarnings,
+        topSellingCategories,
+        totalCount,
+        topSellingBrands,
+        allName,
+        array
+
       });
       //  console.log("hhhhhhhhhheeeeeeelo"+month)
     } else {
@@ -278,15 +440,27 @@ const loadDashboard = async (req, res) => {
       res.render("adminhome", {
         sum,
         proLength,
+        topSellingProducts,
         catLength,
         orderLength,
         month,
+        sales,
         yValues,
-        dailyEarnings
-        
+        dailyEarnings,
+        topSellingCategories,
+        totalCount,
+        topSellingBrands,
+        allName,
+        array
       });
     }
 
+
+
+
+
+
+    // res.render('adminhome', { topSellingProducts, topSellingCategories, topSellingBrands, sum,sales,allName,array, totalCount, dailyEarnings });
 
 
 
@@ -324,9 +498,9 @@ const loadUsers = async (req, res) => {
       .sort({ _id: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage);
-      
+
     //    console.log(userData)
-    res.render('users', { userData,page, totalPage, startSerialNumber,perPage })
+    res.render('users', { userData, page, totalPage, startSerialNumber, perPage })
   } catch (error) {
     console.log(error.message)
   }
@@ -427,37 +601,41 @@ const delete_User = async (req, res) => {
 
 
 
-const loadProducts = async (req, res) => {
-  try {
-    const perPage = 5;
-    let page = parseInt(req.query.page) || 1;
+  const loadProducts = async (req, res) => {
+    try {
+      const perPage = 5;
+      let page = parseInt(req.query.page) || 1;
 
-    const totalProducts = await Product.countDocuments({});
-    const totalPage = Math.ceil(totalProducts / perPage);
+      const totalProducts = await Product.countDocuments({});
+      const totalPage = Math.ceil(totalProducts / perPage);
 
-    if (page < 1) {
-      page = 1;
-    } else if (page > totalPage) {
-      page = totalPage;
+      if (page < 1) {
+        page = 1;
+      } else if (page > totalPage) {
+        page = totalPage;
+      }
+
+      const startSerialNumber = (page - 1) * perPage + 1;
+
+      const allProducts = await Product.find({})
+        .sort({ _id: -1 })
+        .skip(perPage * (page - 1))
+        .limit(perPage);
+
+
+
+      const categories = await Category.find({ is_blocked: false });
+
+      res.render('products', { allProducts, categories, totalPage, page, startSerialNumber });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send("Internal Server Error");
     }
-
-    const startSerialNumber = (page - 1) * perPage + 1;
-
-    const allProducts = await Product.find({})
-      .sort({ _id: -1 })
-      .skip(perPage * (page - 1))
-      .limit(perPage);
-
-
-
-    const categories = await Category.find({ is_blocked: false });
-
-    res.render('products', { allProducts, categories, totalPage, page, startSerialNumber });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Internal Server Error");
   }
-}
+
+
+
+
 
 
 
@@ -571,7 +749,7 @@ const edit_product = async (req, res) => {
 
 const editproductImagePOST = async (req, res) => {
   try {
-   
+
     const image = req.body.imagename;
     const index = parseInt(req.body.index);
     const productID = req.body.productID;
@@ -771,7 +949,7 @@ const loadSales = async (req, res) => {
   try {
     const order = await Order.find({
       status: { $nin: ["Ordered", "Canceled", "Shipped"] },
-    }).sort({_id:-1});
+    }).sort({ _id: -1 });
     //  let couponid=[]
     //  for(let i=0;i<order.length;i++){
     //    if(order[i].coupon){
@@ -785,7 +963,7 @@ const loadSales = async (req, res) => {
     //  }
 
     //  console.log(couponData)
-     console.log(order,"orders")
+    console.log(order, "orders")
 
     res.render("adminSales", { order });
   } catch (error) {
@@ -798,17 +976,29 @@ const loadSales = async (req, res) => {
 const dateFilter = async (req, res) => {
   try {
     const date = req.query.value;
+    const date2 = req.query.value1;
     const parts = date.split("-");
+    const parts1 = date2.split("-");
+
     const day = parseInt(parts[2], 10);
+    const day1 = parseInt(parts1[2], 10);
+
     const month = parseInt(parts[1], 10);
+    const month1 = parseInt(parts1[1], 10);
+
 
     const rotatedDate = day + "-" + month + "-" + parts[0];
+    const rotatedDate1 = day1 + "-" + month1 + "-" + parts1[0];
+
     // console.log(rotatedDate)
 
     const order = await Order.find({
       status: { $nin: ["Ordered", "Canceled", "Shipped"] },
-      orderDate: rotatedDate,
-    }).sort({_id:-1});
+      orderDate: {
+        $gte:rotatedDate,
+        $lte:rotatedDate1 
+      }
+    }).sort({ _id: -1 });
 
     // console.log(order)
 
@@ -818,52 +1008,119 @@ const dateFilter = async (req, res) => {
   }
 };
 
+// const sortDate = async (req, res) => {
+//   try {
+//     const sort = req.query.value;
+//     let orderDateQuery = {};
+
+//     const currentDate = new Date();
+
+//     const currentDateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
+//     if (sort === "Day") {
+
+//       orderDateQuery = currentDateString;
+//     } else if (sort === "Week") {
+//       const firstDayOfWeek = new Date(currentDate);
+//       firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Start of the current week
+//       const lastDayOfWeek = new Date(currentDate);
+//       lastDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 6); // End of the current week
+//       const firstDayOfWeekString = `${firstDayOfWeek.getDate()}-${firstDayOfWeek.getMonth() + 1}-${firstDayOfWeek.getFullYear()}`;
+//       const lastDayOfWeekString = `${lastDayOfWeek.getDate()}-${lastDayOfWeek.getMonth() + 1}-${lastDayOfWeek.getFullYear()}`;
+//       orderDateQuery = {
+//         $gte: firstDayOfWeekString,
+//         $lte: lastDayOfWeekString
+//       };
+//     } else if (sort === "Month") {
+//       // For Month sorting, query orders for the current month
+//       orderDateQuery = {
+//         $regex: `-${currentDate.getMonth() + 1}-`
+//       };
+//     } else if (sort === "Year") {
+//       // For Year sorting, query orders for the current year
+//       orderDateQuery = {
+//         $regex: `-${currentDate.getFullYear()}$`
+//       };
+//     }
+
+//     console.log(orderDateQuery)
+
+
+
+
+
+    
+
+//     // Query orders based on status and order date
+//     const order = await Order.find({
+//       status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+//       orderDate: orderDateQuery
+//     }).sort({ _id: -1 });
+
+
+//     res.render("adminSales", { order });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+
+
 const sortDate = async (req, res) => {
   try {
-    const sort = req.query.value;
-    let orderDateQuery = {};
+      const { value, year, month } = req.query;
+      let orderDateQuery = {};
 
-    const currentDate = new Date();
+      const currentDate = new Date();
+      // const currentYear = new Date().getFullYear();
 
-    const currentDateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
-    if (sort === "Day") {
-      
-      orderDateQuery = currentDateString;
-    } else if (sort === "Week") {
-      const firstDayOfWeek = new Date(currentDate);
-      firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Start of the current week
-      const lastDayOfWeek = new Date(currentDate);
-      lastDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 6); // End of the current week
-      const firstDayOfWeekString = `${firstDayOfWeek.getDate()}-${firstDayOfWeek.getMonth() + 1}-${firstDayOfWeek.getFullYear()}`;
-      const lastDayOfWeekString = `${lastDayOfWeek.getDate()}-${lastDayOfWeek.getMonth() + 1}-${lastDayOfWeek.getFullYear()}`;
-      orderDateQuery = {
-        $gte: firstDayOfWeekString,
-        $lte: lastDayOfWeekString
-      };
-    } else if (sort === "Month") {
-      // For Month sorting, query orders for the current month
-      orderDateQuery = {
-        $regex: `-${currentDate.getMonth() + 1}-`
-      };
-    } else if (sort === "Year") {
-      // For Year sorting, query orders for the current year
-      orderDateQuery = {
-        $regex: `-${currentDate.getFullYear()}$`
-      };
-    }
+      if (value === "Day") {
+          // Filter orders for the selected day
+          const currentDateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
+          orderDateQuery = currentDateString;
+      } else if (value === "Week") {
+          // Filter orders for the current week
+          const firstDayOfWeek = new Date(currentDate);
+          firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Start of the current week
+          const lastDayOfWeek = new Date(currentDate);
+          lastDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 6); // End of the current week
+          const firstDayOfWeekString = `${firstDayOfWeek.getDate()}-${firstDayOfWeek.getMonth() + 1}-${firstDayOfWeek.getFullYear()}`;
+          const lastDayOfWeekString = `${lastDayOfWeek.getDate()}-${lastDayOfWeek.getMonth() + 1}-${lastDayOfWeek.getFullYear()}`;
+          orderDateQuery = {
+              $gte: firstDayOfWeekString,
+              $lte: lastDayOfWeekString
+          };
+      } else if (value === "Month") {
+          // Filter orders for the selected month
+          const selectedMonth = parseInt(month);
+          const selectedYear = parseInt(year);
+          orderDateQuery = {
+              $gte: new Date(selectedYear, selectedMonth - 1, 1), // Start of the selected month
+              $lt: new Date(selectedYear, selectedMonth, 0) // End of the selected month
+          };
+      } else if (value === "Year") {
+          // Filter orders for the selected year
+          const selectedYear = parseInt(year);
+          orderDateQuery = {
+              $gte: new Date(selectedYear, 0, 1), // Start of the selected year
+              $lt: new Date(selectedYear + 1, 0, 1) // End of the selected year
+          };
+      } else {
+          // Default behavior: Filter orders for the current month
+          orderDateQuery = {
+              $gte: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1), // Start of the current month
+              $lt: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0) // End of the current month
+          };
+      }
 
-    console.log(orderDateQuery)
+      // Query orders based on status and order date
+      const order = await Order.find({
+          status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+          orderDate: orderDateQuery
+      }).sort({ _id: -1 });
 
-    // Query orders based on status and order date
-    const order = await Order.find({
-      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
-      orderDate: orderDateQuery
-    }).sort({_id:-1});
-
-
-    res.render("adminSales", { order });
+      res.render("adminSales", { order ,currentYear});
   } catch (error) {
-    console.log(error.message);
+      console.log(error.message);
+      res.status(500).send("Internal Server Error");
   }
 };
 

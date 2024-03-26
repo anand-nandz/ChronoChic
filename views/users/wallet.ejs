@@ -305,6 +305,9 @@
                                         <li><a href="shop">Shop </a>
                                            
                                         </li>
+                                        <li><a href="rolex">Rolex </a>
+                                          
+                                        </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
                                     </ul>
@@ -573,6 +576,7 @@
                         <th>Transaction ID</th>
                         <th>Amount</th>
                         <th>Status</th>
+                        <th>Type</th>
                         <th>Date</th>
                       </tr>
                     </thead>
@@ -584,6 +588,7 @@
                         <td># <%= userWallet.transactions[i].id %></td>
                         <td>₹<%= userWallet.transactions[i].amount %></td>
                         <td><%= userWallet.transactions[i].type %></td>
+                        <td><%= userWallet.transactions[i].orderType %></td>
                         <td><%= userWallet.transactions[i].date %></td>
                       </tr>
                       <% } %>

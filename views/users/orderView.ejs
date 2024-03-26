@@ -399,6 +399,9 @@
                                         <li><a href="shop">Shop </a>
 
                                         </li>
+                                        <li><a href="rolex">Rolex </a>
+                                          
+                                        </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
                                     </ul>
@@ -639,8 +642,11 @@
                 <div class="d-flex justify-content-between align-items-center py-3">
                     <h2 class="h5 mb-0"><a href="#" class="text-muted"></a> Order #<%= findOrder.orderNumber %>
                     </h2>
-                    <a href="/pdf?id=<%=findOrder._id%>" class="h6 mb-0" download="Invoice.pdf">Download Invoice</a>
-
+                    <% if(findOrder.status === 'Delivered' ) { %>
+                        <a href="/pdf?id=<%=findOrder._id%>" class="h6 mb-0 btn btn-rounded" download="Invoice.pdf">Download Invoice</a>
+                    <% } else { %>
+                        <a href="/pdf?id=<%=findOrder._id%>" class="h6 mb-0 btn btn-rounded" download="Invoice.pdf" hidden>Download Invoice</a>
+                    <% } %>
                 </div>
 
 
@@ -674,10 +680,7 @@
                                 </div>
 
                                 <!-- Steps -->
-                                <div
-                                    class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x ">
-
-                                </div>
+                                <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x "> </div>
                                 <input type="hidden" value="<%=findOrder.status%>" id="orderstatus">
 
                             </div>
@@ -720,11 +723,15 @@
                                                             <span class="badge rounded-pill bg-success">
                                                                 <%= findOrder.status %>
                                                             </span>
-                                                            <% } else { %>
-                                                                <span class="badge rounded-pill bg-warning">
-                                                                    <%= findOrder.status %>
-                                                                </span>
-                                                                <% } %>
+                                                        <% } else if (findOrder.status==='Payment Failed' ) { %>
+                                                            <span class="badge rounded-pill bg-danger">
+                                                                <%= findOrder.status %>
+                                                            </span>
+                                                        <% } else { %>
+                                                            <span class="badge rounded-pill bg-warning">
+                                                                <%= findOrder.status %>
+                                                            </span>
+                                                        <% } %>
                                     </div>
                                 </div>
                                 <table class="table table-borderless">
@@ -820,6 +827,9 @@
                                                                 findOrder.status==='Canceled' ) { %>
                                                                 <span class="badge bg-success rounded-pill">Payment
                                                                     Returned to Wallet</span>
+                                                                <% } else if(findOrder.status==='Payment Failed'){ %>
+                                                                    <span
+                                                                        class="badge bg-danger rounded-pill">Payment Failed</span>
                                                                 <% } else { %>
                                                                     <span
                                                                         class="badge bg-success rounded-pill">PAID</span>
@@ -938,6 +948,9 @@
                                                     <p
                                                     style="color: rgb(20, 226, 30); font-size: 20px; font-weight: bold; margin-bottom: 30px;">
                                                     The Order Returned </p>
+                                                    <%}else if(findOrder.status=="Payment Failed"){%>
+                                                        <a onclick="continuePayment('<%= findOrder._id %>')" class="btn btn-rounded" style="margin-left:60px;">
+                                                            <i class="fa fa-share-square mr-10"></i> Continue Payment</a>
                                                     <% }else{ %>
                                                         <a onclick="cancel('<%= findOrder._id %>')" class="btn btn-rounded" style="margin-left:60px;">
                                                             <i class="fa fa-share-square mr-10"></i> Cancel Order</a>
@@ -1108,6 +1121,7 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 
     <script>
@@ -1319,6 +1333,8 @@
                 hideNoProductFound();
             }
         }
+
+
         function updateOrderStatusTracking(status) {
             // Update status text
             document.querySelector('.bg-secondary .text-center:nth-child(2)').innerHTML = '<span class="text-medium">Status:</span> ' + status;
@@ -1392,6 +1408,84 @@
 
 
 
+        function continuePayment(id){
+            // alert(id)
+            $.ajax({
+                url:"/continuePayment",
+                method:"post",
+                data : {
+                    id
+                },
+                success:(response)=>{
+                if(response.status===true){
+                    console.log("working")
+                    // alert("hello continue payemnt is working")
+                    let orderId=response.orderId
+                    // alert(or derId)
+                    var options = {
+                        "key": "rzp_test_lUdFfNwNjMAIHG", // Enter the Key ID generated from the Dashboard
+                        "amount": response.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                        "currency": "INR",
+                        "name": "ChronoChic",
+                        "description": "Test Transaction",
+                        "image": "assets/images/logo/cc.png",
+                        "order_id": response.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                        "handler": function (response) {
+
+                            
+                            // alert(addressId)
+                            // alert(order_id)
+                            // alert("heeeei payment")
+                            // alert(response.razorpay_payment_id);
+                            // alert(response.razorpay_order_id);
+                            // alert(response.razorpay_signature)
+                            // alert(response.address)
+                            // alert(response.orderNum)
+                            // alert(orderId)
+
+                            verifyPayment(response, orderId)
+                        },
+                        "prefill": {
+                            "name": "Gaurav Kumar",
+                            "email": "gaurav.kumar@example.com",
+                            "contact": "9000090000"
+                        },
+                        "notes": {
+                            "address": "Razorpay Corporate Office"
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+                    };
+
+                    var rzp1 = new Razorpay(options);
+                    rzp1.open();
+
+
+
+                }
+            }
+            })
+        }
+
+
+        function verifyPayment(response,order){
+            // alert(response+'response')
+            // alert(order)
+        $.ajax({
+            url:"/payment-success",
+            method:"post",
+            data:{
+                response,
+                order
+            },
+            success:(response)=>{
+                if(response.status==true){
+                    window.location.href=`/orderPlaced?id=${response.order.orderNumber}`
+                }
+            }
+        })
+    }
 
     </script>
 

@@ -50,6 +50,7 @@ admin_route.post("/users/edit", adminController.edit_User);
 admin_route.get("/users/delete", adminController.delete_User);
 
 admin_route.get('/products', adminController.loadProducts)
+
 admin_route.get("/products/add-product", adminController.addProduct);
 admin_route.post("/add-product", upload.array("ProductImage", 4), adminController.add_Product);
 
@@ -81,7 +82,7 @@ admin_route.post("/editCoupon",couponController.editCoupon);
 
 admin_route.get("/sales",adminController.loadSales)
 admin_route.get("/salesDate",adminController.dateFilter)
-admin_route.get("/Date",adminController.sortDate)
+admin_route.get("/date",adminController.sortDate)
 
 
 

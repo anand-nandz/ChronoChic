@@ -170,20 +170,180 @@ const loadIndividualProduct = async (req, res) => {
 
 
 
+// const loadShop = async (req, res) => {
+//     try {
+//         const sortby  = req.query.sortby || null;
+
+//         // console.log(sortby, "sortby");
+//         let productData;
+
+
+//         const perPage = 8;
+//         let page = parseInt(req.query.page) || 1;
+
+//         // Calculate total number of products
+//         const totalpdts = await Product.countDocuments({});
+//         // Calculate total number of pages
+//         const totalPage = Math.ceil(totalpdts / perPage);
+
+//         // Validate page number to prevent out-of-range errors
+//         if (page < 1) {
+//             page = 1;
+//         } else if (page > totalPage) {
+//             page = totalPage;
+//         }
+
+//         let sortQuery = {};
+
+//         switch (sortby) {
+//             case 'name_az':
+//                 sortQuery = { pname: 1 };
+//                 break;
+//             case 'name_za':
+//                 sortQuery = { pname: -1 };
+//                 break;
+//             case 'price_low_high':
+//                 sortQuery = { offprice: 1 };
+//                 break;
+//             case 'price_high_low':
+//                 sortQuery = { offprice: -1 };
+//                 break;
+//             case 'rating_lowest':
+//                 sortQuery = { rating: 1 };
+//                 break;
+//             default:
+                
+//                 sortQuery = { all: -1 }; // Setting a default sorting option
+//                 break;
+//         }
+//         console.log(sortQuery,'sortquery');
+
+//         // Fetch products based on pagination and sorting
+//         productData = await Product.find({})
+//             .sort(sortQuery)
+//             .skip(perPage * (page - 1))
+//             .limit(perPage);
+
+//         console.log(productData, "pdtdata");
+        
+//         // Fetch user and category data
+//         const userData = req.session.user_id ? await User.findById(req.session.user_id) : null;
+//         const categoryData = await Category.find({});
+        
+//         // Fetch wishlist data if user is logged in
+//         let findWish = {};
+//         if (req.session.user._id) {
+//             const wishlistData = await Wishlist.findOne({ user_id: req.session.user._id });
+//             if (wishlistData) {
+//                 for (let i = 0; i < productData.length; i++) {
+//                     findWish[productData[i]._id] = wishlistData.products.some(p => p.productId.equals(productData[i]._id));
+//                 }
+//             }
+//         }
+
+//         res.render('shop', { user: userData, product: productData, category: categoryData, page, totalPage, sortby, findWish ,sortby});
+
+//     } catch (error) {
+//         console.log(error.message);
+//         res.status(500).send("Internal Server Error");
+//     }
+// };
+
+
 const loadShop = async (req, res) => {
     try {
-        const sortby  = req.query.sortby || null;
-        // console.log(sortby, "sortby");
-        let productData;
-
+        const sortby = req.query.sortby || null;
+        const category = req.query.category || null;
 
         const perPage = 8;
         let page = parseInt(req.query.page) || 1;
+        let sortQuery = {};
+
+        // Validate page number to prevent out-of-range errors
+        if (page < 1) {
+            page = 1;
+        }
 
         // Calculate total number of products
         const totalpdts = await Product.countDocuments({});
         // Calculate total number of pages
         const totalPage = Math.ceil(totalpdts / perPage);
+
+        switch (sortby) {
+            case 'name_az':
+                sortQuery = { pname: 1 };
+                break;
+            case 'name_za':
+                sortQuery = { pname: -1 };
+                break;
+            case 'price_low_high':
+                sortQuery = { offprice: 1 };
+                break;
+            case 'price_high_low':
+                sortQuery = { offprice: -1 };
+                break;
+            case 'rating_lowest':
+                sortQuery = { rating: 1 };
+                break;
+            default:
+                sortQuery = { all: -1 }; // Setting a default sorting option
+                break;
+        }
+
+        let productData;
+
+        if (category) {
+            // Fetch products based on category, pagination, and sorting
+            productData = await Product.find({ category: category })
+                .sort(sortQuery)
+                .skip(perPage * (page - 1))
+                .limit(perPage);
+        } else {
+            // Fetch products based on pagination and sorting
+            productData = await Product.find({})
+                .sort(sortQuery)
+                .skip(perPage * (page - 1))
+                .limit(perPage);
+        }
+
+        // Fetch user and category data
+        const userData = req.session.user_id ? await User.findById(req.session.user_id) : null;
+        const categoryData = await Category.find({});
+
+        // Fetch wishlist data if user is logged in
+        let findWish = {};
+        if (req.session.user && req.session.user._id) {
+            const wishlistData = await Wishlist.findOne({ user_id: req.session.user._id });
+            if (wishlistData) {
+                for (let i = 0; i < productData.length; i++) {
+                    findWish[productData[i]._id] = wishlistData.products.some(p => p.productId.equals(productData[i]._id));
+                }
+            }
+        }
+
+        
+
+      const categories = await Category.find({ is_blocked: false });
+        res.render('shop', { user: userData, product: productData, category: categoryData,categories, page, totalPage, sortby, findWish, selectedCategory: req.query.category  });
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+
+const loadRolex = async (req, res) => {
+    try {
+        const sortby = req.query.sortby || null;
+        const perPage = 4;
+        let page = parseInt(req.query.page) || 1;
+
+        // Calculate total number of Rolex products
+        const totalRolexProducts = await Product.countDocuments({ brand: "ROLEX" });
+        console.log(totalRolexProducts);
+        // Calculate total number of pages
+        const totalPage = Math.ceil(totalRolexProducts / perPage);
 
         // Validate page number to prevent out-of-range errors
         if (page < 1) {
@@ -211,42 +371,40 @@ const loadShop = async (req, res) => {
                 sortQuery = { rating: 1 };
                 break;
             default:
-                
-                sortQuery = { all: -1 }; // Setting a default sorting option
+                sortQuery = {}; // Setting a default sorting option
                 break;
         }
-        console.log(sortQuery,'sortquery');
 
-        // Fetch products based on pagination and sorting
-        productData = await Product.find({})
+        // Fetch Rolex products based on pagination and sorting
+        const rolexProducts = await Product.find({ brand: "ROLEX" })
             .sort(sortQuery)
             .skip(perPage * (page - 1))
             .limit(perPage);
+            console.log(rolexProducts,"rolexpdts");
 
-        console.log(productData, "pdtdata");
-        
         // Fetch user and category data
         const userData = req.session.user_id ? await User.findById(req.session.user_id) : null;
         const categoryData = await Category.find({});
-        
+
         // Fetch wishlist data if user is logged in
         let findWish = {};
         if (req.session.user._id) {
             const wishlistData = await Wishlist.findOne({ user_id: req.session.user._id });
             if (wishlistData) {
-                for (let i = 0; i < productData.length; i++) {
-                    findWish[productData[i]._id] = wishlistData.products.some(p => p.productId.equals(productData[i]._id));
+                for (let i = 0; i < rolexProducts.length; i++) {
+                    findWish[rolexProducts[i]._id] = wishlistData.products.some(p => p.productId.equals(rolexProducts[i]._id));
                 }
             }
         }
 
-        res.render('shop', { user: userData, product: productData, category: categoryData, page, totalPage, sortby, findWish ,sortby});
+        res.render('rolex', { user: userData, product: rolexProducts, category: categoryData, page, totalPage, sortby, findWish });
 
     } catch (error) {
         console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
 };
+
 
 
 
@@ -422,6 +580,8 @@ module.exports = {
     addToWishlist,
     removeFromWishlist,
     removeWish,
-    searchProducts
+    searchProducts,
+    loadRolex
+
 
 }

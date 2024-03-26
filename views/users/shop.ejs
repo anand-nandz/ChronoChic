@@ -275,6 +275,9 @@
                                         <li><a href="shop">Shop </a>
                                            
                                         </li>
+                                        <li><a href="rolex">Rolex </a>
+                                          
+                                        </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
                                     </ul>
@@ -546,7 +549,18 @@
                                                     value="rating_lowest">Rating(Lowest)</option>
                                             </select>
 
+                                           
                                         </div>
+                                        <div class="product-short">
+                                            <select class="form-select" id="category" onchange="sortingcat()">
+                                                <option value="">All categories</option>
+                                                <% categories.forEach(function(category) { %>
+                                                    <option value="<%= category._id %>" <%= category._id === selectedCategory ? 'selected' : '' %>><%= category.name %></option>
+                                                <% }); %>
+                                            </select>
+
+                                        </div>
+
                                         <!-- product-short end -->
                                     </div>
                                     <!-- shop-top-bar end -->
@@ -1095,11 +1109,7 @@
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     } else {
-
-
                         window.location.href = `/shop?sortby=${selectedSortBy}`;
-
-
                     }
                     return response.json();
                 })
@@ -1108,6 +1118,28 @@
                     // You can handle errors here, such as displaying an error message to the user
                 });
         }
+
+        function sortingcat() {
+    const selectedCategory = document.getElementById('category').value;
+    alert(selectedCategory)
+    fetch(`/shop?category=${selectedCategory}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }else{
+                // alert(selectedCategory)
+            window.location.href = `/shop?category=${selectedCategory}`;
+            // document.getElementById('category').value = response.selectedCategory;
+            return response.json();
+            }
+            
+        })
+        .catch(error => {
+            console.error("Error updating sorting:", error);
+            // You can handle errors here, such as displaying an error message to the user
+        });
+}
+
 
 
 
@@ -1243,7 +1275,12 @@
 
 
 
+        
     </script>
+    
+<script>
+    
+</script>
 
 
 

@@ -62,6 +62,7 @@ user_route.get('/home', auth.checkAuth, auth.isBlocked, productController.loadPr
 user_route.get('/productDetails', auth.checkAuth, auth.isBlocked, productController.loadIndividualProduct);
 user_route.get('/showproduct', productController.loadProduct);
 user_route.get('/shop', auth.checkAuth, auth.isBlocked,productController.loadShop);
+user_route.get('/rolex',auth.checkAuth, auth.isBlocked,productController.loadRolex)
 user_route.post('/search',productController.searchProducts)
 
 
@@ -75,7 +76,10 @@ user_route.get('/checkout', auth.checkAuth, auth.isBlocked, checkoutController.l
 user_route.get('/checkOutPage', auth.checkAuth, auth.isBlocked, checkoutController.loadCheckOutPage);
 user_route.post('/checkOutData', auth.checkAuth, auth.isBlocked, cartController.addOrder);
 user_route.get('/orderPlaced',auth.checkAuth,auth.isBlocked,cartController.loadorderPlaced);
-user_route.post("/verify-payment",auth.checkAuth,auth.isBlocked,checkoutController.rezopayment)
+user_route.post("/verify-payment",auth.checkAuth,auth.isBlocked,checkoutController.rezopayment);
+user_route.post('/paymentfailed',auth.checkAuth,auth.isBlocked,checkoutController.paymentFailed);
+user_route.post('/continuePayment',auth.checkAuth,auth.isBlocked,checkoutController.continuePayment);
+user_route.post('/payment-success',auth.checkAuth,auth.isBlocked,checkoutController.successPayment);
 
 user_route.get('/orderView',auth.checkAuth,auth.isBlocked,orderController.loadViewOrder);
 user_route.post("/cancelOrder",auth.checkAuth,auth.isBlocked,orderController.cancelOrder);

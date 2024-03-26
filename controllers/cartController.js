@@ -370,7 +370,8 @@ const addOrder = async (req, res) => {
             console.log("entered razo place order ");
             const userData = await User.findOne(req.session.user);
             const cartData = await Cart.findOne({ userId: userData._id });
-    
+            console.log(userData,"userdata in razorpay");
+            console.log(cartData,"cartdata in raxorpay");
             const pdtData = [];
     
             for (let i = 0; i < cartData.items.length; i++) {
@@ -391,7 +392,7 @@ const addOrder = async (req, res) => {
             // }
 
             var options = {
-                amount: totalDis *100,
+                amount: totalDis * 100,
                 currency: "INR",
                 receipt: stringOrder_id
               };
@@ -401,11 +402,11 @@ const addOrder = async (req, res) => {
             //   console.log(options,"optuionsss");
               instance.orders.create(options, function(err, razpayOrder) {
                 if(!err){
-                    console.log(razpayOrder);
-                    res.json({status:"razorpay",order:razpayOrder,orderNumber:orderNum,total:amount,code:code,address:addressData})
+                    console.log(razpayOrder ,"order razooo");
+                    res.json({status:"razorpay",order:razpayOrder,orderNumber:orderNum,total:amount,code:code,address:addressId})
                 }
                 else{                   
-                    //  console.log("error else ");
+                     console.log("error else ");
 
                     console.error(err);
                 }
