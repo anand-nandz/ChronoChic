@@ -84,10 +84,9 @@ const verifyAdmin = async (req, res) => {
 const loadDashboard = async (req, res) => {
   try {
     const userData = await User.findById({ _id: req.session.user_id })
-    // console.log(userData, "admindata in admin");
     const yValues = [0, 0, 0, 0, 0, 0, 0]
     const order = await Order.find({
-      status: { $nin: ["Order Confirmed", "Processing","Product Dispatched" ,"Canceled", "Shipped", "Returned","Return Process", "Payment Failed"] },
+      status: { $nin: ["Order Confirmed", "Processing", "Product Dispatched", "Canceled", "Shipped", "Returned", "Return Process", "Payment Failed"] },
     });
     // console.log(order,"order in dashboard");
 
@@ -111,26 +110,25 @@ const loadDashboard = async (req, res) => {
     ]);
 
     const totalCount = totalProductCount.length > 0 ? totalProductCount[0].totalProductCount : 0;
-    // console.log("Total Count of Products in Orders:", totalCount);
-     
+
 
     //////////////////************************** Top Selling Products  ***************************//////////////////
 
-    
+
 
     const topSellingProducts = await Order.aggregate([
-      { $match: { status: "Delivered" } }, 
-      { $unwind: "$items" }, 
+      { $match: { status: "Delivered" } },
+      { $unwind: "$items" },
       {
         $group: {
-          _id: "$items.productId", 
-          totalQuantity: { $sum: "$items.quantity" }, 
+          _id: "$items.productId",
+          totalQuantity: { $sum: "$items.quantity" },
         },
       },
-      { $sort: { totalQuantity: -1 } }, 
+      { $sort: { totalQuantity: -1 } },
       { $limit: 6 },
       {
-        $lookup: { 
+        $lookup: {
           from: "products",
           localField: "_id",
           foreignField: "_id",
@@ -139,7 +137,7 @@ const loadDashboard = async (req, res) => {
       },
       { $unwind: "$productDetails" },
       {
-        $project: { 
+        $project: {
           _id: "$productDetails._id",
           pname: "$productDetails.pname",
           totalQuantity: 1,
@@ -150,86 +148,85 @@ const loadDashboard = async (req, res) => {
     ]);
 
 
-        //////////////////************************** Top Selling Categories  ***************************//////////////////
+    //////////////////************************** Top Selling Categories  ***************************//////////////////
 
 
     const topSellingCategories = await Order.aggregate([
       { $match: { status: "Delivered" } },
-      { $unwind: "$items" }, 
+      { $unwind: "$items" },
       {
-        $lookup: { 
+        $lookup: {
           from: "products",
           localField: "items.productId",
           foreignField: "_id",
           as: "product",
         },
       },
-      { $unwind: "$product" }, 
+      { $unwind: "$product" },
       {
-        $group: { 
+        $group: {
           _id: "$product.category",
           totalSales: { $sum: "$items.quantity" },
         },
       },
       {
-        $lookup: { 
+        $lookup: {
           from: "categories",
           localField: "_id",
           foreignField: "_id",
           as: "category",
         },
       },
-      { $unwind: "$category" }, 
+      { $unwind: "$category" },
       {
-        $project: { 
+        $project: {
           name: "$category.name",
           totalSales: 1,
         },
       },
-      { $sort: { totalSales: -1 } }, 
-      { $limit: 5 }, 
+      { $sort: { totalSales: -1 } },
+      { $limit: 5 },
     ]);
 
 
 
-        //////////////////************************** Top Selling Brands  ***************************//////////////////
+    //////////////////************************** Top Selling Brands  ***************************//////////////////
 
 
     const topSellingBrands = await Order.aggregate([
-      { $match: { status: "Delivered" } }, 
+      { $match: { status: "Delivered" } },
       { $unwind: "$items" },
       {
-        $lookup: { 
+        $lookup: {
           from: "products",
           localField: "items.productId",
           foreignField: "_id",
           as: "productDetails",
         },
       },
-      { $unwind: "$productDetails" }, 
+      { $unwind: "$productDetails" },
       {
-        $group: { 
+        $group: {
           _id: "$productDetails.brand",
           totalSales: { $sum: "$items.quantity" },
         },
       },
-      { $sort: { totalSales: -1 } }, 
-      { $limit: 5 }, 
+      { $sort: { totalSales: -1 } },
+      { $limit: 5 },
     ]);
 
-    // console.log(topSellingBrands, "Top Selling Brands");
 
 
 
 
     for (let i = 0; i < order.length; i++) {
       const date = order[i].createdAt
-      console.log(date,"date");
+      console.log(date, "date");
       const value = date.getDay()
-      console.log(value,"value get");
+      console.log(value, "value get");
       yValues[value] += order[i].totalAmount
     }
- 
+
     const allData = await Category.find({})
 
     const sales = []
@@ -238,14 +235,12 @@ const loadDashboard = async (req, res) => {
       sales.push(0)
     }
 
-    console.log(sales,"sales in dash ")
 
     const allName = allData.map((x) => x.name)
     const allId = allData.map((x) => x._id)
 
 
 
-    console.log(allName,"allname");
     let productId = []
     let quantity = []
 
@@ -255,39 +250,33 @@ const loadDashboard = async (req, res) => {
         quantity.push(order[i].items[j].quantity)
       }
     }
-    console.log(quantity ,"qty")
-    console.log(productId,"pdtid")
+  
 
     const productData = []
     for (let i = 0; i < productId.length; i++) {
       productData.push(await Product.findById({ _id: productId[i] }))
     }
 
-    //  console.log(productData,"pdtdata in dashboard");
 
     for (let i = 0; i < productData.length; i++) {
 
       for (let j = 0; j < allId.length; j++) {
-        console.log(allId[j] + "     all id");
-        console.log(productData[i].category + "productid");
+        
         if (allId[j] == productData[i].category.toString()) {
-          console.log(quantity[i]);
 
           sales[j] += quantity[i]
         }
       }
 
     }
-    console.log(sales,"sales ");
+   
 
-    console.log("PRODUCT ID" + productId);
-    
     let productSales = [];
-    
+
     for (let i = 0; i < productId.length; i++) {
       productSales.push({ salesCount: 1 });
     }
-    
+
     for (let i = 0; i < productId.length; i++) {
       for (let j = i + 1; j < productId.length; j++) {
         if (productId[i].toString() == productId[j].toString()) {
@@ -295,9 +284,8 @@ const loadDashboard = async (req, res) => {
         }
       }
     }
-    
-    console.log(productSales ,"product sales");
-    
+
+
     const month = await Order.aggregate([
       {
         $project: {
@@ -315,13 +303,11 @@ const loadDashboard = async (req, res) => {
         $sort: { _id: 1 }
       }
     ]);
-    
-    
-    console.log(month,"monthlyyy");
-    
-    let months = ["01-2024","02-2024","03-2024","04-2024","05-2024","06-2024","07-2024","08-2024","09-2024","10-2024","11-2024","12-2024"];
+
+
+    let months = ["01-2024", "02-2024", "03-2024", "04-2024", "05-2024", "06-2024", "07-2024", "08-2024", "09-2024", "10-2024", "11-2024", "12-2024"];
     let array = new Array(months.length).fill(0); // Initialize array with zeros
-    
+
     for (let i = 0; i < months.length; i++) {
       for (let j = 0; j < month.length; j++) {
         if (month[j]._id == months[i]) {
@@ -329,9 +315,8 @@ const loadDashboard = async (req, res) => {
         }
       }
     }
-    
-    console.log(array,"array in month");
-    
+
+
 
     const orderData = await Order.find({ status: "Delivered" });
     let sum = 0;
@@ -340,15 +325,10 @@ const loadDashboard = async (req, res) => {
     }
     const product = await Product.find({});
     const category = await Category.find({});
-    // const order = await Order.find({
-    //   status: { $nin: ["Ordered", "Canceled", "Shipped"] },
-    // });
-    // Aggregate pipeline to calculate monthly earnings from delivered orders
+    
     if (order.length > 0) {
       const month = await Order.aggregate([
-        // Match orders with status "Delivered"
         { $match: { status: "Delivered" } },
-        // Convert orderDate string to ISODate
         {
           $addFields: {
             orderDate: {
@@ -356,57 +336,47 @@ const loadDashboard = async (req, res) => {
             },
           },
         },
-        // Extract year and month from orderDate
         {
           $addFields: {
             year: { $year: "$orderDate" },
             month: { $month: "$orderDate" },
           },
         },
-        // Group by year and month, calculate total earnings for each month
         {
           $group: {
             _id: { year: "$year", month: "$month" },
             totalEarnings: { $sum: "$totalAmount" },
           },
         },
-        // Sort by year and month
         { $sort: { "_id.year": 1, "_id.month": 1 } },
       ]);
 
 
-// Aggregate pipeline to calculate daily earnings from delivered orders
-const dailyEarnings = await Order.aggregate([
-    // Match orders with status "Delivered"
-    { $match: { status: "Delivered" } },
-    // Convert orderDate string to ISODate
-    {
-        $addFields: {
+      const dailyEarnings = await Order.aggregate([
+        { $match: { status: "Delivered" } },
+        {
+          $addFields: {
             orderDate: {
-                $dateFromString: { dateString: "$orderDate", format: "%d-%m-%Y" },
+              $dateFromString: { dateString: "$orderDate", format: "%d-%m-%Y" },
             },
+          },
         },
-    },
-    // Extract year, month, and day from orderDate
-    {
-        $addFields: {
+        {
+          $addFields: {
             year: { $year: "$orderDate" },
             month: { $month: "$orderDate" },
             day: { $dayOfMonth: "$orderDate" },
+          },
         },
-    },
-    // Group by year, month, and day, calculate total earnings for each day
-    {
-        $group: {
+        {
+          $group: {
             _id: { year: "$year", month: "$month", day: "$day" },
             totalEarnings: { $sum: "$totalAmount" },
+          },
         },
-    },
-    // Sort by year, month, and day
-    { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
-]);
+        { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+      ]);
 
-console.log(dailyEarnings, 'dailyEarnings'); // Check the result in console for debugging purposes
 
 
 
@@ -430,7 +400,6 @@ console.log(dailyEarnings, 'dailyEarnings'); // Check the result in console for 
         array
 
       });
-      //  console.log("hhhhhhhhhheeeeeeelo"+month)
     } else {
       const proLength = product.length;
       const catLength = category.length;
@@ -454,21 +423,6 @@ console.log(dailyEarnings, 'dailyEarnings'); // Check the result in console for 
         array
       });
     }
-
-
-
-
-
-
-    // res.render('adminhome', { topSellingProducts, topSellingCategories, topSellingBrands, sum,sales,allName,array, totalCount, dailyEarnings });
-
-
-
-
-
-
-
-    // res.render('adminhome', { admin: userData });
 
   }
   catch (error) {
@@ -499,7 +453,6 @@ const loadUsers = async (req, res) => {
       .skip(perPage * (page - 1))
       .limit(perPage);
 
-    //    console.log(userData)
     res.render('users', { userData, page, totalPage, startSerialNumber, perPage })
   } catch (error) {
     console.log(error.message)
@@ -520,7 +473,6 @@ const editUser = async (req, res) => {
     if (!userDetails) {
       return res.status(404).send("User not found.");
     }
-    console.log(userDetails);
     res.render("editUser", { userDetails, errorMessage: null });
   }
   catch (error) {
@@ -549,11 +501,9 @@ const edit_User = async (req, res) => {
       is_verified: verified === '1' ? true : false,
       is_blocked: status === '1' ? false : true,
     });
-    console.log('req.body:', req.body);
-    console.log('updatedUser:', updatedUser);
+    
     req.session.save();
-    console.log(updatedUser, 'this is user');
-    //   console.log(id);
+  
 
     if (!updatedUser) {
       return res.status(404).send("User not found.");
@@ -601,37 +551,37 @@ const delete_User = async (req, res) => {
 
 
 
-  const loadProducts = async (req, res) => {
-    try {
-      const perPage = 5;
-      let page = parseInt(req.query.page) || 1;
+const loadProducts = async (req, res) => {
+  try {
+    const perPage = 5;
+    let page = parseInt(req.query.page) || 1;
 
-      const totalProducts = await Product.countDocuments({});
-      const totalPage = Math.ceil(totalProducts / perPage);
+    const totalProducts = await Product.countDocuments({});
+    const totalPage = Math.ceil(totalProducts / perPage);
 
-      if (page < 1) {
-        page = 1;
-      } else if (page > totalPage) {
-        page = totalPage;
-      }
-
-      const startSerialNumber = (page - 1) * perPage + 1;
-
-      const allProducts = await Product.find({})
-        .sort({ _id: -1 })
-        .skip(perPage * (page - 1))
-        .limit(perPage);
-
-
-
-      const categories = await Category.find({ is_blocked: false });
-
-      res.render('products', { allProducts, categories, totalPage, page, startSerialNumber });
-    } catch (error) {
-      console.log(error.message);
-      res.status(500).send("Internal Server Error");
+    if (page < 1) {
+      page = 1;
+    } else if (page > totalPage) {
+      page = totalPage;
     }
+
+    const startSerialNumber = (page - 1) * perPage + 1;
+
+    const allProducts = await Product.find({})
+      .sort({ _id: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+
+
+
+    const categories = await Category.find({ is_blocked: false });
+
+    res.render('products', { allProducts, categories, totalPage, page, startSerialNumber });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal Server Error");
   }
+}
 
 
 
@@ -650,12 +600,8 @@ const addProduct = async (req, res) => {
 }
 
 const add_Product = async (req, res) => {
-
-
   try {
-    console.log('hi.........');
     const images = req.files.map((file) => file.filename);
-    console.log(req.body.ProductName);
     const newProduct = new Product({
       pname: req.body.ProductName,
       price: parseFloat(req.body.ProductPrice),
@@ -673,12 +619,9 @@ const add_Product = async (req, res) => {
     });
 
     await newProduct.save();
-    console.log(newProduct);
-    // console.log('product issue not found');
     res.redirect("/admin/products");
   } catch (error) {
     console.error(error);
-    console.log('error in adding images');
     res.status(500).send("Internal Server Error");
   }
 };
@@ -690,7 +633,6 @@ const editProduct = async (req, res) => {
   try {
     const id = req.query.id;
     const product = await Product.findById(id);
-    console.log(product.images);
     const categories = await Category.find({ is_blocked: false });
     if (!product) {
       return res.status(404).send("Product not found");
@@ -711,13 +653,10 @@ const edit_product = async (req, res) => {
   try {
 
     const productId = req.query.id;
-    // console.log(productId, "idd");
     const existingProduct = await Product.findById(productId);
-    // console.log(existingProduct,"existing");
     if (!existingProduct) {
       return res.status(404).send("Product not found.");
     } else {
-      // console.log("else inside");
       const updatedCategory = req.body.ProductCategory;
 
       const updatedProduct = {
@@ -736,7 +675,6 @@ const edit_product = async (req, res) => {
       };
 
       const data = await Product.findByIdAndUpdate(productId, updatedProduct);
-      // console.log(data,'saved');
       res.redirect("/admin/products");
     }
 
@@ -753,7 +691,6 @@ const editproductImagePOST = async (req, res) => {
     const image = req.body.imagename;
     const index = parseInt(req.body.index);
     const productID = req.body.productID;
-    // console.log(image , index , productID);
 
     if (image) {
       const productDetails = await Product.findOne({ _id: productID });
@@ -810,7 +747,6 @@ const loadCategory = async (req, res) => {
 const createCategory = async (req, res) => {
   try {
 
-    console.log("en tooo");
     const { name, description } = req.body;
 
     var nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
@@ -828,7 +764,6 @@ const createCategory = async (req, res) => {
     }
 
     const existingCategory = await Category.findOne({ name: name.trim() });
-    console.log(existingCategory, 'existing');
 
     if (existingCategory) {
       req.flash('error', 'Category name already exists.');
@@ -879,7 +814,6 @@ const edit_Category = async (req, res) => {
       req.flash("error", "Category Name must contain only characters with spaces between names.");
       return res.redirect('/admin/category/edit/' + categoryId);
     }
-    // Validate name and description
     if (!name || !name.trim()) {
       req.flash('error', 'Category name cannot be empty.');
       return res.redirect('/admin/category/edit/' + categoryId);
@@ -888,20 +822,13 @@ const edit_Category = async (req, res) => {
       req.flash('error', 'Category description cannot be empty.');
       return res.redirect('/admin/category/edit/' + categoryId);
     }
-    // const existingCategory = await Category.findOne({ name: name.trim() });
-    // console.log(existingCategory, 'existing');
-
-    // if (existingCategory) {
-    //   req.flash('error', 'Category name already exists.');
-    //   return res.redirect('/admin/category');
-    // }
+    
     const updatedCategory = await Category.findByIdAndUpdate(categoryId, { name, description, is_blocked: status === 'Unlist' });
 
     if (!updatedCategory) {
       req.flash('error', 'Category not found.');
       return res.redirect('/admin/category');
     } else {
-      // await updatedCategory.save();
       req.flash('success', 'Category updated successfully.');
       res.redirect('/admin/category');
     }
@@ -945,26 +872,100 @@ const deleteCategory = async (req, res) => {
 
 
 
+
+const loadCategoryOffer = async (req, res) => {
+  try {
+    const findCat = await Category.find({ is_blocked: false });
+
+    for (let i = 0; i < findCat.length; i++) {
+      if (findCat[i].offer && new Date(findCat[i].offer.endDate) < new Date()) {
+        findCat[i].offer = undefined;
+        await findCat[i].save();
+      }
+    }
+
+    res.render("offerCategory", { findCat });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+const addOfferLoad=async(req,res)=>{
+  try {
+      const catData = await Category.find({
+          is_blocked: false,
+          $or: [
+              { offer: { $exists: false } }, 
+              { offer: false }    
+          ]
+      });
+      res.render("addOffer",{catData})
+  } catch (error) {
+     console.log(error.message) 
+  }
+}
+
+
+const addOffer = async (req, res) => {
+  try {
+    const { discount, startDate, endDate, catname } = req.body;
+
+    const findCat = await Category.findOne({ name: catname });
+
+    if (findCat.offer) {
+      const currentDateTime = new Date();
+      const offerEndDate = new Date(findCat.offer.endDate);
+
+      if (currentDateTime > offerEndDate) {
+        findCat.offer = undefined;
+        await findCat.save();
+      }
+    }
+
+    const updateCat = await Category.findByIdAndUpdate(
+      { _id: findCat._id },
+      {
+        $set: {
+          offer: {
+            discount: discount,
+            startDate: startDate,
+            endDate: endDate,
+          },
+        },
+      }
+    );
+
+    res.json({ status: true });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ status: false, error: error.message });
+  }
+};
+
+
+
+const deleteOffer=async(req,res)=>{
+  try {
+      const id=req.body.id
+      const findCat=await Category.findByIdAndUpdate({_id:id},{
+          $unset:{offer:""}
+      })
+
+      res.json({status:true})
+  } catch (error) {
+      console.log(error.message)
+  }
+}
+
+
 const loadSales = async (req, res) => {
   try {
     const order = await Order.find({
-      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+      status: { $in: ["Delivered"] },
+
     }).sort({ _id: -1 });
-    //  let couponid=[]
-    //  for(let i=0;i<order.length;i++){
-    //    if(order[i].coupon){
-    //       couponid.push(order[i].coupon)
-    //    }
-    //  }
-    //  const couponData=[]
-
-    //  for(let i=0;i<couponid.length;i++){
-    //    couponData.push(await Coupon.find({couponCode:couponid[i]}))
-    //  }
-
-    //  console.log(couponData)
-    console.log(order, "orders")
-
+    
     res.render("adminSales", { order });
   } catch (error) {
     console.log(error.message);
@@ -977,6 +978,7 @@ const dateFilter = async (req, res) => {
   try {
     const date = req.query.value;
     const date2 = req.query.value1;
+    
     const parts = date.split("-");
     const parts1 = date2.split("-");
 
@@ -986,21 +988,16 @@ const dateFilter = async (req, res) => {
     const month = parseInt(parts[1], 10);
     const month1 = parseInt(parts1[1], 10);
 
-
     const rotatedDate = day + "-" + month + "-" + parts[0];
     const rotatedDate1 = day1 + "-" + month1 + "-" + parts1[0];
 
-    // console.log(rotatedDate)
-
     const order = await Order.find({
-      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+      status: { $in: ["Delivered"] },
       orderDate: {
-        $gte:rotatedDate,
-        $lte:rotatedDate1 
+        $gte: rotatedDate,
+        $lte: rotatedDate1
       }
     }).sort({ _id: -1 });
-
-    // console.log(order)
 
     res.render("adminSales", { order });
   } catch (error) {
@@ -1008,121 +1005,53 @@ const dateFilter = async (req, res) => {
   }
 };
 
-// const sortDate = async (req, res) => {
-//   try {
-//     const sort = req.query.value;
-//     let orderDateQuery = {};
 
-//     const currentDate = new Date();
-
-//     const currentDateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
-//     if (sort === "Day") {
-
-//       orderDateQuery = currentDateString;
-//     } else if (sort === "Week") {
-//       const firstDayOfWeek = new Date(currentDate);
-//       firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Start of the current week
-//       const lastDayOfWeek = new Date(currentDate);
-//       lastDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 6); // End of the current week
-//       const firstDayOfWeekString = `${firstDayOfWeek.getDate()}-${firstDayOfWeek.getMonth() + 1}-${firstDayOfWeek.getFullYear()}`;
-//       const lastDayOfWeekString = `${lastDayOfWeek.getDate()}-${lastDayOfWeek.getMonth() + 1}-${lastDayOfWeek.getFullYear()}`;
-//       orderDateQuery = {
-//         $gte: firstDayOfWeekString,
-//         $lte: lastDayOfWeekString
-//       };
-//     } else if (sort === "Month") {
-//       // For Month sorting, query orders for the current month
-//       orderDateQuery = {
-//         $regex: `-${currentDate.getMonth() + 1}-`
-//       };
-//     } else if (sort === "Year") {
-//       // For Year sorting, query orders for the current year
-//       orderDateQuery = {
-//         $regex: `-${currentDate.getFullYear()}$`
-//       };
-//     }
-
-//     console.log(orderDateQuery)
-
-
-
-
-
-    
-
-//     // Query orders based on status and order date
-//     const order = await Order.find({
-//       status: { $nin: ["Ordered", "Canceled", "Shipped"] },
-//       orderDate: orderDateQuery
-//     }).sort({ _id: -1 });
-
-
-//     res.render("adminSales", { order });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
 
 
 const sortDate = async (req, res) => {
   try {
-      const { value, year, month } = req.query;
-      let orderDateQuery = {};
+    const sort = req.query.value;
+    let orderDateQuery = {};
 
-      const currentDate = new Date();
-      // const currentYear = new Date().getFullYear();
+    const currentDate = new Date();
 
-      if (value === "Day") {
-          // Filter orders for the selected day
-          const currentDateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`;
-          orderDateQuery = currentDateString;
-      } else if (value === "Week") {
-          // Filter orders for the current week
-          const firstDayOfWeek = new Date(currentDate);
-          firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); // Start of the current week
-          const lastDayOfWeek = new Date(currentDate);
-          lastDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 6); // End of the current week
-          const firstDayOfWeekString = `${firstDayOfWeek.getDate()}-${firstDayOfWeek.getMonth() + 1}-${firstDayOfWeek.getFullYear()}`;
-          const lastDayOfWeekString = `${lastDayOfWeek.getDate()}-${lastDayOfWeek.getMonth() + 1}-${lastDayOfWeek.getFullYear()}`;
-          orderDateQuery = {
-              $gte: firstDayOfWeekString,
-              $lte: lastDayOfWeekString
-          };
-      } else if (value === "Month") {
-          // Filter orders for the selected month
-          const selectedMonth = parseInt(month);
-          const selectedYear = parseInt(year);
-          orderDateQuery = {
-              $gte: new Date(selectedYear, selectedMonth - 1, 1), // Start of the selected month
-              $lt: new Date(selectedYear, selectedMonth, 0) // End of the selected month
-          };
-      } else if (value === "Year") {
-          // Filter orders for the selected year
-          const selectedYear = parseInt(year);
-          orderDateQuery = {
-              $gte: new Date(selectedYear, 0, 1), // Start of the selected year
-              $lt: new Date(selectedYear + 1, 0, 1) // End of the selected year
-          };
-      } else {
-          // Default behavior: Filter orders for the current month
-          orderDateQuery = {
-              $gte: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1), // Start of the current month
-              $lt: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0) // End of the current month
-          };
-      }
+    const currentDateString = `${currentDate.getDate()}-${currentDate.getMonth() + 1}-${currentDate.getFullYear()}`
+    if (sort === "Day") {
 
-      // Query orders based on status and order date
-      const order = await Order.find({
-          status: { $nin: ["Ordered", "Canceled", "Shipped"] },
-          orderDate: orderDateQuery
-      }).sort({ _id: -1 });
+      orderDateQuery = currentDateString;
+    } else if (sort === "Week") {
+      const firstDayOfWeek = new Date(currentDate);
+      firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay()); 
+      const lastDayOfWeek = new Date(currentDate);
+      lastDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 6); 
+      const firstDayOfWeekString = `${firstDayOfWeek.getDate()}-${firstDayOfWeek.getMonth() + 1}-${firstDayOfWeek.getFullYear()}`;
+      const lastDayOfWeekString = `${lastDayOfWeek.getDate()}-${lastDayOfWeek.getMonth() + 1}-${lastDayOfWeek.getFullYear()}`;
+      orderDateQuery = {
+        $gte: firstDayOfWeekString,
+        $lte: lastDayOfWeekString
+      };
+    } else if (sort === "Month") {
+      orderDateQuery = {
+        $regex: `-${currentDate.getMonth() + 1}-`
+      };
+    } else if (sort === "Year") {
+      orderDateQuery = {
+        $regex: `-${currentDate.getFullYear()}$`
+      };
+    }
 
-      res.render("adminSales", { order ,currentYear});
+    const order = await Order.find({
+      status: { $nin: ["Ordered", "Canceled", "Shipped"] },
+      orderDate: orderDateQuery
+    }).sort({ _id: -1 });
+
+
+    res.render("adminSales", { order });
   } catch (error) {
-      console.log(error.message);
-      res.status(500).send("Internal Server Error");
+    console.log(error.message);
   }
 };
+
 
 
 
@@ -1157,6 +1086,10 @@ module.exports = {
   editproductImagePOST,
   loadSales,
   dateFilter,
-  sortDate
+  sortDate,
+  loadCategoryOffer,
+  addOfferLoad,
+  addOffer,
+  deleteOffer
 
 }

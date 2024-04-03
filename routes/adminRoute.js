@@ -72,6 +72,15 @@ admin_route.post('/category/edit/:id', adminController.edit_Category);
 admin_route.get("/category/delete", adminController.deleteCategory);
 
 
+admin_route.get("/catagoryOffer",adminController.loadCategoryOffer)
+
+admin_route.get("/addOffer",adminController.addOfferLoad)
+
+admin_route.post("/addOfferPost",adminController.addOffer)
+
+admin_route.post("/deleteOffer",adminController.deleteOffer)
+
+
 admin_route.get("/coupon",couponController.loadCouponPage);
 admin_route.get("/addCoupon",couponController.loadAddCoupon);
 admin_route.post("/addCoupon",couponController.addCoupon);

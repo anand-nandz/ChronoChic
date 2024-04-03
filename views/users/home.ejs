@@ -157,6 +157,10 @@
     .rotate-270 {
         transform: rotate(270deg);
     }
+
+    .main-navigation ul li.active a {
+    color: #c89979; /* Change this to your desired color */
+}
 </style>
 
 
@@ -1366,36 +1370,32 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            function addCart(index) {
-                const id = document.getElementById("productId" + index).value;
-                // alert(id)
-                // const newId = document.getElementById("productNewId" + index).value;
+              function addCart(index) {
+            const id = document.getElementById("productId" + index).value;
+            // alert(id)
 
+            const pdtOffPrice = document.getElementById('offerPrice' + index).innerHTML
 
-                const pdtOffPrice = document.getElementById('offerPrice' + index).innerHTML
+            // alert(id + index)
 
-                // alert(id + index)
-               
-
-                $.ajax({
-                    url: "/addCartLoad",
-                    method: "post",
-                    data: {
-                        id,
-                        newId,
-                        pdtOffPrice,
-                    },
-                    success: (response) => {
-                        if (response.status === true) {
-                            window.location.href = "http://localhost:8080/cart"
-                        }
-                        else if (response.status == "viewCart") {
-                            window.location.href = "http://localhost:8080/cart"
-                        }
+            $.ajax({
+                url: "/addCartLoad",
+                method: "post",
+                data: {
+                    id,
+                    pdtOffPrice,
+                },
+                success: (response) => {
+                    if (response.status === true) {
+                        window.location.href = "http://localhost:8080/cart"
                     }
-                })
+                    else if (response.status == "viewCart") {
+                        window.location.href = "http://localhost:8080/cart"
+                    }
+                }
+            })
 
-            }
+        }
 
 
 

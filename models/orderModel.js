@@ -15,10 +15,6 @@ const orderSchema=new mongoose.Schema({
         require:true,
         unique:true
     },
-    email:{
-        type:String,
-        require:true,
-    },
     items:[ 
         {
             productId:{

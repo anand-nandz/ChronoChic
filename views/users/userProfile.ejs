@@ -314,7 +314,7 @@
 
                                         </li>
                                         <li><a href="rolex">Rolex </a>
-                                          
+
                                         </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
@@ -583,10 +583,12 @@
                                                         <div class="d-single-info" style="font-weight: 500;">
                                                             <p>Invite your friends and get rewards</p>
                                                             <% if (userData.referralCode) { %>
-                                                                <p>Referral Code: <span style="font-weight: 600;"><%= userData.referralCode %></span></p>
-                                                            <% } else { %>
-                                                                <p>No Referral Code Found</p>
-                                                            <% } %>
+                                                                <p>Referral Code: <span style="font-weight: 600;">
+                                                                        <%= userData.referralCode %>
+                                                                    </span></p>
+                                                                <% } else { %>
+                                                                    <p>No Referral Code Found</p>
+                                                                    <% } %>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 col-md-12">
@@ -658,9 +660,7 @@
                                                         <div class="login-form-container">
                                                             <div class="account-login-form">
                                                                 <form action="#">
-                                                                    <p>Already have an account? <a href="#">Log in
-                                                                            instead!</a>
-                                                                    </p>
+                                                                   
                                                                     <!-- <label>Social title</label>
                                                             <div class="input-radio">
                                                                 <span class="custom-radio"><input type="radio" value="1" name="id_gender"> Mr.</span>
@@ -754,7 +754,7 @@
                                                                                         name="name" class="form-control"
                                                                                         placeholder="Full Name" required
                                                                                         oninput="validateName()">
-                                                                                    <div id="nameError" class="error">
+                                                                                    <div id="nameError" class="error text-danger">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div
@@ -767,7 +767,7 @@
                                                                                         placeholder="Pincode" required
                                                                                         oninput="validatePincode()">
                                                                                     <div id="pincodeError"
-                                                                                        class="error"></div>
+                                                                                        class="error text-danger"></div>
                                                                                 </div>
                                                                             </div>
                                                                             <!-- Second Row (Alternate Phone and Pincode) -->
@@ -780,7 +780,7 @@
                                                                                         class="form-control"
                                                                                         placeholder="Phone" required
                                                                                         oninput="validatePhone()">
-                                                                                    <div id="phoneError" class="error">
+                                                                                    <div id="phoneError" class="error text-danger ">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div
@@ -795,7 +795,7 @@
                                                                                         required
                                                                                         oninput="validateAltPhone()">
                                                                                     <div id="altPhoneError"
-                                                                                        class="error"></div>
+                                                                                        class="error text-danger"></div>
                                                                                 </div>
                                                                             </div>
                                                                             <!-- Third Row (Landmark and City) -->
@@ -809,7 +809,7 @@
                                                                                         placeholder="Landmark" required
                                                                                         oninput="validateLandMark()">
                                                                                     <div id="landMarkError"
-                                                                                        class="error"></div>
+                                                                                        class="error text-danger"></div>
                                                                                 </div>
                                                                                 <div
                                                                                     class="form-group col-md-6 mb-3 ms-3">
@@ -819,7 +819,7 @@
                                                                                         name="city" class="form-control"
                                                                                         placeholder="City" required
                                                                                         oninput="validateCity()">
-                                                                                    <div id="cityError" class="error">
+                                                                                    <div id="cityError" class="error text-danger">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -833,7 +833,7 @@
                                                                                         class="form-control"
                                                                                         placeholder="State" required
                                                                                         oninput="validateState()">
-                                                                                    <div id="stateError" class="error">
+                                                                                    <div id="stateError" class="error text-danger">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div
@@ -855,7 +855,7 @@
                                                                                         </option>
                                                                                     </select>
                                                                                     <div id="addressTypeError"
-                                                                                        class="error"></div>
+                                                                                        class="error text-danger"></div>
                                                                                 </div>
                                                                             </div>
                                                                             <!-- Fifth Row (Address) -->
@@ -870,7 +870,7 @@
                                                                                         required
                                                                                         oninput="validateHomeAddress()">
                                                                                     <div id="homeAddressError"
-                                                                                        class="error"></div>
+                                                                                        class="error text-danger"></div>
                                                                                 </div>
                                                                             </div>
                                                                             <!-- Button Box -->
@@ -967,6 +967,7 @@
                                                                         <p class="validity">Valid until: <span>
                                                                                 <%= coupon.endDate %>
                                                                             </span></p>
+                                                                            
                                                                     </div>
 
                                                                 </div>
@@ -1160,6 +1161,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
             integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -1251,7 +1253,14 @@
                         // Prevent form submission if validation fails
                         event.preventDefault();
                         // Show an additional message to the user to clear validation errors
-                        alert('Please fix validation errors before submitting the form.');
+                        // alert('Please fix validation errors before submitting the form.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            text: 'Please fix validation errors before submitting the form.',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
                     }
 
                 });
@@ -1279,6 +1288,17 @@
                 const isValidState = validateInput('state', /^[a-zA-Z\s]+$/, 'stateError', 'State');
                 const isValidAddressType = validateInput('addressType', null, 'addressTypeError', 'Address Type');
                 const isValidHomeAddress = validateInput('homeAddress', null, 'homeAddressError', 'Address');
+
+
+                // const isValidAltPhone = validateInput('altPhone', /^(91)?0?[6-9]\d{9}$/, 'altPhoneError', 'Alternate Phone');
+                if (isValidAltPhone) {
+                    const phoneValue = getElementValue('phone');
+                    const altPhoneValue = getElementValue('altPhone');
+                    if (phoneValue === altPhoneValue) {
+                        document.getElementById('altPhoneError').innerText = 'Phone and Alternate Phone must be different.';
+                        return false;
+                    }
+                }
 
                 if (!isValidName || !isValidPhone || !isValidAltPhone || !isValidPincode || !isValidLandMark || !isValidCity || !isValidState || !isValidAddressType || !isValidHomeAddress) {
                     document.getElementById('mainError').innerText = 'Cannot submit form. Please fix errors.';
