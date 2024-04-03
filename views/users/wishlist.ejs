@@ -706,10 +706,10 @@
                 },
                 success:(response)=>{
                     if(response.status === true){
-                        window.location.href = "http://localhost:8080/cart"
+                        window.location.href = "/cart"
                     }
                     else if (response.status == "viewCart") {
-                        window.location.href = "http://localhost:8080/cart"
+                        window.location.href = "/cart"
                 }
                 }
             })
@@ -739,7 +739,7 @@
                             },
                             success:(response)=>{
                                 if(response.status == true){
-                                    window.location.href = "http://localhost:8080/wishlist"
+                                    window.location.href = "/wishlist"
                                 }
                             }
                         })
