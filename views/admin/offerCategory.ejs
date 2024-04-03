@@ -1,0 +1,387 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:00 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>ChronoChic Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/adminassets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/adminassets/css/main.css" rel="stylesheet" type="text/css" />
+    <style>
+        .error-text {
+            color: red; 
+            font-weight: bold; 
+    
+        }
+    </style>
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="/admin/home" class="brand-wrap">
+                <img src="/adminassets/imgs/theme/logo.png" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/home"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/products"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/order"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Category</span>
+                    </a>                   
+                </li>
+                <li class="menu-item active">
+                    <a class="menu-link" href="/admin/catagoryOffer"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Category Offer</span>
+                    </a>                   
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/coupon"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Coupons</span>
+                    </a>                   
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/users"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Users</span>
+                    </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/sales"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sales Report</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>                    
+                </li>
+                
+               
+            </ul>
+            <hr>
+            <!-- <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li>
+            </ul> -->
+            <br>
+            <br>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <!-- <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
+                    </div> -->
+                    <!-- <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist> -->
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li> -->
+                    <!-- <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="/adminassets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="/adminassets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
+                        </div>
+                    </li> -->
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <!-- <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a> -->
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="adminLogin"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Categories </h2>
+                    <p>Add, edit or delete a category</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end pb-20">
+                <!-- <a href="/admin/addCategory" class="btn btn-sm btn-primary rounded font-sm">Create Categories</a> -->
+                <div style="margin-left: 20px;">
+                    <a href="/admin/addOffer" class="btn btn-sm btn-primary rounded font-sm">Add offer</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="col-md-15">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr style="width: 100%;">
+
+                                        <th>Name</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Discount</th>
+                                        <!-- <th>Status</th> -->
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <% if (findCat.length>0) { %>
+                                        <% for( let i=0; i < findCat.length; i++ ) { %>
+                                            <tr>
+                                                <td><b>
+                                                        <%= findCat[i].name %>
+                                                    </b></td>
+                                                <% if (findCat[i].offer.startDate) { %>
+                                                    <td>
+                                                        <%= findCat[i].offer.startDate %>
+                                                    </td>
+                                                    <td>
+                                                        <%= findCat[i].offer.endDate %>
+                                                    </td>
+                                                    <td>
+                                                        <%= findCat[i].offer.discount %>
+                                                    </td>
+                                                    <!-- <td><span class="badge  rounded-pill alert-success" id="status">List</span></td> -->
+                                                    <td class="text-end">
+                                                        <div class="button-container">
+                                                            <!-- <a href="/admin/cat-edit?id=" id="edit" class="btn btn-info rounded font-sm mt-6 p-10" style="display: inline-block; margin-right: 10px;">EDIT</a> -->
+                                                            <button type="button" class="btn btn-primary"
+                                                                style="padding: 10px; display: inline-block;"
+                                                                onclick="deleteCatOffer('<%=findCat[i]._id%>')"
+                                                                id="listButton">Delete</button>
+                                                        </div>
+
+                                                    </td>
+
+                                                    <% }else{ %>
+                                                        <td>----</td>
+                                                        <td>----</td>
+                                                        <td>----</td>
+                                                        <!-- <td><span class="badge  rounded-pill alert-success" id="status">List</span></td> -->
+                                                        <td class="text-end">
+                                                            <div class="button-container">
+                                                                <!-- <a href="/admin/cat-edit?id=" id="edit" class="btn btn-info rounded font-sm mt-6 p-10" style="display: inline-block; margin-right: 10px;">EDIT</a> -->
+                                                                <!-- <button type="button" class="btn btn-primary"
+                                                                    style="padding: 10px; display: inline-block;"
+                                                                    id="listButton">Delete</button> -->
+                                                            </div>
+
+                                                        </td>
+
+                                            </tr>
+                                            <% } %>
+
+                                                <% } %>
+
+
+                                                    <% } %>
+
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> ©,
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/admin-assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/admin-assets/js/vendors/select2.min.js"></script>
+    <script src="/admin-assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/admin-assets/js/main.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function list(id, index) {
+
+            const catId = id
+            //  alert(catId)
+
+            $.ajax({
+                url: "/admin/cat-list",
+                method: "post",
+                data: {
+                    catId
+                },
+                success: (response) => {
+                    if (response.status === "unlist") {
+                        // alert("unlist")
+                        document.getElementById("edit" + index).style.display = "inline-block"
+                        document.getElementById("listButton" + index).innerHTML = 'LIST'
+                        document.getElementById('status' + index).innerHTML = 'UNLIST'
+
+                    } else if (response.status == 'list') {
+                        // alert("list")
+                        document.getElementById("edit" + index).style.display = "none"
+                        document.getElementById("listButton" + index).innerHTML = 'UNLIST'
+                        document.getElementById('status' + index).innerHTML = 'LIST'
+                    }
+                }
+            })
+
+
+        }
+
+        function deleteCatOffer(id) {
+            // alert(id)
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to Delete this Offer?!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your Offer has been deleted.",
+                        icon: "success"
+                    }).then((result) => {
+                        $.ajax({
+                            url: "/admin/deleteOffer",
+                            method: "post",
+                            data: {
+                                id
+                            },
+                            success: (response) => {
+                                if (response.status === true) {
+                                    // alert("hello")
+                                    location.href = "/admin/catagoryOffer"
+                                    // window.addEventListener("load")
+                                }
+                            }
+                        })
+                    })
+                }
+            })
+            // alert("hai")
+
+
+
+
+
+        }
+
+
+
+
+    </script>
+
+
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+
+</html>

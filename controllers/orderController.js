@@ -237,10 +237,8 @@ const saveOrder = async (req, res) => {
           status: status
         }
       })
-      console.log(updateStatus, "sts updated in cod return");
 
     }
-    console.log("sts changed to return");
     if (status == "Returned") {
       console.log("entered sts== returned");
 

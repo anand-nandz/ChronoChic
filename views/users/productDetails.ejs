@@ -527,10 +527,11 @@
                                     <a href="#reviews">(<span class="count">1</span> customer review)</a>
                                 </div>
                                 <div class="price-box">
-                                    <span id="offerPrice" class="new-price">₹<%= product.offprice %></span>
-                                    <span class="old-price">₹<%= product.price %></span>
-                                    <span class="text-danger"><%= product.discountPercentage %>% OFF</span>
+                                    <span id="offerPrice" class="new-price">₹<%= product.offprice.toFixed(2) %></span>
+                                    <span class="old-price">₹<%= product.price.toFixed(2) %></span>
+                                    <span class="text-danger"><%= product.discountPercentage.toFixed(2) %>% OFF</span>
                                 </div>
+                                
                                 <p><%= product.description %></p>
 
                                 <div class="single-add-to-cart">

@@ -42,7 +42,6 @@ const loadLogin = async (req, res) => {
 
 const loadRegister = async (req, res) => {
     try {
-        console.log('hlo......................');
         res.render('register', { error:null });
 
     }
@@ -58,7 +57,6 @@ const loadRegister = async (req, res) => {
 const insertUser = async (req, res) => {
     try {
         const { name, email, mobileno, userpassword, confirmpassword, gender ,  referral} = req.body;
-        console.log(referral,"reefer in insertuser");
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
             return res.redirect('/register?error=Email already exists. Please use a different email.');
@@ -72,14 +70,10 @@ const insertUser = async (req, res) => {
             console.log(otp,"genearted otp");
 
             if(referral != ""){
-                console.log("inside referr if");
                 const searchReffer = await User.findOne({referralCode: referral})
-                console.log(searchReffer);
                 if(searchReffer){
-                    console.log("inside reffer");
                     
                     req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp,referral };
-                    console.log(req.session.Data);
                     req.session.save();
                     // return res.redirect('/verifyOTP');
                 }
@@ -87,10 +81,8 @@ const insertUser = async (req, res) => {
     
     
             } else{
-                console.log("inside else in insertuser");
                  req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp };
                  req.session.save();
-                 console.log(req.session.Data,"after");
 
              }
 
@@ -114,42 +106,6 @@ const insertUser = async (req, res) => {
         return res.render('register', { error: 'An error occurred. Please try again later.' });
     }
 }
-
-// const insertUser = async (req, res) => {
-//     try {
-//         const { name, email, mobileno, userpassword, confirmpassword, gender, referral } = req.body;
-
-//         const existingUser = await User.findOne({ email: email });
-//         if (existingUser) {
-//             return res.redirect('/register?error=Email already exists. Please use a different email.');
-//         }
-
-//         if (referral) {
-//             const validReferral = await User.findOne({ referralCode: referral });
-//             if (!validReferral) {
-//                 return res.render('register', { error: 'Invalid referral code. Please enter a valid referral code.' });
-//             }
-//         }
-
-//         if (userpassword === confirmpassword) {
-//             const otp = generateOtp();
-//             const otpTimestamp = Date.now();
-
-//             req.session.Data = { name, email, mobileno, userpassword, confirmpassword, otp, gender, otpTimestamp, referral };
-//             req.session.save();
-
-//             const sentEmailUser = await sendInsertOtp(email, otp);
-//             if (sentEmailUser) {
-//                 return res.redirect('/verifyOTP');
-//             }
-//         } else {
-//             return res.render('register', { error: 'Passwords do not match.' });
-//         }
-//     } catch (error) {
-//         console.error('Error in insertUser controller:', error);
-//         return res.render('register', { error: 'An error occurred. Please try again later.' });
-//     }
-// }
 
 
 
@@ -192,7 +148,6 @@ const loadOtp = async (req, res) => {
 
 
 const getOtp = async (req, res) => {
-    console.log("calling");
     try {
        console.log(req.session.Data.otp);
        console.log( req.session.Data.otpTimestamp);
@@ -205,14 +160,12 @@ const getOtp = async (req, res) => {
         const currentTime = Date.now();
         console.log("stored otp", otp)
         console.log(otpInBody, 'this is otp', req.session, 'req session ');
-        console.log(currentTime,"currenttimeeeeeeeeeeee");
-        console.log(otpTimestamp,'timestampppppppppppp');
+        
         if (otpInBody === otp && (currentTime - otpTimestamp) <= 60000) {
             const refferal=referralCode(8);
            
             console.log(refferal,"new referal code")
 
-            console.log(req.session.Data, "session data ......................................")
             const { name, email, mobileno, userpassword, gender ,referral} = req.session.Data
 
 
@@ -233,16 +186,11 @@ const getOtp = async (req, res) => {
                 await user.save()
 
             }
-            console.log(req.session.Data.referral ,"consoled referal");
             if(req.session.Data.referral){
-                console.log(req.session.Data.referral, "inside session reffer");
                 const findUser = await User.findOne({ referralCode: req.session.Data.referral });
-                console.log("user inside refeer to find refeeral", findUser);
                 
                 if (findUser) {
-                    console.log("inside finduser finded");
                     const userWallet = await Wallet.findOne({ userId: findUser._id });
-                    console.log(userWallet,"userwallet");
                     if (userWallet) {
                         const updateWallet = await Wallet.findOneAndUpdate(
                             { userId: findUser._id },
@@ -260,7 +208,6 @@ const getOtp = async (req, res) => {
                             }
                         );
                     } else {
-                        console.log("else in wallet case");
                         const createWallet = new Wallet({
                             userId: findUser._id,
                             balance: 100,
@@ -294,15 +241,10 @@ const getOtp = async (req, res) => {
     
             }
            
-
-
             console.log("registered successfully")
-            // res.redirect('/login')
             res.redirect('/login?registration=complete');
         } else {
-            // Handle case when OTP is invalid or expired
             if ((currentTime - otpTimestamp) > 60000) {
-                // Check if OTP has expired
                 req.session.Data.otp = null;
                 return res.render('verifyOTP', { message: 'OTP has expired. Please request a new one.' });
             } else {
@@ -416,7 +358,6 @@ const  resendOTP = async (req, res) => {
         
         console.log(newOTP,"newotp ......");
         console.log(req.session.Data.otp,"otp saved in sessionnnnnnnnnnn");
-        // console.log(saved , "saved session ....");
         res.status(200).json({ message: "OTP resent successfully", newOTP });
     } catch (error) {
         console.log('Error in resending OTP:', error);
@@ -450,7 +391,6 @@ const verifyLogin = async (req, res) => {
 
         const userData = await User.findOne({ email });
 
-        console.log(userData);
 
         if (!userData) {
             req.flash('error', 'User not found');
@@ -469,19 +409,15 @@ const verifyLogin = async (req, res) => {
             return res.redirect('/login');
         }
 
-        console.log(hashedPassword, 'password');
-        console.log(userData.password, 'hlooooooooooooo');
 
         if (hashedPassword) {
             if (userData.is_blocked) {
                 return res.render('login', { message: "User has been blocked" });
             }
             req.session.user = userData;
-            console.log(req.session.user);
             res.redirect('/home');
         }
         else {
-            console.log("home rendering");
             res.render('login', { message: 'Invalid Password' })
         }
     }
@@ -502,8 +438,7 @@ const loadHome = async (req, res) => {
             const user = await User.findById(req.session.user._id);
             if (user && user.is_blocked) {
                 req.session.destroy();
-                console.log(user, 'this is the user');
-                console.log(user.is_blocked, 'blocked');
+                
                 req.flash('error', 'Your account has been blocked by the admin.');
                 return res.redirect('/login');
             }
@@ -557,7 +492,8 @@ const forgotPassword = async (req, res) => {
         const email = req.body.email;
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.status(404).json({ message: "Email not found" })
+            return res.render('forgotPassword', { message: "Email not found", email: email });
+
         }
 
         const otp = generateOtp();
@@ -570,7 +506,6 @@ const forgotPassword = async (req, res) => {
 
         const sentEmail = await sendForgotPasswordOTP(req.body.email, otp);
         if (sentEmail) {
-            // console.log('sentemail');
             res.redirect('/resetPassword')
         }
 
@@ -600,8 +535,7 @@ const passwordReset = async (req, res) => {
         // console.log(otpEntered);
         const otpEntered = req.body.otp;
         const otpStored = req.session.forgotPassword.otp;
-        console.log("otp not get", req.session.forgotPassword.otp);
-        console.log(otpEntered);
+        console.log(otpEntered,"otp");
 
         const newPassword = req.body.newPassword;
 
@@ -611,7 +545,6 @@ const passwordReset = async (req, res) => {
         if (newPassword !== confirmNewPassword) {
             return res.status(400).json({ message: "Passwords not match" })
         }
-        console.log('pass', hashedPassword);
         if (otpEntered === otpStored) {
             const user = await User.findOneAndUpdate(
                 { email: req.session.forgotPassword.email },
@@ -623,8 +556,6 @@ const passwordReset = async (req, res) => {
                 return res.status(404).json({ message: "User not found" });
             }
 
-            console.log('email to update', req.session.forgotPassword.email);
-            console.log('hashed password', hashedPassword);
 
             res.redirect('/login');
         }
@@ -675,12 +606,8 @@ const orders = async (req, res) => {
 
         const totalOrders = await Order.countDocuments({ userId: req.session.user._id });
         const totalPage = Math.ceil(totalOrders / perPage);
-
-        if (page < 1) {
-            page = 1;
-        } else if (page > totalPage) {
-            page = totalPage;
-        }
+        
+        page = Math.max(1, Math.min(page, totalPage));
 
         const orders = await Order.find({ userId: req.session.user._id })
             .sort({ _id: -1 })
@@ -703,7 +630,6 @@ const orders = async (req, res) => {
 const addAddress = async (req, res) => {
     try {
         const { addressType, name, city, homeAddress, landMark, state, pincode, phone, altPhone } = req.body;
-
         const existingAddresses = await Address.findOne({ userId: req.session.user._id });
 
         // if (existingAddresses && existingAddresses.address.length >= 3) {
@@ -760,7 +686,6 @@ const renderEditAddress = async (req, res) => {
         const address = await Address.findOne({ userId: user._id, 'address._id': addressId });
       
         if (!address) {
-            console.log('Address not found');
             return res.status(404).send('Address not found');
         }
 
@@ -804,7 +729,6 @@ const editAddress = async (req, res) => {
         );
 
         if (!result) {
-            console.log('Address not found');
             return res.status(404).send('Address not found');
         }
 
@@ -825,7 +749,6 @@ const deleteAddress = async (req, res) => {
 
         
         if (!address) {
-            console.log('Address not found');
             return res.status(404).send('Address not found');
         }
 
@@ -845,6 +768,37 @@ const deleteAddress = async (req, res) => {
 
 
 
+
+const loadInvoice=async(req,res)=>{
+    try {
+      const id=req.query.id
+      const findOrder=await Order.findById({_id:id})
+  
+  
+      const proId = [];
+  
+      for (let i = 0; i < findOrder.items.length; i++) {
+        proId.push(findOrder.items[i].productId);
+      }
+  
+      const proData = [];
+  
+      for (let i = 0; i < proId.length; i++) {
+        proData.push(await Product.findById({ _id: proId[i] }));
+      }
+  
+      
+      
+  
+  
+  
+      res.render("invoice",{proData, findOrder})
+      
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+  
 
 
 
@@ -870,7 +824,8 @@ module.exports = {
     renderEditAddress,
     editAddress,
     deleteAddress,
-    checkEmailExists
+    checkEmailExists,
+    loadInvoice
   
 
 }

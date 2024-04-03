@@ -103,7 +103,9 @@ user_route.get("/coupon", auth.checkAuth,auth.isBlocked, couponController.loadCo
 user_route.post("/applyCoupon",  auth.checkAuth,auth.isBlocked, couponController.applyCoupon);
 
 
-user_route.get('/pdf',checkoutController.invoice)
+user_route.get('/pdf',checkoutController.invoice);
+user_route.get("/loadInvoice",userController.loadInvoice)
+
 
 
 module.exports = user_route;

@@ -15,6 +15,17 @@ const categorySchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+        offer: {
+            discount:{
+                type:Number
+            },
+            startDate:{
+                type:String,
+            },
+            endDate:{
+                type:String
+            },
+        },
     is_blocked:{
         type:Boolean,
         default:false

@@ -88,7 +88,7 @@
             padding: 5px 0;
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
             margin-left: 62.5px;
-            
+
             z-index: 1;
         }
 
@@ -151,6 +151,11 @@
         .rotate-270 {
             transform: rotate(270deg);
         }
+
+        .main-navigation ul li.active a {
+            color: #c89979;
+            /* Change this to your desired color */
+        }
     </style>
 
 
@@ -172,9 +177,9 @@
                             <div class="header-top-settings">
                                 <ul class="nav align-items-center">
                                     <li class="language">English
-                                        
+
                                     </li>
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -210,7 +215,7 @@
                             <div class="search-box-wrapper">
                                 <div class="search-box-inner-wrap">
                                     <div class="search-box-inner">
-                                        
+
                                         <!-- <div class="search-select-box">
                                             <div class="nice-select">
                                                 <optgroup label=" Watch">
@@ -239,7 +244,7 @@
                             </div>
                         </div>
 
-                         <div class="col-lg-3">
+                        <div class="col-lg-3">
                             <div class="right-blok-box text-white d-flex">
 
                                 <div class="user-wrap">
@@ -252,7 +257,7 @@
                                             class="cart-total"></span></a>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
 
                     </div>
                 </div>
@@ -268,15 +273,15 @@
                                 <!--  Start Mainmenu Nav-->
                                 <nav class="main-navigation text-center">
                                     <ul>
-                                        <li class="active"><a href="home">Home </a>
-                                            
+                                        <li><a href="home">Home </a>
+
                                         </li>
 
-                                        <li><a href="shop">Shop </a>
-                                           
+                                        <li class="active"><a href="shop">Shop </a>
+
                                         </li>
                                         <li><a href="rolex">Rolex </a>
-                                          
+
                                         </li>
                                         <li><a href="">About Us</a></li>
                                         <li><a href="">Contact</a></li>
@@ -549,14 +554,17 @@
                                                     value="rating_lowest">Rating(Lowest)</option>
                                             </select>
 
-                                           
+
                                         </div>
                                         <div class="product-short">
                                             <select class="form-select" id="category" onchange="sortingcat()">
                                                 <option value="">All categories</option>
                                                 <% categories.forEach(function(category) { %>
-                                                    <option value="<%= category._id %>" <%= category._id === selectedCategory ? 'selected' : '' %>><%= category.name %></option>
-                                                <% }); %>
+                                                    <option value="<%= category._id %>"
+                                                        <%=category._id===selectedCategory ? 'selected' : '' %>><%=
+                                                            category.name %>
+                                                    </option>
+                                                    <% }); %>
                                             </select>
 
                                         </div>
@@ -573,7 +581,7 @@
                                     <div class="tab-pane active" id="grid">
                                         <div class="shop-product-wrap">
                                             <div class="row">
-                                                <% for (let i=0; i < Math.min(product.length, 12); i++) { %>
+                                                <% for (let i=0; i < Math.min(product.length, 16); i++) { %>
                                                     <% let productList=product[i]; %>
                                                         <div class="col-lg-3 col-md-6">
                                                             <!-- single-product-area start -->
@@ -668,15 +676,35 @@
                                                                         </span>
                                                                     </div>
                                                                     <div class="price-box">
-                                                                        <span id="offerPrice<%= i %>"
-                                                                            class="new-price">₹<%= productList.offprice
-                                                                                %>
+                                                                        <span class="new-price">
+                                                                            <% if (productList.offerPrice) { %>
+                                                                                ₹<%= productList.offerPrice.toFixed(2)
+                                                                                    %>
+                                                                                    <% } else { %>
+                                                                                        ₹<%= productList.offprice.toFixed(2)
+                                                                                            %>
+                                                                                            <% } %>
                                                                         </span>
-                                                                        <span class="old-price">₹<%= productList.price
-                                                                                %></span>
-                                                                        <span class="text-danger">
-                                                                            <%= productList.discountPercentage %>% OFF
-                                                                        </span>
+                                                                        <span class="old-price">₹<%=
+                                                                                productList.price.toFixed(2) %></span>
+                                                                        <!-- Display the discount percentage -->
+                                                                        <% if (productList.offerPrice &&
+                                                                            productList.offprice
+                                                                            !==productList.offerPrice) { %>
+                                                                            <% let
+                                                                                discountPercentage=((productList.price -
+                                                                                productList.offerPrice) /
+                                                                                productList.price) * 100; %>
+                                                                                <span class="text-danger">
+                                                                                    <%= discountPercentage.toFixed(2) %>
+                                                                                        % OFF
+                                                                                </span>
+                                                                                <% } else { %>
+                                                                                    <span class="text-danger">
+                                                                                        <%= productList.discountPercentage
+                                                                                            %>% OFF
+                                                                                    </span>
+                                                                                    <% } %>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -809,6 +837,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        
                                                         <% } %>
 
 
@@ -1120,25 +1149,25 @@
         }
 
         function sortingcat() {
-    const selectedCategory = document.getElementById('category').value;
-    alert(selectedCategory)
-    fetch(`/shop?category=${selectedCategory}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }else{
-                // alert(selectedCategory)
-            window.location.href = `/shop?category=${selectedCategory}`;
-            // document.getElementById('category').value = response.selectedCategory;
-            return response.json();
-            }
-            
-        })
-        .catch(error => {
-            console.error("Error updating sorting:", error);
-            // You can handle errors here, such as displaying an error message to the user
-        });
-}
+            const selectedCategory = document.getElementById('category').value;
+            // alert(selectedCategory)
+            fetch(`/shop?category=${selectedCategory}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    } else {
+                        // alert(selectedCategory)
+                        window.location.href = `/shop?category=${selectedCategory}`;
+                        // document.getElementById('category').value = response.selectedCategory;
+                        return response.json();
+                    }
+
+                })
+                .catch(error => {
+                    console.error("Error updating sorting:", error);
+                    // You can handle errors here, such as displaying an error message to the user
+                });
+        }
 
 
 
@@ -1275,12 +1304,12 @@
 
 
 
-        
+
     </script>
-    
-<script>
-    
-</script>
+
+    <script>
+
+    </script>
 
 
 

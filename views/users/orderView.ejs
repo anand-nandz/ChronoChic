@@ -643,11 +643,12 @@
                     <h2 class="h5 mb-0"><a href="#" class="text-muted"></a> Order #<%= findOrder.orderNumber %>
                     </h2>
                     <% if(findOrder.status === 'Delivered' ) { %>
-                        <a href="/pdf?id=<%=findOrder._id%>" class="h6 mb-0 btn btn-rounded" download="Invoice.pdf">Download Invoice</a>
+                        <button class="h6 mb-0 btn btn-rounded" onclick="invoice('<%=findOrder._id%>')">Invoice</button>
                     <% } else { %>
-                        <a href="/pdf?id=<%=findOrder._id%>" class="h6 mb-0 btn btn-rounded" download="Invoice.pdf" hidden>Download Invoice</a>
+                        <button class="h6 mb-0 btn btn-rounded" onclick="invoice('<%=findOrder._id%>')" hidden>Invoice</button>
                     <% } %>
                 </div>
+               
 
 
 
@@ -673,10 +674,22 @@
                                             Via:</span> UPS Ground</div>
                                     <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span>
                                     </div>
-                                    <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected
+                                    <% if(findOrder.status === 'Delivered' ) { %>
+                                        <div class="w-100 text-center py-1 px-2" hidden><span class="text-medium">Expected
                                             Date:</span>
                                         <%= expectedDeliveryDate %>
                                     </div>
+
+                                        <% } else { %>
+                                            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected
+                                                Date:</span>
+                                            <%= expectedDeliveryDate %>
+                                        </div>
+
+                                            <% } %>
+
+
+                                    
                                 </div>
 
                                 <!-- Steps -->
@@ -763,7 +776,7 @@
                                     <tfoot>
                                         <!-- Order totals -->
                                         <tr>
-                                            <% let pdttotal=0; // Calculate the discount amount for(let
+                                            <% let pdttotal=0; 
                                                 for(let i=0;i<findOrder.items.length;i++){ pdttotal+=findOrder.items[i].subTotal
                                                 } const discountAmount=(pdttotal * (findOrder.discount /
                                                 100)).toFixed(2); %>
@@ -1125,6 +1138,13 @@
 
 
     <script>
+
+        function invoice(id){
+        window.location.href="/loadInvoice?id="+id
+    }
+
+
+
         function cancel(id) {
             // alert(id)
             $.ajax({
@@ -1454,7 +1474,7 @@
                             "address": "Razorpay Corporate Office"
                         },
                         "theme": {
-                            "color": "#3399cc"
+                            "color": "#333"
                         }
                     };
 

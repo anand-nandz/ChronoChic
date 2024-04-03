@@ -679,6 +679,7 @@
                                                     <td>₹<span class="amount" id="discount">0</span></td>
 
                                                 </tr>
+                                                <% if(cartData.total  <2000){%>
                                                 <tr class="shipping">
                                                     <th>Shipping</th>
                                                     <td></td>
@@ -694,10 +695,31 @@
                                                     <th>Order Total</th>
                                                     <td></td>
                                                     <td><strong>₹<span class="amount" id="cartSubtotal">
-                                                                <%= cartData.total %>
+                                                                <%= cartData.total  %>
                                                             </span></strong>
                                                     </td>
                                                 </tr>
+                                                <%} else {%>
+                                                    <tr class="shipping">
+                                                    <th>Shipping</th>
+                                                    <td></td>
+                                                    <td>
+                                                        <ul>
+                                                            <label><span>₹</span> 100</label>
+                                                            </li>
+                                                            <li></li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                                <tr class="order-total">
+                                                    <th>Order Total</th>
+                                                    <td></td>
+                                                    <td><strong>₹<span class="amount" id="cartSubtotal">
+                                                                <%= cartData.total +100  %>
+                                                            </span></strong>
+                                                    </td>
+                                                </tr>
+                                                    <%}%>
                                             </tfoot>
                                         </table>
 
@@ -980,6 +1002,10 @@
 
 
 
+        
+
+
+
         function placeOrder(cartid) {
             //    alert(addressId)
             //    alert(cartid)
@@ -1060,7 +1086,7 @@
                                 "address": "Razorpay Corporate Office"
                             },
                             "theme": {
-                                "color": "#3399cc"
+                                "color": "#333"
                             }
                         };
                         var rzp1 = new Razorpay(options);
@@ -1141,6 +1167,7 @@
             const code = document.getElementById("Code").value
             // alert(code)
             // alert(id)
+            const values= document.getElementById("cartSubtotal").innerHTML
 
             $.ajax({
                 url: "/applyCoupon",
@@ -1168,9 +1195,9 @@
                             icon: "success",
                             title: "Coupon added"
                         }).then((result) => {
-
+                            // alert(values)
                             document.getElementById("discount").innerHTML = parseInt(response.total)
-                            document.getElementById("cartSubtotal").innerHTML = response.cartTotal - parseInt(response.total)
+                            document.getElementById("cartSubtotal").innerHTML = parseInt(values) - parseInt(response.total)
                             document.getElementById("remove").style.display = "inline-block"
                             document.getElementById("apply").style.display = "none"
                             document.getElementById("Code").style.display = "none"

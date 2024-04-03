@@ -82,7 +82,7 @@ const loadCheckOutPage = async (req, res) => {
 
 
     const cartItems = cartData.items;
-      console.log(cartItems,"itemss...................");
+      
     const address = await Address.find({ userId: userData._id });
 
     res.render("checkout", { pdtData, cartItems, cartData, address });
@@ -99,7 +99,6 @@ const loadCheckOutPage = async (req, res) => {
 const successPayment=async(req,res)=>{
   try {
     const {response,order}=req.body
-    console.log(response,order,"res,order inpayment success")
 
    
     let hmac = crypto.createHmac("sha256", keySecret);
@@ -168,8 +167,6 @@ const rezopayment = async (req, res) => {
       let address = addressData.address[index]
 
       const date = generateDate()
-      //   console.log(date,"dateeee");
-
 
       if (findCoupon) {
         const orderData = new Order({
@@ -185,9 +182,6 @@ const rezopayment = async (req, res) => {
           coupon: findCoupon.couponCode,
           discount: findCoupon.discount
         });
-
-        //   console.log(s,"shippingg................");
-
 
         const orderdatasave = await orderData.save();
 
@@ -324,7 +318,6 @@ const loadWallet = async (req, res) => {
     const userWallet = await Wallet.findOne({ userId: userData._id });
     if (userWallet && userWallet.transactions) {
       userWallet.transactions.sort((a, b) => {
-        // Assuming date format is 'DD-MM-YYYY', you may need to adjust the parsing logic if it's different
         const dateA = new Date(a.date.split('-').reverse().join('-'));
         const dateB = new Date(b.date.split('-').reverse().join('-'));
         return dateB - dateA;
@@ -360,7 +353,6 @@ const addWalletCash = async (req, res) => {
       }
     });
 
-    // console.log(amount)
   } catch (error) {
     console.log(error.message);
   }
@@ -414,7 +406,6 @@ const addCash = async (req, res) => {
             }
           ]
         })
-        console.log(newWallet, "newwww");
         await newWallet.save()
       }
     }
@@ -425,12 +416,87 @@ const addCash = async (req, res) => {
   }
 };
 
+// const invoice = async (req, res) => {
+//   try {
+//     const id = req.query.id;
+//     console.log(id, "invoice id");
+//     const findOrder = await Order.findById({ _id: id }).populate({ path: 'items.productId', model: 'Product' });
+//     console.log(findOrder, "order invoice");
+
+//     if (!findOrder) {
+//       return res.status(404).send('Order not found');
+//     }
+
+//     let pdttotal = 0;
+//     for (let i = 0; i < findOrder.items.length; i++) {
+//       pdttotal += findOrder.items[i].subTotal;
+//     }
+//     const discountAmount = (pdttotal * (findOrder.discount / 100)).toFixed(2);
+//     console.log(pdttotal, "pdttotal");
+//     console.log(discountAmount, "disamount");
+
+//     const discount = findOrder.discount;
+//     console.log("Discount:", discount);
+
+//     const vatRate = (discount / 100); 
+//     console.log("VAT Rate:", vatRate);
+
+//     const vatAmount = pdttotal * vatRate;
+//     const totalWithVAT = pdttotal - vatAmount;
+
+//     console.log("VAT Amount:", vatAmount);
+//     console.log("Total with VAT:", totalWithVAT);
+
+//     // Add discount information to data
+//     const data = {
+//       "documentTitle": "INVOICE", 
+//       "currency": "INR",
+//       "taxNotation": "gst", 
+//       "marginTop": 25,
+//       "marginRight": 25,
+//       "marginLeft": 25,
+//       "marginBottom": 25,
+//       "logo": "/public/assets/images/logo/cc.png", 
+//       "background": "/public/assets/images/logo/cc.png", 
+//       "sender": {
+//           "company": "ChronoChic",
+//           "address": "Kongad, Palakkad, Kerala",
+//           "zip": "678632",
+//           "city": "Kongad",
+//           "country": "India" 
+//       },
+//       "client": {
+//           "company": findOrder.shippingAddress[0].name.trim(),
+//           "address": findOrder.shippingAddress[0].homeAddress,
+//           "zip": findOrder.shippingAddress[0].pincode,
+//           "city": findOrder.shippingAddress[0].city,
+//           "country": findOrder.shippingAddress[0].state 
+//       },
+//       "products": findOrder.items.map(item => ({
+//           "quantity": item.quantity.toString(),
+//           "description": item.productId.pname,
+//           "price": item.subTotal / item.quantity,
+//       })),
+//     };
+
+   
+// console.log(data,"data");
+//     const result = await easyinvoice.createInvoice(data);
+  
+//     res.setHeader('Content-Type', 'application/pdf');
+//     res.setHeader('Content-Disposition', 'attachment; filename=myInvoice.pdf');
+//     res.send(Buffer.from(result.pdf, 'base64'));
+//   } catch (error) {
+//     console.error('Error generating invoice:', error.message);
+//     res.status(500).send('Error generating invoice');
+//   }
+// };
+
+
 const invoice = async (req, res) => {
   try {
     const id = req.query.id;
-    console.log(id, "invoice id");
     const findOrder = await Order.findById({ _id: id }).populate({ path: 'items.productId', model: 'Product' });
-    console.log(findOrder, "order invoice");
 
     if (!findOrder) {
       return res.status(404).send('Order not found');
@@ -441,22 +507,14 @@ const invoice = async (req, res) => {
       pdttotal += findOrder.items[i].subTotal;
     }
     const discountAmount = (pdttotal * (findOrder.discount / 100)).toFixed(2);
-    console.log(pdttotal, "pdttotal");
-    console.log(discountAmount, "disamount");
+    
 
     const discount = findOrder.discount;
-    console.log("Discount:", discount);
 
     const vatRate = (discount / 100); 
-    console.log("VAT Rate:", vatRate);
 
     const vatAmount = pdttotal * vatRate;
     const totalWithVAT = pdttotal - vatAmount;
-
-    console.log("VAT Amount:", vatAmount);
-    console.log("Total with VAT:", totalWithVAT);
-
-    // Add discount information to data
     const data = {
       "documentTitle": "INVOICE", 
       "currency": "INR",
@@ -486,10 +544,12 @@ const invoice = async (req, res) => {
           "description": item.productId.pname,
           "price": item.subTotal / item.quantity,
       })),
+      "discountApplied": {
+          "couponCode": findOrder.couponCode,
+          "couponPercentage": findOrder.couponPercentage
+      }
     };
 
-   
-console.log(data,"data");
     const result = await easyinvoice.createInvoice(data);
   
     res.setHeader('Content-Type', 'application/pdf');
@@ -500,7 +560,6 @@ console.log(data,"data");
     res.status(500).send('Error generating invoice');
   }
 };
-
 
 
 

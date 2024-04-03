@@ -583,7 +583,7 @@
                                             <% } %>
                                                 <% } else { %>
                                                     <tr>
-                                                        <td colspan="6" id="noPro">Product Not Found</td>
+                                                        <td colspan="6" id="noPro">Cart is Empty.</td>
                                                     </tr>
                                                 <% } %>
                                                 
@@ -600,14 +600,7 @@
                                                     type="submit">
                                                 <a href="shop" class=" continue-btn">Continue Shopping</a>
                                             </div>
-                                            <div class="coupon" id="coupon">
-                                                <h3>Coupon</h3>
-                                                <p>Enter your coupon code if you have one.</p>
-                                                <input id="coupon_code" class="input-text" name="coupon_code" value=""
-                                                    placeholder="Coupon code" type="text">
-                                                <input class="button" name="apply_coupon" value="Apply coupon"
-                                                    type="submit">
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-4 ml-auto">
@@ -627,10 +620,8 @@
                                                 <% } %>
                                         </div>
                                     </div>
-                                    <% } else { %>
-                                        <tr>
-                                            <td colspan="6" id="noPro">Cart Not Found</td>
-                                        </tr>
+                                    <% } else {%> 
+                                    
                                         <% } %>
                             </div>
                         </form>
@@ -959,29 +950,72 @@
 
 
 
-        function checkOut() {
-            $.ajax({
-                url: "/checkout",
-                method: "get",
-                success: (response) => {
-                    if (response.status === "checked") {
+        // function checkOut() {
+        //     $.ajax({
+        //         url: "/checkout",
+        //         method: "get",
+        //         success: (response) => {
+        //             if (response.status === "checked") {
 
+        //                 Swal.fire({
+        //                     icon: "warning",
+        //                     title: "Oops...",
+        //                     text: "check your Cart!",
+
+        //                 });
+
+        //             } else if (response.status == true) {
+        //                 // alert("hello")
+        //                 location.href = "/checkOutPage"
+        //             }
+        //         }
+
+        //     })
+
+        // }
+
+        function checkOut() {
+    $.ajax({
+        url: "/checkout",
+        method: "get",
+        success: (response) => {
+            if (response.status === "checked") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Oops...",
+                    text: "Some products in your cart are no longer available or out of stock. Please review your cart.",
+                });
+            } else if (response.status === true) {
+                // Check if the response contains totalPrice
+                if (response.totalPrice !== undefined) {
+                    const cartTotal = parseFloat($("#total").text()); // Current total displayed to the user
+                    const newTotal = parseFloat(response.totalPrice); // Total price calculated by the server
+
+                    if (newTotal !== cartTotal) {
                         Swal.fire({
                             icon: "warning",
                             title: "Oops...",
-                            text: "check your Cart!",
-
+                            text: "Some product prices in your cart have changed. Please review your cart.",
+                        }).then(() => {
+                            location.href = "/cart"; // Redirect the user to the cart page to review changes
                         });
-
-                    } else if (response.status == true) {
-                        // alert("hello")
-                        location.href = "/checkOutPage"
+                    } else {
+                        location.href = "/checkOutPage"; // Proceed to checkout page
                     }
+                } else {
+                    location.href = "/checkOutPage"; // Proceed to checkout page
                 }
-
-            })
-
+            }
+        },
+        error: () => {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "An error occurred while processing your request. Please try again later.",
+            });
         }
+    });
+}
 
 
 
