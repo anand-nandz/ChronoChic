@@ -19,7 +19,7 @@ let urls = "mongodb+srv://anandu102000:ujZbtxjgVV4RN0i0@cluster0.apncugz.mongodb
 
 mongoose.connect(urls);
 
-
+    
 
 mongoose.connection.on("connected", () => {
     console.log('DataBase connected');
