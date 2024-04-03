@@ -14,7 +14,12 @@ app.set('views','./views/users')
 
 
 
-mongoose.connect(`mongodb://127.0.0.1:27017/chronoChic`);
+// mongoose.connect(`mongodb://127.0.0.1:27017/chronoChic`);
+let urls = "mongodb+srv://anandu102000:ujZbtxjgVV4RN0i0@cluster0.apncugz.mongodb.net/chronoChic?retryWrites=true&w=majority&appName=Cluster0"
+
+mongoose.connect(urls);
+
+
 
 mongoose.connection.on("connected", () => {
     console.log('DataBase connected');
