@@ -9,20 +9,20 @@ require("dotenv").config();
 
 app.set('view engine','ejs');
 
-app.set('views','./views/users')
-// const flash = require('express-flash');
+app.set('views','./views/users');
 
+let urls = `mongodb+srv://chronochicshop:L4ynUS4NDcj5fk6S@chronochic.rfnqs.mongodb.net/chronochic?retryWrites=true&w=majority`
 
-
+mongoose.connect(urls)
 // mongoose.connect(`mongodb://127.0.0.1:27017/chronoChic`);
-let urls = "mongodb+srv://anandu102000:ujZbtxjgVV4RN0i0@cluster0.apncugz.mongodb.net/chronoChic?retryWrites=true&w=majority&appName=Cluster0"
-
-mongoose.connect(urls);
-
-    
-
-mongoose.connection.on("connected", () => {
+  
+mongoose.connection.on("connected", async() => {
     console.log('DataBase connected');
+    console.log('Database connected:', mongoose.connection.name);
+    console.log('Connected to MongoDB at:', mongoose.connection.host);
+    const collections = await mongoose.connection.db.listCollections().toArray();
+    console.log('Collections:', collections.map(col => col.name));
+
 })
 
 mongoose.connection.on("disconnected", () => {
@@ -32,17 +32,13 @@ mongoose.connection.on("error", () => {
     console.log('DataBase error');
 })
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
-
-//Serve static files form the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/products", express.static(path.join(__dirname, "public")));
 app.use("/admin/users", express.static(path.join(__dirname, "public")));
 app.use("/admin/products", express.static(path.join(__dirname, "public")));
-
 
 app.use(session({
     secret: process.env.SECRET,
@@ -51,7 +47,6 @@ app.use(session({
 }));
 
 app.use(flash());
-
 
 
 //for user route
@@ -65,9 +60,6 @@ app.use('/admin', adminRoute);
 app.use('*',(req,res,next)=>{
     res.render('error404')
 })
-
-
-
 
 app.listen(8080, function check(error) {
     if (error) {
