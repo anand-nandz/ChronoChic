@@ -14,14 +14,9 @@ app.set('views','./views/users');
 let urls = `mongodb+srv://chronochicshop:L4ynUS4NDcj5fk6S@chronochic.rfnqs.mongodb.net/chronochic?retryWrites=true&w=majority`
 
 mongoose.connect(urls)
-// mongoose.connect(`mongodb://127.0.0.1:27017/chronoChic`);
   
 mongoose.connection.on("connected", async() => {
-    console.log('DataBase connected');
-    console.log('Database connected:', mongoose.connection.name);
-    console.log('Connected to MongoDB at:', mongoose.connection.host);
-    const collections = await mongoose.connection.db.listCollections().toArray();
-    console.log('Collections:', collections.map(col => col.name));
+    console.log('DataBase connected')
 
 })
 
